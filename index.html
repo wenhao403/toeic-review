@@ -21,6 +21,8 @@ select,input[type="email"],input[type="password"]{width:100%;background:var(--ca
 table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
 .note{font-size:13px;line-height:1.6;color:var(--muted);margin-top:12px}@media(max-width:650px){.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.word{font-size:31px}}
 [hidden]{display:none!important}.account-card{margin:14px 0}.account-card p{line-height:1.6}.btn:disabled{opacity:.55;cursor:default}
+.account-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}.account-bar .btn{padding:6px 10px;white-space:nowrap;background:transparent}.account-card p:empty{display:none}#accountLabel{font-size:14px;overflow-wrap:anywhere}#accountPanel summary{cursor:pointer;color:var(--muted);font-size:14px}#syncStatus{line-height:1.5}#syncStatus.needs-attention{color:var(--bad)}
+.choice::before{content:attr(data-shortcut);display:inline-block;margin-right:10px;padding:2px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
@@ -28,7 +30,12 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
   <div class="top">
     <div><h1>TOEIC Day 1–30 單字複習</h1><div class="sub">自由選擇起始與結束 Day，複習指定範圍</div></div>
   </div>
-  <div class="card account-card">
+  <div class="account-card">
+    <div class="account-bar">
+      <span class="muted" id="syncStatus" role="status">登入同一帳號，即可在手機與電腦同步</span>
+      <button class="btn" id="accountToggle" type="button" aria-expanded="true" aria-controls="accountPanel">帳號設定</button>
+    </div>
+    <div id="accountPanel" class="card" style="margin-top:10px">
     <strong id="accountLabel">尚未登入 · 使用本機紀錄</strong>
     <form id="authForm" style="margin-top:12px">
       <div class="row">
@@ -39,8 +46,13 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
       <p class="note">第一次使用請建立帳號並完成信箱驗證。手機與電腦請使用同一個 Email 登入。</p>
     </form>
     <div id="accountActions" hidden>
-      <div class="row" style="margin-top:12px"><button class="btn primary" id="syncBtn">立即同步</button><button class="btn" id="mergeBtn">合併本機舊紀錄</button><button class="btn" id="passwordToggle" type="button" aria-expanded="false" aria-controls="passwordForm">更新密碼</button><button class="btn" id="logoutBtn">登出</button></div>
-      <p class="note">登入後答案自動同步；斷線時先保存在本機。合併舊紀錄時，答對與答錯次數各取本機、雲端的較大值。</p>
+      <div class="row" style="margin-top:12px"><button class="btn" id="passwordToggle" type="button" aria-expanded="false" aria-controls="passwordForm">更新密碼</button><button class="btn" id="logoutBtn">登出</button></div>
+      <details style="margin-top:14px"><summary>同步與舊紀錄（備用）</summary>
+        <p class="note">平常會自動同步，不需操作。若剛換裝置想立刻取得最新紀錄，或連線恢復後想重試，可按「立即同步」。</p>
+        <button class="btn" id="syncBtn">立即同步</button>
+        <p class="note">「合併本機舊紀錄」只用來帶入以前未登入時的練習紀錄。如果一直登入同一帳號使用，就不需要。合併時各項次數取較大值，不相加。</p>
+        <button class="btn" id="mergeBtn">合併本機舊紀錄</button>
+      </details>
     </div>
     <form id="passwordForm" hidden style="margin-top:14px">
       <p class="note">請設定單字網站專用密碼（至少 12 個字元），不要與 Gmail 或其他網站共用。</p>
@@ -51,8 +63,8 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
       <div class="row" style="margin-top:12px"><button class="btn primary" id="passwordSubmit" type="submit">儲存新密碼</button><button class="btn" id="passwordCancel" type="button">取消</button></div>
     </form>
     <p class="muted" id="passwordMsg" role="status"></p>
-    <p class="muted" id="syncStatus" role="status">登入同一帳號，即可在手機與電腦同步</p>
     <p class="muted" id="authMsg" role="status"></p>
+    </div>
   </div>
   <div class="tabs">
     <button class="tab active" data-tab="home">設定</button>
@@ -86,7 +98,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
     </div>
   </section>
 
-  <section id="quiz" class="panel">
+  <section id="quiz" class="panel" tabindex="-1">
     <div class="card quiz">
       <div class="row" style="justify-content:space-between"><span id="qProgress" class="muted">尚未建立題目</span><span id="qScore" class="muted">答對 0</span></div>
       <div class="bar" style="margin-top:10px"><div id="qBar"></div></div>
@@ -94,6 +106,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
       <div class="wordline"><div id="qWord" class="word">先到「設定」建立題目</div><button id="speakBtn" class="btn speaker" type="button" style="display:none" aria-label="播放發音">🔊</button></div>
       <div id="qPos" class="muted"></div>
       <div id="choices" class="choices"></div>
+      <p class="note">鍵盤：1 左上、2 右上、3 左下、4 右下（手機依序 1～4）；選答案後按 Enter 下一題。</p>
       <div id="feedback" style="min-height:28px;margin-top:16px;font-weight:700"></div>
       <button id="nextBtn" class="btn primary" style="display:none;width:100%;margin-top:10px">下一題</button>
     </div>
@@ -130,7 +143,7 @@ const save=()=>saveGuest();
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){const id=idOf(w);return progress[id]||(progress[id]={correct:0,wrong:0})}
-function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active')}
+function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true})}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent='Day '+d;$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
@@ -170,8 +183,8 @@ function renderQuestion(){
   locked=false; const item=deck[idx];
   $('#qDay').textContent=(roundMode==='wrong'?'今日錯題重練 · ':'')+'Day '+item.day;$('#qWord').textContent=item.word;$('#qPos').textContent=item.pos;$('#speakBtn').style.display='inline-block';
   $('#qProgress').textContent=`第 ${idx+1} / ${deck.length} 題`;$('#qScore').textContent=`答對 ${correct}`;$('#qBar').style.width=`${idx/deck.length*100}%`;
-  makeChoices(item).forEach(text=>{
-    const b=document.createElement('button');b.className='btn choice';b.type='button';b.textContent=text;
+  makeChoices(item).forEach((text,choiceIndex)=>{
+    const b=document.createElement('button');b.className='btn choice';b.type='button';b.textContent=text;b.dataset.shortcut=String(choiceIndex+1);b.setAttribute('aria-keyshortcuts',String(choiceIndex+1));b.setAttribute('aria-label',`${choiceIndex+1}：${text}`);
     b.addEventListener('click',()=>answer(b,text,item));$('#choices').appendChild(b);
   });
 }
@@ -187,6 +200,23 @@ function answer(btn,text,item){
   try{persistRound()}catch{$('#roundMsg').textContent='本輪順序未能保存，但已答單字仍會從一般抽題排除'}refreshStats();
 }
 $('#nextBtn').addEventListener('click',()=>{idx++;locked=false;renderQuestion();try{persistRound()}catch{}});
+// Numeric keys answer directly; Enter advances only after an answer is saved.
+document.addEventListener('keydown',e=>{
+ if(e.ctrlKey||e.metaKey||e.altKey||e.shiftKey)return;
+ const target=e.target;
+ if(target?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"]'))return;
+ if(!$('#quiz').classList.contains('active')||!deck.length||idx>=deck.length)return;
+ const control=target?.closest?.('button,a,summary,[role="button"]');
+ if(control&&!$('#quiz').contains(control)&&!control.matches('[data-tab="quiz"]')&&control.getClientRects().length)return;
+ const physical=/^(?:Digit|Numpad)([1-4])$/.exec(e.code||'');
+ const number=physical?Number(physical[1]):/^[1-4]$/.test(e.key)?Number(e.key):0;
+ if(e.isComposing&&!physical)return;
+ if(!number&&e.key!=='Enter')return;
+ e.preventDefault();
+ if(e.repeat)return;
+ if(number){if(!locked)$('#choices').children[number-1]?.click();}
+ else if(locked&&$('#nextBtn').style.display!=='none')$('#nextBtn').click();
+},true);
 $('#speakBtn').addEventListener('click',()=>{
   if(!deck.length||idx>=deck.length)return;
   if(!('speechSynthesis' in window)){$('#feedback').textContent='此瀏覽器不支援語音播放';return}
@@ -231,7 +261,7 @@ function pendingAnswers(uid){
  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(prefix)){const e=JSON.parse(localStorage.getItem(k));out.push(e)}}
  return out;
 }
-function cloudMessage(text){$('#syncStatus').textContent=text}
+function cloudMessage(text){$('#syncStatus').textContent=text;$('#syncStatus').classList.toggle('needs-attention',text.includes('未完成')||text.includes('未載入'));}
 function composeProgress(uid){
  let cache;try{cache=JSON.parse(localStorage.getItem(cloudCache(uid))||'{}')}catch{cache={}}
  const data=cleanProgress(cache.progress||{}),acknowledged=new Set(cache.acknowledged||[]);
@@ -291,8 +321,13 @@ async function syncProgress(){
  syncJob=navigator.locks?navigator.locks.request(KEY+':sync',task):task();
  try{return await syncJob}finally{syncJob=null;if(account&&accountGeneration!==generation)setTimeout(()=>void syncProgress(),0)}
 }
+let accountUIInitialized=false;
+function setAccountPanel(open){$('#accountPanel').hidden=!open;$('#accountToggle').setAttribute('aria-expanded',String(open));}
+$('#accountToggle').addEventListener('click',()=>setAccountPanel($('#accountPanel').hidden));
 function activateAccount(session){
- const next=session?.user||null;authReady=true;$('#buildQuiz').disabled=false;
+ const next=session?.user||null;
+ if(!accountUIInitialized||account?.id!==next?.id){setAccountPanel(!next);accountUIInitialized=true;}
+ authReady=true;$('#buildQuiz').disabled=false;
  if(account?.id===next?.id){refreshStats();return;}
  accountGeneration++;account=next;closePasswordForm();$('#passwordMsg').textContent='';
  progress=account?composeProgress(account.id):guestProgress();
