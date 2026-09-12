@@ -39,9 +39,18 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
       <p class="note">第一次使用請建立帳號並完成信箱驗證。手機與電腦請使用同一個 Email 登入。</p>
     </form>
     <div id="accountActions" hidden>
-      <div class="row" style="margin-top:12px"><button class="btn primary" id="syncBtn">立即同步</button><button class="btn" id="mergeBtn">合併本機舊紀錄</button><button class="btn" id="logoutBtn">登出</button></div>
+      <div class="row" style="margin-top:12px"><button class="btn primary" id="syncBtn">立即同步</button><button class="btn" id="mergeBtn">合併本機舊紀錄</button><button class="btn" id="passwordToggle" type="button" aria-expanded="false" aria-controls="passwordForm">更新密碼</button><button class="btn" id="logoutBtn">登出</button></div>
       <p class="note">登入後答案自動同步；斷線時先保存在本機。合併舊紀錄時，答對與答錯次數各取本機、雲端的較大值。</p>
     </div>
+    <form id="passwordForm" hidden style="margin-top:14px">
+      <p class="note">請設定單字網站專用密碼（至少 12 個字元），不要與 Gmail 或其他網站共用。</p>
+      <div class="row">
+        <div class="grow"><label for="newPassword">新密碼</label><input id="newPassword" type="password" autocomplete="new-password" minlength="12" required></div>
+        <div class="grow"><label for="confirmPassword">再次輸入新密碼</label><input id="confirmPassword" type="password" autocomplete="new-password" minlength="12" required></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn primary" id="passwordSubmit" type="submit">儲存新密碼</button><button class="btn" id="passwordCancel" type="button">取消</button></div>
+    </form>
+    <p class="muted" id="passwordMsg" role="status"></p>
     <p class="muted" id="syncStatus" role="status">登入同一帳號，即可在手機與電腦同步</p>
     <p class="muted" id="authMsg" role="status"></p>
   </div>
@@ -271,7 +280,7 @@ async function syncProgress(){
 function activateAccount(session){
  const next=session?.user||null;
  if(account?.id===next?.id)return;
- accountGeneration++;account=next;
+ accountGeneration++;account=next;closePasswordForm();$('#passwordMsg').textContent='';
  progress=account?composeProgress(account.id):readProgress(KEY);
  // Do not carry an in-progress round across accounts.
  deck=[];idx=0;correct=0;locked=false;renderQuestion();$('#qDay').textContent='';$('#qPos').textContent='';$('#qScore').textContent='答對 0';$('#qProgress').textContent='尚未建立題目';$('#qBar').style.width='0';
@@ -297,6 +306,38 @@ async function authenticate(signup){
  }catch(e){$('#authMsg').textContent=authError(e)}
  finally{$('#loginBtn').disabled=false;$('#signupBtn').disabled=false}
 }
+function closePasswordForm(){
+ $('#passwordForm').reset();$('#passwordForm').hidden=true;$('#passwordToggle').setAttribute('aria-expanded','false');
+}
+$('#passwordToggle').addEventListener('click',()=>{
+ if(!account)return;
+ if(!$('#passwordForm').hidden){closePasswordForm();return}
+ $('#passwordMsg').textContent='';$('#passwordForm').hidden=false;$('#passwordToggle').setAttribute('aria-expanded','true');$('#newPassword').focus();
+});
+$('#passwordCancel').addEventListener('click',closePasswordForm);
+let passwordUpdating=false;
+$('#passwordForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(passwordUpdating)return;
+ if(!cloud||!account){closePasswordForm();$('#passwordMsg').textContent='請先登入再更新密碼';return}
+ if(!$('#passwordForm').reportValidity())return;
+ const password=$('#newPassword').value;
+ if(password.length<12){$('#passwordMsg').textContent='新密碼至少需要 12 個字元';return}
+ if(password!==$('#confirmPassword').value){$('#passwordMsg').textContent='兩次輸入的密碼不一致，請重新確認';return}
+ const uid=account.id,generation=accountGeneration;
+ passwordUpdating=true;$('#passwordSubmit').disabled=true;$('#passwordCancel').disabled=true;$('#passwordToggle').disabled=true;$('#logoutBtn').disabled=true;
+ $('#passwordMsg').textContent='正在更新密碼…';
+ try{
+  const {error}=await cloud.auth.updateUser({password});
+  if(error)throw error;
+  if(account?.id===uid&&accountGeneration===generation){closePasswordForm();$('#passwordMsg').textContent='密碼已更新。之後請使用新密碼登入；這不會更改 Gmail 密碼。'}
+ }catch(error){
+  if(account?.id===uid&&accountGeneration===generation){
+   $('#passwordForm').reset();
+   const messages={same_password:'新密碼不能與原密碼相同',weak_password:'密碼不符合安全要求，請改用更長且獨立的密碼',reauthentication_needed:'請先登出並重新登入，再更新密碼',session_not_found:'登入已失效，請重新登入'};
+   $('#passwordMsg').textContent=messages[error.code]||'密碼更新未確認，請確認網路後重試；若無法登入，可嘗試剛設定的新密碼。';
+  }
+ }finally{passwordUpdating=false;$('#passwordSubmit').disabled=false;$('#passwordCancel').disabled=false;$('#passwordToggle').disabled=false;$('#logoutBtn').disabled=false}
+});
 $('#authForm').addEventListener('submit',e=>{e.preventDefault();void authenticate(false)});
 $('#signupBtn').addEventListener('click',()=>void authenticate(true));
 $('#syncBtn').addEventListener('click',()=>void syncProgress());
