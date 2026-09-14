@@ -13,7 +13,7 @@
 .tab.active,.btn.primary{background:var(--accent);color:#08111f;border-color:transparent;font-weight:700}.panel{display:none}.panel.active{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .stat{font-size:26px;font-weight:800;margin-top:5px}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grow{flex:1;min-width:210px}
-select,input[type="email"],input[type="password"]{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px}
+select,textarea,input[type="search"],input[type="text"],input[type="email"],input[type="password"]{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:11px}
 .quiz{padding:24px;text-align:center}.wordline{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}.word{font-size:36px;font-weight:800;margin:16px 0 6px}
 .speaker{font-size:22px;padding:8px 11px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}.choice{min-height:60px;text-align:left}
 .choice.good{border-color:var(--good)}.choice.bad{border-color:var(--bad)}.goodtxt{color:var(--good)}.badtxt{color:var(--bad)}
@@ -23,6 +23,8 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
 [hidden]{display:none!important}.account-card{margin:14px 0}.account-card p{line-height:1.6}.btn:disabled{opacity:.55;cursor:default}
 .account-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px}.account-bar .btn{padding:6px 10px;white-space:nowrap;background:transparent}.account-card p:empty{display:none}#accountLabel{font-size:14px;overflow-wrap:anywhere}#accountPanel summary{cursor:pointer;color:var(--muted);font-size:14px}#syncStatus{line-height:1.5}#syncStatus.needs-attention{color:var(--bad)}
 .choice::before{content:attr(data-shortcut);display:inline-block;margin-right:10px;padding:2px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:13px}
+textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-width:180px;white-space:pre-wrap;overflow-wrap:anywhere}#dictionaryBody .btn{padding:6px 10px}#dictionaryEdit{margin:14px 0}#dictionaryEdit label{display:block;margin:10px 0 5px}
+.choice.unsure{grid-column:1 / -1;text-align:center;border-style:dashed;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -71,6 +73,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
     <button class="tab" data-tab="quiz">開始作答</button>
     <button class="tab" data-tab="weak">弱點單字</button>
     <button class="tab" data-tab="backup">備份</button>
+    <button class="tab" data-tab="dictionary">單字庫管理</button>
   </div>
 
   <section id="home" class="panel active">
@@ -94,7 +97,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
         <span id="ruleText" class="muted"></span>
       </div>
       <p id="roundMsg" class="muted" role="status"></p>
-      <div class="note">一般抽題會排除今天已答過的單字（答對、答錯皆算）。台灣時間午夜換日；重練今日錯題可再次練習所選範圍內今天答錯的單字。本輪進度保存在這台裝置，今日完成紀錄會在登入後同步。累積答錯：<span id="wrongTotal">0</span>。</div>
+      <div class="note">一般抽題會排除今天已答過的單字（答對、答錯皆算）。限量抽題優先練習不熟或少練習的字；至少答對 5 次且正確率達 90% 的熟悉單字較少出現。選「全部」仍包含所有今日未答單字。台灣時間午夜換日；重練今日錯題可再次練習所選範圍內今天答錯的單字。本輪進度保存在這台裝置，今日完成紀錄會在登入後同步。累積答錯：<span id="wrongTotal">0</span>。</div>
     </div>
   </section>
 
@@ -106,7 +109,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
       <div class="wordline"><div id="qWord" class="word">先到「設定」建立題目</div><button id="speakBtn" class="btn speaker" type="button" style="display:none" aria-label="播放發音">🔊</button></div>
       <div id="qPos" class="muted"></div>
       <div id="choices" class="choices"></div>
-      <p class="note">鍵盤：1 左上、2 右上、3 左下、4 右下（手機依序 1～4）；選答案後按 Enter 下一題。</p>
+      <p class="note">鍵盤：1 左上、2 右上、3 左下、4 右下（手機依序 1～4）；5 不確定（記為答錯）；作答後按 Enter 下一題。</p>
       <div id="feedback" style="min-height:28px;margin-top:16px;font-weight:700"></div>
       <button id="nextBtn" class="btn primary" style="display:none;width:100%;margin-top:10px">下一題</button>
     </div>
@@ -116,6 +119,29 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
     <div class="card">
       <strong>弱點單字</strong><span class="muted">　依答錯次數排序</span>
       <div style="overflow:auto"><table><thead><tr><th>單字</th><th>中文</th><th>Day</th><th>錯誤</th><th>答對</th></tr></thead><tbody id="weakBody"></tbody></table></div>
+    </div>
+  </section>
+
+  <section id="dictionary" class="panel">
+    <div class="card">
+      <strong>單字庫管理</strong>
+      <p id="dictionaryPermission" class="note"></p>
+      <div class="row">
+        <div class="grow"><label for="dictionarySearch">搜尋單字或中文</label><input type="search" id="dictionarySearch" placeholder="例如 opening 或 職缺"></div>
+        <div class="grow"><label for="dictionaryDay">Day 範圍</label><select id="dictionaryDay"><option value="0">全部 Day</option></select></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="dictionaryRefresh">更新單字庫</button><button class="btn" id="dictionaryExport">匯出單字 JSON</button></div>
+      <p id="dictionaryStatus" class="note" role="status">載入單字庫中…</p>
+      <form id="dictionaryEdit" hidden>
+        <strong id="editWordTitle"></strong>
+        <p class="note">英文與 Day 保留原值，以維持答題紀錄。中文解釋與詞性可修改。</p>
+        <label for="editPos">詞性</label><input id="editPos" type="text" maxlength="100" required>
+        <label for="editMeaning">中文解釋</label><textarea id="editMeaning" maxlength="2000" required></textarea>
+        <div class="row" style="margin-top:12px"><button class="btn primary" id="dictionarySave" type="submit">儲存到雲端</button><button class="btn" id="dictionaryCancel" type="button">取消編輯</button></div>
+        <p id="dictionaryEditMsg" class="note" role="status"></p>
+      </form>
+      <div style="overflow:auto"><table><thead><tr><th>Day</th><th>英文</th><th>詞性</th><th>中文</th><th>熟悉程度</th><th>操作</th></tr></thead><tbody id="dictionaryBody"></tbody></table></div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="dictionaryPrev">上一頁</button><span id="dictionaryCount" class="muted"></span><button class="btn" id="dictionaryNext">下一頁</button></div>
     </div>
   </section>
 
@@ -143,7 +169,7 @@ const save=()=>saveGuest();
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){const id=idOf(w);return progress[id]||(progress[id]={correct:0,wrong:0})}
-function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true})}
+function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent='Day '+d;$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
@@ -168,8 +194,8 @@ $('#currentDay').addEventListener('change',()=>{
 });
 $('#buildQuiz').addEventListener('click',()=>void prepareRound());
 function makeChoices(item){
-  const others=shuffle(WORDS.filter(w=>w.word!==item.word && w.zh!==item.zh));
-  return shuffle([item.zh,...others.slice(0,3).map(w=>w.zh)]);
+  const others=shuffle([...new Set(WORDS.filter(w=>w.word!==item.word && w.zh!==item.zh).map(w=>w.zh))]);
+  return shuffle([item.zh,...others.slice(0,3)]);
 }
 function renderQuestion(){
   checkDate();
@@ -180,13 +206,14 @@ function renderQuestion(){
   if(idx>=deck.length){
     $('#qWord').textContent=roundMode==='normal'&&!remainingPool().length?'今天所選範圍的單字已全部作答':'本輪完成！';$('#qPos').textContent=`答對 ${correct} / ${deck.length}`;$('#qDay').textContent='';$('#qProgress').textContent=`${deck.length} / ${deck.length}`;$('#qBar').style.width='100%';$('#speakBtn').style.display='none';refreshStats();return
   }
-  locked=false; const item=deck[idx];
+  locked=false; const item={...deck[idx]};
   $('#qDay').textContent=(roundMode==='wrong'?'今日錯題重練 · ':'')+'Day '+item.day;$('#qWord').textContent=item.word;$('#qPos').textContent=item.pos;$('#speakBtn').style.display='inline-block';
   $('#qProgress').textContent=`第 ${idx+1} / ${deck.length} 題`;$('#qScore').textContent=`答對 ${correct}`;$('#qBar').style.width=`${idx/deck.length*100}%`;
   makeChoices(item).forEach((text,choiceIndex)=>{
     const b=document.createElement('button');b.className='btn choice';b.type='button';b.textContent=text;b.dataset.shortcut=String(choiceIndex+1);b.setAttribute('aria-keyshortcuts',String(choiceIndex+1));b.setAttribute('aria-label',`${choiceIndex+1}：${text}`);
     b.addEventListener('click',()=>answer(b,text,item));$('#choices').appendChild(b);
   });
+  const unsure=document.createElement('button');unsure.className='btn choice unsure';unsure.type='button';unsure.textContent='不確定';unsure.dataset.shortcut='5';unsure.setAttribute('aria-label','5：不確定');unsure.setAttribute('aria-keyshortcuts','5');unsure.addEventListener('click',()=>answer(unsure,null,item));$('#choices').appendChild(unsure);
 }
 function answer(btn,text,item){
   if(locked||!authReady)return;
@@ -195,7 +222,7 @@ function answer(btn,text,item){
   const ok=text===item.zh;
   try{recordAnswer(item,ok)}catch{$('#feedback').textContent='無法儲存紀錄，請確認瀏覽器儲存空間後重試';return}locked=true;
   if(ok){correct++;btn.classList.add('good');$('#feedback').innerHTML='<span class="goodtxt">✓ 答對</span>'}
-  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});$('#feedback').innerHTML=`<span class="badtxt">✗ 正確答案：${item.zh}</span>`}
+  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});$('#feedback').textContent=(text===null?'不確定，已記為答錯。正確答案：':'✗ 正確答案：')+item.zh}
   $('#qScore').textContent=`答對 ${correct}`;[...$('#choices').children].forEach(x=>x.disabled=true);$('#nextBtn').style.display='block';
   try{persistRound()}catch{$('#roundMsg').textContent='本輪順序未能保存，但已答單字仍會從一般抽題排除'}refreshStats();
 }
@@ -208,8 +235,8 @@ document.addEventListener('keydown',e=>{
  if(!$('#quiz').classList.contains('active')||!deck.length||idx>=deck.length)return;
  const control=target?.closest?.('button,a,summary,[role="button"]');
  if(control&&!$('#quiz').contains(control)&&!control.matches('[data-tab="quiz"]')&&control.getClientRects().length)return;
- const physical=/^(?:Digit|Numpad)([1-4])$/.exec(e.code||'');
- const number=physical?Number(physical[1]):/^[1-4]$/.test(e.key)?Number(e.key):0;
+ const physical=/^(?:Digit|Numpad)([1-5])$/.exec(e.code||'');
+ const number=physical?Number(physical[1]):/^[1-5]$/.test(e.key)?Number(e.key):0;
  if(e.isComposing&&!physical)return;
  if(!number&&e.key!=='Enter')return;
  e.preventDefault();
@@ -227,7 +254,7 @@ function renderWeak(){
   const body=$('#weakBody');body.innerHTML='';
   const rows=WORDS.map(w=>({...w,...stat(w)})).filter(w=>w.wrong>0).sort((a,b)=>b.wrong-a.wrong||a.word.localeCompare(b.word)).slice(0,100);
   if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">目前還沒有答錯紀錄</td></tr>';return}
-  rows.forEach(w=>{const tr=document.createElement('tr');tr.innerHTML=`<td><b>${w.word}</b><div class="muted">${w.pos}</div></td><td>${w.zh}</td><td>${w.day}</td><td class="badtxt">${w.wrong}</td><td>${w.correct}</td>`;body.appendChild(tr)})
+  rows.forEach(w=>{const tr=document.createElement('tr');for(const text of [w.word+' ('+w.pos+')',w.zh,w.day,w.wrong,w.correct]){const td=document.createElement('td');td.textContent=String(text);tr.appendChild(td)}body.appendChild(tr)})
 }
 $('#exportBtn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(progress,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='toeic_progress.json';a.click();URL.revokeObjectURL(a.href);$('#backupMsg').textContent='紀錄已匯出';
@@ -329,7 +356,7 @@ function activateAccount(session){
  if(!accountUIInitialized||account?.id!==next?.id){setAccountPanel(!next);accountUIInitialized=true;}
  authReady=true;$('#buildQuiz').disabled=false;
  if(account?.id===next?.id){refreshStats();return;}
- accountGeneration++;account=next;closePasswordForm();$('#passwordMsg').textContent='';
+ accountGeneration++;account=next;void checkDictionaryAdmin();closePasswordForm();$('#passwordMsg').textContent='';
  progress=account?composeProgress(account.id):guestProgress();
  restoreSettings();
  // Do not carry an in-progress round across accounts.
@@ -449,10 +476,11 @@ async function prepareRound(mode='normal',resume=false){
  building=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;
  try{
   const uid=owner();if(account){const ok=await syncProgress();if(owner()!==uid)return;if(!ok)$('#roundMsg').textContent='目前無法取得其他裝置最新紀錄，先依本機紀錄出題；連線後請再同步。'}
+  await refreshDictionary();
   checkDate();const daily=dailyStatus();let saved=resume?savedRound():null;
   if(resume&&!saved){$('#roundMsg').textContent='沒有今天可繼續的題目，請重新建立本輪題目';return}
   if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;$('#startDay').value=String(saved.start);$('#currentDay').value=String(saved.end)}
-  else{roundMode=mode;const candidates=mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
+  else{roundMode=mode;const candidates=mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
   roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
  finally{building=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false}
@@ -465,6 +493,99 @@ async function fetchDaily(uid,date){
 function refreshDay(){const changed=checkDate();if(changed||roundDate!==studyDate){roundDate=studyDate;refreshStats();$('#roundMsg').textContent='已依台灣時間換日，今天可以重新複習。';if(deck.length){deck=[];idx=0;locked=false;renderQuestion()}}}
 setInterval(refreshDay,10000);
 window.addEventListener('focus',()=>{refreshDay();refreshStats()});
+
+// Weighted sampling without replacement: known words remain possible, but less likely.
+function familiarity(w){const s=progress[idOf(w)]||{correct:0,wrong:0},total=s.correct+s.wrong;return {correct:s.correct,wrong:s.wrong,total,rate:total?s.correct/total:0,mastered:s.correct>=5&&s.correct/total>=.9}}
+function samplingWeight(w){const f=familiarity(w);if(f.mastered)return .12;if(!f.total)return 1.5;return .5+3*(1-f.rate)+1/Math.sqrt(f.total)}
+function sampleReview(candidates,limit,random=Math.random){
+ if(limit>=candidates.length)return shuffle(candidates);
+ return candidates.map(w=>({w,score:-Math.log(Math.max(Number.MIN_VALUE,random()))/samplingWeight(w)})).sort((a,b)=>a.score-b.score).slice(0,limit).map(x=>x.w);
+}
+const ORIGINAL_WORDS=WORDS.map(w=>({...w}));
+const DICTIONARY_CACHE=KEY+':dictionary-v1';
+let dictionaryFingerprint=null,dictionaryRows=new Map(),dictionaryAdmin=false,dictionaryLoaded=false,dictionaryJob=null,dictionarySaving=false,editorKey=null,editorRevision=0,dictionaryPage=0;
+function dictionaryMessage(text){$('#dictionaryStatus').textContent=text}
+function applyDictionary(rows){
+ const valid=rows.filter(r=>knownWords.has(r.word_key)&&typeof r.zh==='string'&&r.zh.trim()&&r.zh.length<=2000&&typeof r.pos==='string'&&r.pos.length<=100&&Number.isSafeInteger(r.revision)&&r.revision>0);
+ const fingerprint=JSON.stringify(valid);if(fingerprint===dictionaryFingerprint)return;dictionaryFingerprint=fingerprint;
+ dictionaryRows=new Map(valid.map(r=>[r.word_key,r]));
+ for(let i=0;i<WORDS.length;i++){const r=dictionaryRows.get(idOf(WORDS[i]));WORDS[i].zh=r?r.zh:ORIGINAL_WORDS[i].zh;WORDS[i].pos=r?r.pos:ORIGINAL_WORDS[i].pos;}
+ renderDictionary();renderWeak();
+}
+async function refreshDictionary(){
+ if(dictionarySaving)return false;
+ if(!cloud){dictionaryMessage('目前使用本機單字庫；連網後重新整理即可取得雲端更新。');return false}
+ if(dictionaryJob)return dictionaryJob;
+ dictionaryJob=(async()=>{try{
+  const rows=[];for(let offset=0;;offset+=1000){const {data,error}=await cloud.from('word_overrides').select('word_key,pos,zh,revision').order('word_key').range(offset,offset+999);if(error)throw error;rows.push(...data);if(data.length<1000)break;}
+  applyDictionary(rows);dictionaryLoaded=true;
+  try{localStorage.setItem(DICTIONARY_CACHE,JSON.stringify(rows))}catch{}
+  dictionaryMessage('單字庫已同步。修改中文與詞性不會清除答題紀錄。');return true;
+ }catch{dictionaryMessage('單字庫同步未完成，先使用已保存的版本；編輯需連線後重試。');return false}
+ })();try{return await dictionaryJob}finally{dictionaryJob=null}
+}
+async function checkDictionaryAdmin(){
+ const uid=account?.id;dictionaryAdmin=false;$('#dictionaryEdit').hidden=true;editorKey=null;renderDictionary();if(!cloud||!uid)return;
+ let result;try{result=await cloud.from('dictionary_editors').select('user_id').eq('user_id',uid)}catch{result={data:[],error:true}}
+ const {data,error}=result;
+ if(account?.id!==uid)return;
+ dictionaryAdmin=!error&&data?.some(row=>row.user_id===uid);renderDictionary();
+}
+function renderDictionary(){
+ const search=$('#dictionarySearch').value.trim().toLocaleLowerCase(),day=+$('#dictionaryDay').value;
+ const matches=WORDS.filter(w=>(!day||w.day===day)&&(!search||[w.word,w.zh,w.pos].some(t=>t.toLocaleLowerCase().includes(search))));
+ const pageSize=30,pages=Math.max(1,Math.ceil(matches.length/pageSize));dictionaryPage=Math.min(dictionaryPage,pages-1);
+ $('#dictionaryCount').textContent=`共 ${matches.length} 個單字 · 第 ${dictionaryPage+1} / ${pages} 頁`;
+ $('#dictionaryPrev').disabled=dictionaryPage===0;$('#dictionaryNext').disabled=dictionaryPage>=pages-1;
+ $('#dictionaryPermission').textContent=dictionaryAdmin?'你可以編輯中文解釋與詞性，儲存後其他裝置會取得更新。':account?'目前帳號可瀏覽與匯出；只有管理者帳號可以編輯。':'登入管理者帳號後可編輯；目前可瀏覽與匯出。';
+ const body=$('#dictionaryBody');body.replaceChildren();
+ for(const w of matches.slice(dictionaryPage*pageSize,(dictionaryPage+1)*pageSize)){
+  const tr=document.createElement('tr'),f=familiarity(w);
+  for(const text of ['Day '+w.day,w.word,w.pos,w.zh,`${f.mastered?'熟悉':!f.total?'尚未練習':'練習中'} · 對 ${f.correct} / 錯 ${f.wrong}`]){const td=document.createElement('td');td.textContent=text;tr.appendChild(td)}
+  const td=document.createElement('td'),button=document.createElement('button');button.className='btn';button.type='button';button.textContent='編輯';button.disabled=!dictionaryAdmin||dictionarySaving;button.addEventListener('click',()=>openWordEditor(idOf(w)));td.appendChild(button);tr.appendChild(td);body.appendChild(tr);
+ }
+}
+function openWordEditor(key){
+ if(!dictionaryAdmin||dictionarySaving)return;
+ if(editorKey&&editorKey!==key&&!$('#dictionaryEdit').hidden){const previous=wordIndex.get(editorKey);if($('#editPos').value!==previous.pos||$('#editMeaning').value!==previous.zh){$('#dictionaryEditMsg').textContent='請先儲存或取消目前的修改，再編輯其他單字。';return}}
+ const w=wordIndex.get(key);if(!w)return;
+ editorKey=key;editorRevision=dictionaryRows.get(key)?.revision||0;
+ $('#dictionaryEdit').hidden=false;$('#editWordTitle').textContent=`Day ${w.day} · ${w.word}`;$('#editPos').value=w.pos;$('#editMeaning').value=w.zh;$('#dictionaryEditMsg').textContent='';$('#editMeaning').focus();
+}
+$('#dictionarySearch').addEventListener('input',()=>{dictionaryPage=0;renderDictionary()});
+$('#dictionaryDay').addEventListener('change',()=>{dictionaryPage=0;renderDictionary()});
+$('#dictionaryPrev').addEventListener('click',()=>{dictionaryPage--;renderDictionary()});
+$('#dictionaryNext').addEventListener('click',()=>{dictionaryPage++;renderDictionary()});
+$('#dictionaryRefresh').addEventListener('click',async()=>{await refreshDictionary();await checkDictionaryAdmin()});
+$('#dictionaryCancel').addEventListener('click',()=>{$('#dictionaryEdit').hidden=true;editorKey=null});
+$('#dictionaryEdit').addEventListener('submit',async e=>{
+ e.preventDefault();if(dictionarySaving||!dictionaryAdmin||!editorKey||!account)return;
+ if(!$('#dictionaryEdit').reportValidity())return;
+ const key=editorKey,uid=account.id,pos=$('#editPos').value.trim(),zh=$('#editMeaning').value.trim();
+ if(!pos||!zh){$('#dictionaryEditMsg').textContent='詞性與中文解釋不能空白';return}
+ dictionarySaving=true;$('#dictionarySave').disabled=true;$('#dictionaryCancel').disabled=true;renderDictionary();$('#dictionaryEditMsg').textContent='正在儲存到雲端…';
+ try{
+  if(dictionaryJob)await dictionaryJob;
+  const {data,error}=await cloud.rpc('save_word_override',{p_word_key:key,p_pos:pos,p_zh:zh,p_expected_revision:editorRevision});
+  if(error)throw error;
+  const row=data?.[0];if(!row)throw Error('No saved record');
+  // Use the saved row immediately; keep the current quiz question's captured text unchanged.
+  const rows=new Map(dictionaryRows);rows.set(key,row);applyDictionary([...rows.values()]);
+  try{localStorage.setItem(DICTIONARY_CACHE,JSON.stringify([...rows.values()]))}catch{}
+  if(account?.id===uid&&editorKey===key){editorRevision=row.revision;$('#dictionaryEditMsg').textContent='已儲存到雲端。之後出題會使用新內容，其他裝置連線後會自動更新。';}
+ }catch(error){
+  if(account?.id===uid&&editorKey===key)$('#dictionaryEditMsg').textContent=error.code==='40001'?'其他裝置已更新這個單字。你的草稿仍保留；先複製草稿，再按「更新單字庫」並重新開啟編輯確認。':'儲存未確認，草稿仍保留。請確認網路與管理者登入狀態後重試。';
+ }finally{dictionarySaving=false;$('#dictionarySave').disabled=false;$('#dictionaryCancel').disabled=false;renderDictionary()}
+});
+$('#dictionaryExport').addEventListener('click',()=>{
+ const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(WORDS,null,2)],{type:'application/json'}));a.href=url;a.download='toeic_words.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+for(let d=1;d<=30;d++){const option=document.createElement('option');option.value=d;option.textContent='Day '+d;$('#dictionaryDay').appendChild(option)}
+const cachedDictionary=readJSON(DICTIONARY_CACHE,[]);applyDictionary(Array.isArray(cachedDictionary)?cachedDictionary:[]);
+void refreshDictionary();
+window.addEventListener('online',()=>void refreshDictionary());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refreshDictionary()});
+setInterval(()=>{if(!document.hidden)void refreshDictionary()},30000);
 
 progress=guestProgress();restoreSettings();$('#buildQuiz').disabled=!authReady;
 if(cloud)cloud.auth.onAuthStateChange((_event,session)=>activateAccount(session));
