@@ -25,6 +25,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
 .choice::before{content:attr(data-shortcut);display:inline-block;margin-right:10px;padding:2px 7px;border:1px solid var(--line);border-radius:5px;color:var(--muted);font-size:13px}
 textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-width:180px;white-space:pre-wrap;overflow-wrap:anywhere}#dictionaryBody .btn{padding:6px 10px}#dictionaryEdit{margin:14px 0}#dictionaryEdit label{display:block;margin:10px 0 5px}
 .choice.unsure{grid-column:1 / -1;text-align:center;border-style:dashed;color:var(--muted)}
+.history-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}@media(max-width:650px){.history-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -72,7 +73,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
     <button class="tab active" data-tab="home">設定</button>
     <button class="tab" data-tab="quiz">開始作答</button>
     <button class="tab" data-tab="weak">弱點單字</button>
-    <button class="tab" data-tab="backup">備份</button>
+    <button class="tab" data-tab="history">學習紀錄</button>
     <button class="tab" data-tab="dictionary">單字庫管理</button>
   </div>
 
@@ -145,6 +146,23 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
     </div>
   </section>
 
+  <section id="history" class="panel">
+    <div class="card">
+      <strong>學習紀錄</strong><p class="note">以台灣時間計算每天的作答。「不確定」算答錯，錯題重練另算一次作答，因此題數可能大於當日完成的不同單字數。</p>
+      <div class="history-grid">
+        <div><div class="muted">今日答題</div><div class="stat" id="historyTodayTotal">0</div></div>
+        <div><div class="muted">今日答對</div><div class="stat goodtxt" id="historyTodayCorrect">0</div></div>
+        <div><div class="muted">今日答錯</div><div class="stat badtxt" id="historyTodayWrong">0</div></div>
+        <div><div class="muted">今日正確率</div><div class="stat" id="historyTodayRate">—</div></div>
+      </div>
+      <p id="historyTodayNote" class="note"></p><p id="historyComparison"></p>
+      <div class="row"><div class="grow"><label for="historyRange">查看期間</label><select id="historyRange"><option value="7">最近 7 天</option><option value="30" selected>最近 30 天</option><option value="90">最近 90 天</option><option value="99999">全部紀錄</option></select></div><button class="btn" id="historyRefresh">更新紀錄</button></div>
+      <p id="historySummary" class="note"></p><p id="historyLocalNote" class="note"></p>
+      <div style="overflow:auto"><table><thead><tr><th>日期</th><th>答題數</th><th>答對</th><th>答錯</th><th>正確率</th><th>未分類</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+      <p class="note">部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類或未作答的日期，正確率顯示「—」。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
+    </div>
+  </section>
+
   <section id="backup" class="panel">
     <div class="card">
       <strong>學習紀錄備份</strong>
@@ -169,7 +187,7 @@ const save=()=>saveGuest();
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){const id=idOf(w);return progress[id]||(progress[id]={correct:0,wrong:0})}
-function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}}
+function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent='Day '+d;$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
@@ -183,6 +201,7 @@ function refreshStats(){
   $('#ruleText').textContent=`Day ${$('#startDay').value} ～ Day ${$('#currentDay').value}｜範圍 ${pool().length}｜今日已答 ${pool().length-available}｜剩餘 ${available}`;
   updateResume();
   renderWeak();
+  renderHistory();
 }
 $('#startDay').addEventListener('change',()=>{
   if(+$('#startDay').value>+$('#currentDay').value)$('#currentDay').value=$('#startDay').value;
@@ -305,7 +324,8 @@ function recordAnswer(item,ok){
  }else{
   const next=guestProgress(),s=next[idOf(item)]??={correct:0,wrong:0};s[ok?'correct':'wrong']++;
   const daily=dailyStatus();daily[idOf(item)]={had_wrong:!!daily[idOf(item)]?.had_wrong||!ok};
-  localStorage.setItem(KEY+':guest-v2',JSON.stringify({progress:next,date:studyDate,daily}));progress=next;
+  const history=guestState().history||{},row=history[studyDate]??=emptyDay();row[ok?'correct':'wrong']++;
+  localStorage.setItem(KEY+':guest-v2',JSON.stringify({progress:next,date:studyDate,daily,history}));progress=next;
  }
 }
 async function fetchProgress(uid){
@@ -332,9 +352,10 @@ async function syncProgress(){
    }
    const snapshot=await fetchProgress(uid);
    const dailyDate=taipeiDate(),daily=await fetchDaily(uid,dailyDate);
+   const history=await fetchHistory();
    if(account?.id!==uid||generation!==accountGeneration)return false;
    // Cache and receipts are committed together so a refresh cannot double-count acknowledged answers.
-   localStorage.setItem(cloudCache(uid),JSON.stringify({progress:snapshot,acknowledged:pending.map(e=>e.id),dailyDate,daily}));
+   localStorage.setItem(cloudCache(uid),JSON.stringify({progress:snapshot,acknowledged:pending.map(e=>e.id),dailyDate,daily,history}));
    for(const e of pending)localStorage.removeItem(pendingPrefix(uid)+e.id);
    progress=composeProgress(uid);refreshStats();
    cloudMessage(pendingAnswers(uid).length?'仍有新紀錄等待同步':'已同步 · '+new Date().toLocaleTimeString());
@@ -586,6 +607,44 @@ void refreshDictionary();
 window.addEventListener('online',()=>void refreshDictionary());
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refreshDictionary()});
 setInterval(()=>{if(!document.hidden)void refreshDictionary()},30000);
+
+function emptyDay(){return {correct:0,wrong:0,unknown:0}}
+function dayTotal(row){return row.correct+row.wrong+row.unknown}
+function dayRate(row){return !row.unknown&&dayTotal(row)>0?100*row.correct/dayTotal(row):null}
+function historyData(){
+ const result={};let base,acknowledged=new Set();
+ if(account){const cache=readJSON(cloudCache(account.id));base=cache.history||{};acknowledged=new Set(cache.acknowledged||[])}else base=guestState().history||{};
+ for(const [date,row] of Object.entries(base))result[date]={...emptyDay(),...row};
+ if(account)for(const event of pendingAnswers(account.id)){
+  if(!event.answered_at||acknowledged.has(event.id))continue;
+  const date=taipeiDate(new Date(event.answered_at));const row=result[date]??=emptyDay();row[event.correct?'correct':'wrong']++;
+ }
+ return result;
+}
+function offsetDay(day,offset){const d=new Date(day+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+offset);return d.toISOString().slice(0,10)}
+function sumHistory(history,from,to){const sum=emptyDay();for(const [date,row] of Object.entries(history))if(date>=from&&date<=to){sum.correct+=row.correct;sum.wrong+=row.wrong;sum.unknown+=row.unknown}return sum}
+function formatRate(row){const rate=dayRate(row);return rate===null?'—':rate.toFixed(1)+'%'}
+function renderHistory(){
+ const history=historyData(),today=taipeiDate(),row=history[today]||emptyDay();
+ $('#historyTodayTotal').textContent=dayTotal(row);$('#historyTodayCorrect').textContent=row.correct;$('#historyTodayWrong').textContent=row.wrong;$('#historyTodayRate').textContent=formatRate(row);
+ $('#historyTodayNote').textContent=row.unknown?'今日含 '+row.unknown+' 題舊紀錄未分類，無法計算完整正確率。':'';
+ const days=+$('#historyRange').value||30;
+ const dates=days===99999?Object.keys(history).sort().reverse():Array.from({length:days},(_,i)=>offsetDay(today,-i));
+ const total=dates.reduce((s,date)=>{const r=history[date]||emptyDay();s.correct+=r.correct;s.wrong+=r.wrong;s.unknown+=r.unknown;return s},emptyDay());
+ $('#historySummary').textContent=`所選期間：${dayTotal(total)} 題｜答對 ${total.correct}｜答錯 ${total.wrong}｜正確率 ${formatRate(total)}${total.unknown?'｜舊紀錄未分類 '+total.unknown+' 題':''}`;
+ const recent=sumHistory(history,offsetDay(today,-6),today),prior=sumHistory(history,offsetDay(today,-13),offsetDay(today,-7));
+ const a=dayRate(recent),b=dayRate(prior);
+ $('#historyComparison').textContent=a===null||b===null?'近 7 天與前 7 天：尚無兩段完整對錯資料可比較。':`近 7 天 ${a.toFixed(1)}%（${dayTotal(recent)} 題），前 7 天 ${b.toFixed(1)}%（${dayTotal(prior)} 題）；${a>b?'提高':a<b?'下降':'持平'}${a===b?'':' '+Math.abs(a-b).toFixed(1)+' 個百分點'}。`;
+ const body=$('#historyBody');body.replaceChildren();
+ for(const date of dates){const r=history[date]||emptyDay(),tr=document.createElement('tr');for(const value of [date+(date===today?'（今天）':''),dayTotal(r),r.correct,r.wrong,formatRate(r),r.unknown||'—']){const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td)}body.appendChild(tr)}
+ if(!dates.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='目前沒有可按日期查看的紀錄，開始作答後會自動累積。';tr.appendChild(td);body.appendChild(tr)}
+ $('#historyLocalNote').textContent=account?'顯示目前帳號的雲端紀錄及這台裝置尚待同步的答案。':'尚未登入，顯示這個瀏覽器的本機紀錄。';
+}
+async function fetchHistory(){
+ const result={};for(let offset=0;;offset+=1000){const {data,error}=await cloud.rpc('get_daily_history').order('review_date').range(offset,offset+999);if(error)throw error;for(const row of data)result[row.review_date]={correct:Number(row.correct_count),wrong:Number(row.wrong_count),unknown:Number(row.unknown_count)};if(data.length<1000)return result}
+}
+$('#historyRange').addEventListener('change',renderHistory);
+$('#historyRefresh').addEventListener('click',async()=>{await syncProgress();renderHistory()});
 
 progress=guestProgress();restoreSettings();$('#buildQuiz').disabled=!authReady;
 if(cloud)cloud.auth.onAuthStateChange((_event,session)=>activateAccount(session));
