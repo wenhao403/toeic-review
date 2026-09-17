@@ -26,6 +26,7 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:10px;bor
 textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-width:180px;white-space:pre-wrap;overflow-wrap:anywhere}#dictionaryBody .btn{padding:6px 10px}#dictionaryEdit{margin:14px 0}#dictionaryEdit label{display:block;margin:10px 0 5px}
 .choice.unsure{grid-column:1 / -1;text-align:center;border-style:dashed;color:var(--muted)}
 .history-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}@media(max-width:650px){.history-grid{grid-template-columns:1fr 1fr}}
+.rules-row{position:relative;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px}.rules-row>.note{margin:0}.practice-rules{font-size:13px;color:var(--muted)}.practice-rules summary{cursor:pointer;list-style:none;padding:8px 0;border-radius:5px}.practice-rules summary::-webkit-details-marker{display:none}.practice-rules summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.practice-rules[open] summary{color:var(--accent)}.rules-content{position:absolute;left:0;right:0;top:100%;z-index:20;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 12px 30px #0006;max-height:60vh;overflow:auto;line-height:1.7;color:var(--text);font-size:14px}.rules-content ul{margin:10px 0 0;padding-left:22px}.rules-content li+li{margin-top:9px}
 </style>
 </head>
 <body>
@@ -96,10 +97,30 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
         <button class="btn primary" id="buildQuiz">建立本輪題目</button>
         <button class="btn" id="resumeBtn" hidden>繼續上次作答</button>
         <button class="btn" id="retryTodayBtn">重練今日錯題</button>
+        <button class="btn" id="retryWeakBtn">重練弱點單字</button>
         <span id="ruleText" class="muted"></span>
       </div>
       <p id="roundMsg" class="muted" role="status"></p>
-      <div class="note">一般抽題會排除今天已答過的單字（答對、答錯皆算）。限量抽題優先練習不熟或少練習的字；累積作答至少 3 次，且連續答對 3 次或累積正確率達 80% 的熟悉單字較少出現。未滿 3 次仍照常練習；聽力使用提示不算直接答對。部分舊紀錄無法還原連對次數，會從可確認的紀錄累積。選「全部」仍包含所有今日未答單字。台灣時間午夜換日；重練今日錯題可再次練習所選範圍內今天答錯的單字。本輪進度保存在這台裝置，今日完成紀錄會在登入後同步。<span id="wrongTotalLabel">累積答錯</span>：<span id="wrongTotal">0</span>。</div>
+      <div class="rules-row">
+        <details id="practiceRules" class="practice-rules">
+          <summary aria-controls="practiceRulesContent">ⓘ 練習規則</summary>
+          <div id="practiceRulesContent" class="rules-content">
+            <strong>練習規則</strong>
+            <ul>
+              <li><strong>一般抽題：</strong>排除今天已答過的字，答對、答錯都算。</li>
+              <li><strong>限量抽題：</strong>優先練習不熟或少練習的字；選「全部」則包含所有今日未答單字。</li>
+              <li><strong>熟悉門檻：</strong>累積作答至少 3 次，且「連續答對 3 次」或「累積正確率達 80%」，就減少出題。未滿 3 次照常練習。</li>
+              <li><strong>聽力提示：</strong>使用提示不算直接答對，也會中斷連續答對。</li>
+              <li><strong>重練弱點單字：</strong>抽取所選 Day 範圍內曾答錯、尚未熟悉的字，今天答過也能再練。</li>
+              <li><strong>重練今日錯題：</strong>再次練習所選範圍內今天答錯或聽力需要提示的字。</li>
+              <li><strong>每天換日：</strong>台灣時間早上 6:00 至隔天 05:59:59 算同一天。</li>
+              <li><strong>進度保存：</strong>本輪續答進度保存在這台裝置；登入後，作答紀錄會同步雲端。</li>
+              <li><strong>舊紀錄：</strong>無法還原的連對次數，從可確認的紀錄累積。</li>
+            </ul>
+          </div>
+        </details>
+        <span class="note"><span id="wrongTotalLabel">累積答錯</span>：<span id="wrongTotal">0</span></span>
+      </div>
     </div>
   </section>
 
@@ -120,7 +141,8 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 
   <section id="weak" class="panel">
     <div class="card">
-      <strong>弱點單字</strong><span id="weakMode" class="muted"></span><span class="muted">　依答錯次數排序</span>
+      <strong>弱點單字</strong><span id="weakMode" class="muted"></span><span class="muted">　依錯誤率排序，已熟悉的單字不列入</span>
+      <p id="weakScope" class="note"></p><button class="btn primary" id="weakStartBtn">重練弱點單字</button>
       <div style="overflow:auto"><table><thead><tr><th>單字</th><th>中文</th><th>Day</th><th id="weakWrongHead">錯誤</th><th id="weakCorrectHead">答對</th></tr></thead><tbody id="weakBody"></tbody></table></div>
     </div>
   </section>
@@ -150,7 +172,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 
   <section id="history" class="panel">
     <div class="card">
-      <strong>學習紀錄</strong><p class="note">以台灣時間計算每天的作答。「不確定」算答錯，錯題重練另算一次作答，因此題數可能大於當日完成的不同單字數。</p>
+      <strong>學習紀錄</strong><p class="note">以台灣時間早上 6:00 到隔天 05:59:59 計算一天的作答。「不確定」算答錯，錯題重練另算一次作答，因此題數可能大於當日完成的不同單字數。</p>
       <label for="historyMode">練習模式</label><select id="historyMode"><option value="reading">單字辨識</option><option value="listening">聽力練習</option></select>
       <p id="listeningHistoryNote" class="note" hidden>聽力以未看提示就答對的「直接聽懂率」為主要指標。重聽不扣分；顯示英文後答對另列「提示後答對」，仍需複習。</p>
       <div class="history-grid">
@@ -163,7 +185,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div class="row"><div class="grow"><label for="historyRange">查看期間</label><select id="historyRange"><option value="7">最近 7 天</option><option value="30" selected>最近 30 天</option><option value="90">最近 90 天</option><option value="99999">全部紀錄</option></select></div><button class="btn" id="historyRefresh">更新紀錄</button></div>
       <p id="historySummary" class="note"></p><p id="historyLocalNote" class="note"></p>
       <div style="overflow:auto"><table><thead><tr><th>日期</th><th>答題數</th><th id="historyCorrectHead">答對</th><th>答錯</th><th id="historyRateHead">正確率</th><th>提示後答對</th><th>未分類</th></tr></thead><tbody id="historyBody"></tbody></table></div>
-      <p class="note">部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類或未作答的日期，正確率顯示「—」。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
+      <p class="note">有時間的雲端紀錄已按早上 6:00 重新歸日；較早未登入的本機紀錄只有每日合計，保留原日期，更新前的本機今日完成清單會重新開始，累積成績保留。部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類或未作答的日期，正確率顯示「—」。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
     </div>
   </section>
 
@@ -193,6 +215,13 @@ const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){return activeProgress()[idOf(w)]||{correct:0,wrong:0}}
 function showTab(id){if(id!=='quiz')stopSpeech();document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}}
+// Native disclosure supports touch and keyboard; mouse users can preview on hover.
+const practiceRules=$('#practiceRules');
+practiceRules.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')practiceRules.open=true});
+practiceRules.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!practiceRules.contains(document.activeElement))practiceRules.open=false});
+practiceRules.addEventListener('focusout',e=>{if(!practiceRules.contains(e.relatedTarget))practiceRules.open=false});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&practiceRules.open){practiceRules.open=false;e.stopPropagation()}});
+document.addEventListener('pointerdown',e=>{if(!practiceRules.contains(e.target))practiceRules.open=false});
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent='Day '+d;$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
@@ -228,12 +257,12 @@ function renderQuestion(){
   if(roundDate!==studyDate){deck=[];idx=0;roundDate=studyDate;}
   if(roundMode==='normal'){const daily=dailyStatus();while(idx<deck.length&&daily[idOf(deck[idx])])idx++;}
   $('#feedback').textContent='';$('#nextBtn').style.display='none';$('#choices').innerHTML='';
-  if(!deck.length){$('#qWord').textContent=roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
+  if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'所選範圍目前沒有需要加強的弱點單字':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
   if(idx>=deck.length){
     $('#qWord').textContent=roundMode==='normal'&&!remainingPool().length?'今天所選範圍的單字已全部作答':'本輪完成！';$('#qPos').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct} / ${deck.length}`;$('#qDay').textContent='';$('#qProgress').textContent=`${deck.length} / ${deck.length}`;$('#qBar').style.width='100%';$('#speakBtn').style.display='none';refreshStats();return
   }
   locked=false; const item={...deck[idx]};hintUsed=practiceMode==='listening'&&readJSON(roundKey()).revealedKey===idOf(item);
-  $('#qDay').textContent=(roundMode==='wrong'?'今日錯題重練 · ':'')+(practiceMode==='listening'?'聽力練習 · ':'')+'Day '+item.day;$('#qWord').textContent=practiceMode==='listening'&&!hintUsed?'聽發音，選出中文意思':item.word;$('#qPos').textContent=practiceMode==='listening'&&!hintUsed?'英文已隱藏':item.pos;$('#revealBtn').hidden=practiceMode!=='listening'||hintUsed;$('#speakBtn').style.display='inline-block';
+  $('#qDay').textContent=(roundMode==='weak'?'弱點單字重練 · ':roundMode==='wrong'?'今日錯題重練 · ':'')+(practiceMode==='listening'?'聽力練習 · ':'')+'Day '+item.day;$('#qWord').textContent=practiceMode==='listening'&&!hintUsed?'聽發音，選出中文意思':item.word;$('#qPos').textContent=practiceMode==='listening'&&!hintUsed?'英文已隱藏':item.pos;$('#revealBtn').hidden=practiceMode!=='listening'||hintUsed;$('#speakBtn').style.display='inline-block';
   $('#qProgress').textContent=`第 ${idx+1} / ${deck.length} 題`;$('#qScore').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct}`;$('#qBar').style.width=`${idx/deck.length*100}%`;
   makeChoices(item).forEach((text,choiceIndex)=>{
     const b=document.createElement('button');b.className='btn choice';b.type='button';b.textContent=text;b.dataset.shortcut=String(choiceIndex+1);b.setAttribute('aria-keyshortcuts',String(choiceIndex+1));b.setAttribute('aria-label',`${choiceIndex+1}：${text}`);
@@ -277,8 +306,9 @@ $('#speakBtn').addEventListener('click',playWord);
 function renderWeak(){
   $('#weakMode').textContent=practiceMode==='listening'?' · 聽力（含需要提示）':' · 單字辨識';
   const body=$('#weakBody');body.innerHTML='';
-  const stats=activeProgress();const rows=WORDS.map(w=>({...w,...(stats[idOf(w)]||{correct:0,wrong:0})})).filter(w=>w.wrong>0).sort((a,b)=>b.wrong-a.wrong||a.word.localeCompare(b.word)).slice(0,100);
-  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">目前還沒有答錯紀錄</td></tr>';return}
+  const stats=activeProgress();const rows=weakPool(stats).map(w=>({...w,...stats[idOf(w)]})).sort((a,b)=>b.wrong/(b.correct+b.wrong)-a.wrong/(a.correct+a.wrong)||b.wrong-a.wrong||a.word.localeCompare(b.word));
+  $('#weakScope').textContent=`Day ${$('#startDay').value} ～ Day ${$('#currentDay').value}，共 ${rows.length} 個弱點單字。沿用設定頁的模式與題數，今天答過也可再練。`;
+  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">所選範圍目前沒有需要加強的弱點單字</td></tr>';return}
   rows.forEach(w=>{const tr=document.createElement('tr');for(const text of [w.word+' ('+w.pos+')',w.zh,w.day,w.wrong,w.correct]){const td=document.createElement('td');td.textContent=String(text);tr.appendChild(td)}body.appendChild(tr)})
 }
 $('#exportBtn').addEventListener('click',()=>{
@@ -331,7 +361,7 @@ function recordAnswer(item,ok){
   const next=guestProgress(),s=next[idOf(item)]??={correct:0,wrong:0};s.streak=ok?streakOf(s)+1:0;s[ok?'correct':'wrong']++;
   const daily=dailyStatus();daily[idOf(item)]={had_wrong:!!daily[idOf(item)]?.had_wrong||!ok};
   const history=guestState().history||{},row=history[studyDate]??=emptyDay();row[ok?'correct':'wrong']++;
-  localStorage.setItem(KEY+':guest-v2',JSON.stringify({progress:next,date:studyDate,daily,history}));progress=next;
+  localStorage.setItem(KEY+':guest-v2',JSON.stringify({dayBoundary:6,progress:next,date:studyDate,daily,history}));progress=next;
  }
 }
 async function fetchProgress(uid){
@@ -357,16 +387,16 @@ async function syncProgress(){
     const {error}=await cloud.rpc('sync_answers_v3',{events:pending.slice(i,i+200)});if(error)throw error;
    }
    for(let i=0;i<listeningPending.length;i+=200){const {error}=await cloud.rpc('save_listening_answers',{events:listeningPending.slice(i,i+200)});if(error)throw error}
-   const listening=await fetchListening(uid);
+   const dailyDate=taipeiDate(),listening=await fetchListening(dailyDate);
    const snapshot=await fetchProgress(uid);
    const {data:streaks,error:streakError}=await cloud.rpc('get_answer_streaks');if(streakError)throw streakError;
    for(const [key,s] of Object.entries(snapshot))s.streak=Math.max(s.wrong===0?s.correct:0,streaks.reading?.[key]||0);
    for(const [key,s] of Object.entries(listening.progress))s.streak=Math.max(s.wrong===0?s.correct:0,streaks.listening?.[key]||0);
-   const dailyDate=taipeiDate(),daily=await fetchDaily(uid,dailyDate);
+   const daily=await fetchDaily(uid,dailyDate);
    const history=await fetchHistory();
    if(account?.id!==uid||generation!==accountGeneration)return false;
    // Cache and receipts are committed together so a refresh cannot double-count acknowledged answers.
-   localStorage.setItem(cloudCache(uid),JSON.stringify({progress:snapshot,acknowledged:pending.map(e=>e.id),dailyDate,daily,history,listening,listenAcknowledged:listeningPending.map(e=>e.id)}));
+   localStorage.setItem(cloudCache(uid),JSON.stringify({dayBoundary:6,progress:snapshot,acknowledged:pending.map(e=>e.id),dailyDate,daily,history,listening,listenAcknowledged:listeningPending.map(e=>e.id)}));
    for(const e of pending)localStorage.removeItem(pendingPrefix(uid)+e.id);
    for(const e of listeningPending)localStorage.removeItem(listenPrefix(uid)+e.id);
    progress=composeProgress(uid);refreshStats();
@@ -477,7 +507,7 @@ window.addEventListener('storage',e=>{if(account&&e.key?.startsWith(KEY+':')){pr
 setInterval(()=>{if(!document.hidden)void syncProgress()},30000);
 // Daily completion is based on the answer time in Taiwan, even when uploaded later.
 function taipeiDate(date=new Date()){
- const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date);
+ const parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date(date.getTime()-6*60*60*1000));
  const part=k=>parts.find(p=>p.type===k).value;return `${part('year')}-${part('month')}-${part('day')}`;
 }
 let studyDate=taipeiDate(),roundDate=studyDate,roundMode='normal',roundStart=1,roundEnd=30,building=false,authReady=!cloud;
@@ -490,9 +520,9 @@ function saveGuest(){const s=guestState();localStorage.setItem(KEY+':guest-v2',J
 function dailyStatus(){
  if(practiceMode==='listening')return listeningData().days[taipeiDate()]||{};
  checkDate();let daily={};
- if(account){const cache=readJSON(cloudCache(account.id));if(cache.dailyDate===studyDate)daily={...cache.daily};
+ if(account){const cache=readJSON(cloudCache(account.id));if(cache.dayBoundary===6&&cache.dailyDate===studyDate)daily={...cache.daily};
   for(const e of pendingAnswers(account.id)){if(e.answered_at&&taipeiDate(new Date(e.answered_at))===studyDate)daily[e.word_key]={had_wrong:!!daily[e.word_key]?.had_wrong||!e.correct};}
- }else{const state=guestState();if(state.date===studyDate)daily={...state.daily};}
+ }else{const state=guestState();if(state.dayBoundary===6&&state.date===studyDate)daily={...state.daily};}
  return daily;
 }
 function remainingPool(){const daily=dailyStatus();return pool().filter(w=>!daily[idOf(w)])}
@@ -503,28 +533,29 @@ function persistRound(){
  localStorage.setItem(roundKey(),JSON.stringify(state));updateResume();
 }
 function savedRound(){const s=readJSON(roundKey());return s.date===studyDate&&Array.isArray(s.keys)&&Number.isInteger(s.next)&&s.next>=0&&s.next<s.keys.length?s:null}
-function updateResume(){checkDate();const saved=savedRound();const daily=dailyStatus();const count=saved?saved.keys.slice(saved.next).filter(k=>wordIndex.has(k)&&(saved.mode==='wrong'||!daily[k])).length:0;$('#resumeBtn').hidden=!count;$('#resumeBtn').textContent=`繼續上次作答（剩 ${count} 題）`;}
+function updateResume(){checkDate();const saved=savedRound();const daily=dailyStatus();const count=saved?saved.keys.slice(saved.next).filter(k=>wordIndex.has(k)&&(saved.mode==='wrong'||saved.mode==='weak'||!daily[k])).length:0;$('#resumeBtn').hidden=!count;$('#resumeBtn').textContent=`繼續上次作答（剩 ${count} 題）`;}
 function restoreSettings(){const s=readJSON(roundKey());if(s.start>=1&&s.end<=30&&s.start<=s.end){$('#startDay').value=String(s.start);$('#currentDay').value=String(s.end);$('#limit').value=String(s.limit||50)}updateResume()}
 async function prepareRound(mode='normal',resume=false){
  if(building||!authReady)return;
- building=true;$('#practiceMode').disabled=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;
+ building=true;$('#practiceMode').disabled=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;$('#retryWeakBtn').disabled=true;$('#weakStartBtn').disabled=true;
  try{
   const uid=owner();if(account){const ok=await syncProgress();if(owner()!==uid)return;if(!ok)$('#roundMsg').textContent='目前無法取得其他裝置最新紀錄，先依本機紀錄出題；連線後請再同步。'}
   await refreshDictionary();
   checkDate();const daily=dailyStatus();let saved=resume?savedRound():null;
   if(resume&&!saved){$('#roundMsg').textContent='沒有今天可繼續的題目，請重新建立本輪題目';return}
   if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;$('#startDay').value=String(saved.start);$('#currentDay').value=String(saved.end)}
-  else{roundMode=mode;const candidates=mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
+  else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode!=='wrong'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
   hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
- finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false}
+ finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#retryWeakBtn').disabled=false;$('#weakStartBtn').disabled=false}
 }
 $('#resumeBtn').addEventListener('click',()=>void prepareRound('normal',true));
 $('#retryTodayBtn').addEventListener('click',()=>void prepareRound('wrong'));
-async function fetchDaily(uid,date){
- const all={};for(let offset=0;;offset+=1000){const {data,error}=await cloud.from('daily_progress').select('word_key,had_wrong').eq('user_id',uid).eq('review_date',date).order('word_key').range(offset,offset+999);if(error)throw error;for(const row of data)if(knownWords.has(row.word_key))all[row.word_key]={had_wrong:row.had_wrong};if(data.length<1000)return all}
-}
-function refreshDay(){const changed=checkDate();if(changed||roundDate!==studyDate){roundDate=studyDate;refreshStats();$('#roundMsg').textContent='已依台灣時間換日，今天可以重新複習。';if(deck.length){deck=[];idx=0;locked=false;renderQuestion()}}}
+$('#retryWeakBtn').addEventListener('click',()=>void prepareRound('weak'));
+$('#weakStartBtn').addEventListener('click',()=>void prepareRound('weak'));
+function weakPool(stats=activeProgress()){return pool().filter(w=>{const f=familiarity(w,stats);return f.wrong>0&&!f.mastered})}
+async function fetchDaily(uid,date){const {data,error}=await cloud.rpc('get_reading_daily6',{p_day:date});if(error)throw error;return data}
+function refreshDay(){const changed=checkDate();if(changed||roundDate!==studyDate){roundDate=studyDate;refreshStats();$('#roundMsg').textContent='已依台灣時間早上 6:00 換日，今天可以重新複習。';if(deck.length){deck=[];idx=0;locked=false;renderQuestion()}}}
 setInterval(refreshDay,10000);
 window.addEventListener('focus',()=>{refreshDay();refreshStats()});
 
@@ -658,10 +689,10 @@ function renderHistory(){
  const body=$('#historyBody');body.replaceChildren();
  for(const date of dates){const r=history[date]||emptyDay(),tr=document.createElement('tr');for(const value of [date+(date===today?'（今天）':''),dayTotal(r),r.correct,r.wrong,formatRate(r),r.hinted||'—',r.unknown||'—']){const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td)}body.appendChild(tr)}
  if(!dates.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='目前沒有可按日期查看的紀錄，開始作答後會自動累積。';tr.appendChild(td);body.appendChild(tr)}
- $('#historyLocalNote').textContent=account?'顯示目前帳號的雲端紀錄及這台裝置尚待同步的答案。':'尚未登入，顯示這個瀏覽器的本機紀錄。';
+ $('#historyLocalNote').textContent=account?(readJSON(cloudCache(account.id)).dayBoundary===6?'顯示目前帳號的雲端紀錄及這台裝置尚待同步的答案。':'目前顯示舊快取；連線同步後，會依早上 6:00 重新歸日。'):'尚未登入，顯示這個瀏覽器的本機紀錄。';
 }
 async function fetchHistory(){
- const result={};for(let offset=0;;offset+=1000){const {data,error}=await cloud.rpc('get_daily_history').order('review_date').range(offset,offset+999);if(error)throw error;for(const row of data)result[row.review_date]={correct:Number(row.correct_count),wrong:Number(row.wrong_count),unknown:Number(row.unknown_count)};if(data.length<1000)return result}
+ const result={};for(let offset=0;;offset+=1000){const {data,error}=await cloud.rpc('get_daily_history6').order('review_date').range(offset,offset+999);if(error)throw error;for(const row of data)result[row.review_date]={correct:Number(row.correct_count),wrong:Number(row.wrong_count),unknown:Number(row.unknown_count)};if(data.length<1000)return result}
 }
 $('#historyRange').addEventListener('change',renderHistory);
 $('#historyRefresh').addEventListener('click',async()=>{await syncProgress();renderHistory()});
@@ -680,6 +711,8 @@ function addListening(data,e){
 function listeningData(){
  const cache=account?readJSON(cloudCache(account.id)):null;
  const data=JSON.parse(JSON.stringify(account?cache.listening||emptyListening():readJSON(KEY+':listen-guest',emptyListening())));
+ if((account?cache.dayBoundary:data.dayBoundary)!==6)data.days={};
+ data.dayBoundary=6;
  if(account){const ack=new Set(cache.listenAcknowledged||[]);for(const e of listenPending(account.id))if(!ack.has(e.id))addListening(data,e)}
  return data;
 }
@@ -689,7 +722,7 @@ function recordListening(item,ok){
  if(account){localStorage.setItem(listenPrefix(account.id)+event.id,JSON.stringify(event));cloudMessage('已存於本機，等待同步');void syncProgress()}
  else{const data=listeningData();addListening(data,event);localStorage.setItem(KEY+':listen-guest',JSON.stringify(data))}
 }
-async function fetchListening(){const {data,error}=await cloud.rpc('get_listening_snapshot');if(error)throw error;return data}
+async function fetchListening(date=taipeiDate()){const {data,error}=await cloud.rpc('get_listening_snapshot6',{p_day:date});if(error)throw error;data.dayBoundary=6;return data}
 function stopSpeech(){speechGeneration++;if('speechSynthesis' in window)window.speechSynthesis.cancel()}
 function playWord(){
  if(!deck.length||idx>=deck.length)return;
