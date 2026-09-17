@@ -99,7 +99,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
         <span id="ruleText" class="muted"></span>
       </div>
       <p id="roundMsg" class="muted" role="status"></p>
-      <div class="note">一般抽題會排除今天已答過的單字（答對、答錯皆算）。限量抽題優先練習不熟或少練習的字；至少答對 5 次且正確率達 90% 的熟悉單字較少出現。選「全部」仍包含所有今日未答單字。台灣時間午夜換日；重練今日錯題可再次練習所選範圍內今天答錯的單字。本輪進度保存在這台裝置，今日完成紀錄會在登入後同步。<span id="wrongTotalLabel">累積答錯</span>：<span id="wrongTotal">0</span>。</div>
+      <div class="note">一般抽題會排除今天已答過的單字（答對、答錯皆算）。限量抽題優先練習不熟或少練習的字；累積作答至少 3 次，且連續答對 3 次或累積正確率達 80% 的熟悉單字較少出現。未滿 3 次仍照常練習；聽力使用提示不算直接答對。部分舊紀錄無法還原連對次數，會從可確認的紀錄累積。選「全部」仍包含所有今日未答單字。台灣時間午夜換日；重練今日錯題可再次練習所選範圍內今天答錯的單字。本輪進度保存在這台裝置，今日完成紀錄會在登入後同步。<span id="wrongTotalLabel">累積答錯</span>：<span id="wrongTotal">0</span>。</div>
     </div>
   </section>
 
@@ -301,7 +301,7 @@ function cleanProgress(value){
  for(const [key,s] of Object.entries(value)){
   if(!knownWords.has(key))continue;
   if(!s || !Number.isSafeInteger(s.correct)||s.correct<0||s.correct>2147483647||!Number.isSafeInteger(s.wrong)||s.wrong<0||s.wrong>2147483647)throw Error('紀錄次數格式不正確');
-  out[key]={correct:s.correct,wrong:s.wrong};
+  out[key]={correct:s.correct,wrong:s.wrong};if(Number.isSafeInteger(s.streak)&&s.streak>=0)out[key].streak=s.streak;
  }
  return out;
 }
@@ -311,13 +311,13 @@ function pendingPrefix(uid){return KEY+':pending:'+uid+':'}
 function pendingAnswers(uid){
  const prefix=pendingPrefix(uid),out=[];
  for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(prefix)){const e=JSON.parse(localStorage.getItem(k));out.push(e)}}
- return out;
+ return out.sort(answerOrder);
 }
 function cloudMessage(text){$('#syncStatus').textContent=text;$('#syncStatus').classList.toggle('needs-attention',text.includes('未完成')||text.includes('未載入'));}
 function composeProgress(uid){
  let cache;try{cache=JSON.parse(localStorage.getItem(cloudCache(uid))||'{}')}catch{cache={}}
  const data=cleanProgress(cache.progress||{}),acknowledged=new Set(cache.acknowledged||[]);
- for(const e of pendingAnswers(uid)){if(acknowledged.has(e.id))continue;const s=data[e.word_key]??={correct:0,wrong:0};s[e.correct?'correct':'wrong']++}
+ for(const e of pendingAnswers(uid)){if(acknowledged.has(e.id))continue;const s=data[e.word_key]??={correct:0,wrong:0};s.streak=e.correct?streakOf(s)+1:0;s[e.correct?'correct':'wrong']++}
  return data;
 }
 function recordAnswer(item,ok){
@@ -328,7 +328,7 @@ function recordAnswer(item,ok){
   cloudMessage('已存於本機，等待同步');
   void syncProgress();
  }else{
-  const next=guestProgress(),s=next[idOf(item)]??={correct:0,wrong:0};s[ok?'correct':'wrong']++;
+  const next=guestProgress(),s=next[idOf(item)]??={correct:0,wrong:0};s.streak=ok?streakOf(s)+1:0;s[ok?'correct':'wrong']++;
   const daily=dailyStatus();daily[idOf(item)]={had_wrong:!!daily[idOf(item)]?.had_wrong||!ok};
   const history=guestState().history||{},row=history[studyDate]??=emptyDay();row[ok?'correct':'wrong']++;
   localStorage.setItem(KEY+':guest-v2',JSON.stringify({progress:next,date:studyDate,daily,history}));progress=next;
@@ -354,11 +354,14 @@ async function syncProgress(){
    const pending=pendingAnswers(uid),listeningPending=listenPending(uid);
    for(let i=0;i<pending.length;i+=200){
     if(account?.id!==uid||generation!==accountGeneration)return false;
-    const {error}=await cloud.rpc('sync_answers_v2',{events:pending.slice(i,i+200)});if(error)throw error;
+    const {error}=await cloud.rpc('sync_answers_v3',{events:pending.slice(i,i+200)});if(error)throw error;
    }
    for(let i=0;i<listeningPending.length;i+=200){const {error}=await cloud.rpc('save_listening_answers',{events:listeningPending.slice(i,i+200)});if(error)throw error}
    const listening=await fetchListening(uid);
    const snapshot=await fetchProgress(uid);
+   const {data:streaks,error:streakError}=await cloud.rpc('get_answer_streaks');if(streakError)throw streakError;
+   for(const [key,s] of Object.entries(snapshot))s.streak=Math.max(s.wrong===0?s.correct:0,streaks.reading?.[key]||0);
+   for(const [key,s] of Object.entries(listening.progress))s.streak=Math.max(s.wrong===0?s.correct:0,streaks.listening?.[key]||0);
    const dailyDate=taipeiDate(),daily=await fetchDaily(uid,dailyDate);
    const history=await fetchHistory();
    if(account?.id!==uid||generation!==accountGeneration)return false;
@@ -526,7 +529,9 @@ setInterval(refreshDay,10000);
 window.addEventListener('focus',()=>{refreshDay();refreshStats()});
 
 // Weighted sampling without replacement: known words remain possible, but less likely.
-function familiarity(w,stats=activeProgress()){const s=stats[idOf(w)]||{correct:0,wrong:0},total=s.correct+s.wrong;return {correct:s.correct,wrong:s.wrong,total,rate:total?s.correct/total:0,mastered:s.correct>=5&&s.correct/total>=.9}}
+function answerOrder(a,b){return (a.answered_at||'').localeCompare(b.answered_at||'')||a.id.localeCompare(b.id)}
+function streakOf(s){return Number.isSafeInteger(s.streak)?s.streak:s.wrong===0?s.correct:0}
+function familiarity(w,stats=activeProgress()){const s=stats[idOf(w)]||{correct:0,wrong:0},total=s.correct+s.wrong;return {correct:s.correct,wrong:s.wrong,total,rate:total?s.correct/total:0,streak:streakOf(s),mastered:total>=3&&(streakOf(s)>=3||s.correct/total>=.8)}}
 function samplingWeight(w,stats){const f=familiarity(w,stats);if(f.mastered)return .12;if(!f.total)return 1.5;return .5+3*(1-f.rate)+1/Math.sqrt(f.total)}
 function sampleReview(candidates,limit,random=Math.random){
  if(limit>=candidates.length)return shuffle(candidates);
@@ -572,7 +577,7 @@ function renderDictionary(){
  const body=$('#dictionaryBody');body.replaceChildren();
  for(const w of matches.slice(dictionaryPage*pageSize,(dictionaryPage+1)*pageSize)){
   const tr=document.createElement('tr'),f=familiarity(w);
-  for(const text of ['Day '+w.day,w.word,w.pos,w.zh,`${f.mastered?'熟悉':!f.total?'尚未練習':'練習中'} · 對 ${f.correct} / 錯 ${f.wrong}`]){const td=document.createElement('td');td.textContent=text;tr.appendChild(td)}
+  for(const text of ['Day '+w.day,w.word,w.pos,w.zh,`${f.mastered?'熟悉':!f.total?'尚未練習':'練習中'} · 對 ${f.correct} / 錯 ${f.wrong} · 連對 ${f.streak}`]){const td=document.createElement('td');td.textContent=text;tr.appendChild(td)}
   const td=document.createElement('td'),button=document.createElement('button');button.className='btn';button.type='button';button.textContent='編輯';button.disabled=!dictionaryAdmin||dictionarySaving;button.addEventListener('click',()=>openWordEditor(idOf(w)));td.appendChild(button);tr.appendChild(td);body.appendChild(tr);
  }
 }
@@ -663,12 +668,12 @@ $('#historyRefresh').addEventListener('click',async()=>{await syncProgress();ren
 
 // Listening has its own mastery, daily completion, and idempotent answer receipts.
 function listenPrefix(uid){return KEY+':listen-pending:'+uid+':'}
-function listenPending(uid){const out=[],prefix=listenPrefix(uid);for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(prefix))out.push(JSON.parse(localStorage.getItem(k)))}return out}
+function listenPending(uid){const out=[],prefix=listenPrefix(uid);for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith(prefix))out.push(JSON.parse(localStorage.getItem(k)))}return out.sort(answerOrder)}
 function emptyListening(){return {progress:{},days:{},history:{}}}
 function addListening(data,e){
  if(!knownWords.has(e.word_key))return;
  const direct=e.correct&&!e.hinted,date=taipeiDate(new Date(e.answered_at));
- const s=data.progress[e.word_key]??={correct:0,wrong:0};s[direct?'correct':'wrong']++;
+ const s=data.progress[e.word_key]??={correct:0,wrong:0};s.streak=direct?streakOf(s)+1:0;s[direct?'correct':'wrong']++;
  const day=data.days[date]??={};day[e.word_key]={had_wrong:!!day[e.word_key]?.had_wrong||!direct};
  const row=data.history[date]??=emptyDay();row[e.correct?(e.hinted?'hinted':'correct'):'wrong']++;
 }
