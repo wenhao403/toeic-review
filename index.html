@@ -723,16 +723,45 @@ function recordListening(item,ok){
  else{const data=listeningData();addListening(data,event);localStorage.setItem(KEY+':listen-guest',JSON.stringify(data))}
 }
 async function fetchListening(date=taipeiDate()){const {data,error}=await cloud.rpc('get_listening_snapshot6',{p_day:date});if(error)throw error;data.dayBoundary=6;return data}
-function stopSpeech(){speechGeneration++;if('speechSynthesis' in window)window.speechSynthesis.cancel()}
+let activeUtterance=null,speechStartTimer=null;
+function stopSpeech(){
+ speechGeneration++;
+ if(speechStartTimer!==null){clearTimeout(speechStartTimer);speechStartTimer=null}
+ if('speechSynthesis' in window){const synth=window.speechSynthesis;if(activeUtterance||synth.speaking||synth.pending)synth.cancel()}
+ activeUtterance=null;
+}
 function playWord(){
  if(!deck.length||idx>=deck.length)return;
  stopSpeech();const generation=speechGeneration;
- if(!('speechSynthesis' in window)){$('#audioStatus').textContent='此瀏覽器無法播放語音，請改用支援語音的瀏覽器。';return}
- const u=new SpeechSynthesisUtterance(deck[idx].word);u.lang='en-US';u.rate=.82;
- const vs=window.speechSynthesis.getVoices();u.voice=vs.find(v=>v.lang==='en-US')||vs.find(v=>v.lang?.startsWith('en'))||null;
- $('#audioStatus').textContent='';
- u.onerror=()=>{if(generation===speechGeneration)$('#audioStatus').textContent='未能播放，請按發音按鈕再聽一次，並確認裝置音量。'};
- window.speechSynthesis.speak(u);
+ if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){$('#audioStatus').textContent='此瀏覽器不支援發音。請用 Safari 或 Chrome 直接開啟網站。';return}
+ const synth=window.speechSynthesis;
+ // Let the device resolve an English voice instead of selecting a possibly unavailable voice.
+ const u=new SpeechSynthesisUtterance(deck[idx].word);u.lang='en-US';u.rate=.82;u.pitch=1;u.volume=1;
+ activeUtterance=u;
+ const current=()=>generation===speechGeneration&&activeUtterance===u;
+ const clearStart=()=>{if(speechStartTimer!==null){clearTimeout(speechStartTimer);speechStartTimer=null}};
+ const fail=code=>{
+  if(!current())return;clearStart();activeUtterance=null;
+  const messages={
+   'not-allowed':'瀏覽器未允許播放，請直接點一下喇叭按鈕。若是在 App 內開啟，請改用 Safari 或 Chrome。',
+   'voice-unavailable':'手機目前無法使用英文語音。請連上網路後重試，或確認系統已安裝英文語音。',
+   'language-unavailable':'手機目前沒有可用的英文語音，請確認系統語音設定。',
+   'audio-busy':'聲音正在被其他程式使用，請停止其他音訊後再點喇叭。',
+   'audio-hardware':'無法使用音訊輸出，請確認手機音量與耳機連線。',
+   'network':'發音服務連線失敗，請連網後再點喇叭。'
+  };
+  $('#audioStatus').textContent=messages[code]||'發音未完成，請再點一次喇叭；若仍無聲，請確認媒體音量、靜音設定與藍牙輸出。';
+ };
+ u.onstart=()=>{if(current()){clearStart();$('#audioStatus').textContent='正在播放發音…'}};
+ u.onend=()=>{if(current()){clearStart();activeUtterance=null;$('#audioStatus').textContent='播放結束。若沒聽到，請確認媒體音量、靜音設定與藍牙輸出。'}};
+ u.onerror=e=>fail(e.error);
+ $('#audioStatus').textContent='準備播放…';
+ speechStartTimer=setTimeout(()=>{if(current()){$('#audioStatus').textContent='尚未開始播放。請再點一次喇叭；若仍無聲，請用 Safari 或 Chrome 直接開啟網站。';speechStartTimer=null}},5000);
+ try{
+  // Keep speak in the tap handler so mobile browsers retain the user gesture.
+  if(synth.paused)synth.resume();
+  synth.speak(u);
+ }catch{fail('synthesis-failed')}
 }
 $('#revealBtn').addEventListener('click',()=>{
  if(practiceMode!=='listening'||locked||!deck[idx])return;
