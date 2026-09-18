@@ -28,7 +28,6 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .history-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}@media(max-width:650px){.history-grid{grid-template-columns:1fr 1fr}}
 .rules-row{position:relative;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px}.rules-row>.note{margin:0}.practice-rules{font-size:13px;color:var(--muted)}.practice-rules summary{cursor:pointer;list-style:none;padding:8px 0;border-radius:5px}.practice-rules summary::-webkit-details-marker{display:none}.practice-rules summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.practice-rules[open] summary{color:var(--accent)}.rules-content{position:absolute;left:0;right:0;top:100%;z-index:20;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 12px 30px #0006;max-height:60vh;overflow:auto;line-height:1.7;color:var(--text);font-size:14px}.rules-content ul{margin:10px 0 0;padding-left:22px}.rules-content li+li{margin-top:9px}
 .keyboard-help-row{justify-content:flex-end;text-align:left;margin-top:8px}.keyboard-help-row .rules-content{left:auto;right:0;top:auto;bottom:100%;width:min(440px,100%)}
-#feedback .feedback-answer{color:#f3f4f6}
 </style>
 </head>
 <body>
@@ -295,7 +294,7 @@ function answer(btn,text,item){
   try{practiceMode==='listening'?recordListening(item,ok):recordAnswer(item,ok)}catch{$('#feedback').textContent='無法儲存紀錄，請確認瀏覽器儲存空間後重試';return}locked=true;
   $('#feedback').classList.remove('badtxt');$('#feedback').classList.toggle('goodtxt',ok);
   if(ok){if(practiceMode!=='listening'||!hintUsed)correct++;btn.classList.add('good');$('#feedback').innerHTML='<span class="goodtxt">✓ 答對</span>'}
-  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});const mark=document.createElement('span');mark.className='badtxt';mark.textContent='✗ 答錯。';const meaning=document.createElement('span');meaning.className='feedback-answer';meaning.textContent='正確答案：'+item.zh;$('#feedback').replaceChildren(mark,meaning)}
+  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});const mark=document.createElement('span');mark.className='badtxt';mark.textContent='✗ 答錯';$('#feedback').replaceChildren(mark)}
   if(practiceMode==='listening'){stopSpeech();$('#qWord').textContent=item.word;$('#qPos').textContent=item.pos;$('#revealBtn').hidden=true;if(ok)$('#feedback').textContent=(hintUsed?'提示後答對（仍需複習）：':'✓ 直接聽懂：')+item.zh;}
   $('#qScore').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct}`;[...$('#choices').children].forEach(x=>x.disabled=true);$('#nextBtn').style.display='block';
   try{persistRound()}catch{$('#roundMsg').textContent='本輪順序未能保存，但已答單字仍會從一般抽題排除'}refreshStats();
