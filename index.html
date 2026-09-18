@@ -97,7 +97,6 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
         <button class="btn primary" id="buildQuiz">建立本輪題目</button>
         <button class="btn" id="resumeBtn" hidden>繼續上次作答</button>
         <button class="btn" id="retryTodayBtn">重練今日錯題</button>
-        <button class="btn" id="retryWeakBtn">重練弱點單字</button>
         <span id="ruleText" class="muted"></span>
       </div>
       <p id="roundMsg" class="muted" role="status"></p>
@@ -111,7 +110,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
               <li><strong>限量抽題：</strong>優先練習不熟或少練習的字；選「全部」則包含所有今日未答單字。</li>
               <li><strong>熟悉門檻：</strong>累積作答至少 3 次，且「連續答對 3 次」或「累積正確率達 80%」，就減少出題。未滿 3 次照常練習。</li>
               <li><strong>聽力提示：</strong>使用提示不算直接答對，也會中斷連續答對。</li>
-              <li><strong>重練弱點單字：</strong>抽取所選 Day 範圍內曾答錯、尚未熟悉的字，今天答過也能再練。</li>
+              <li><strong>重練弱點單字：</strong>在「弱點單字」分頁開始，抽取全部 Day 中曾答錯、尚未熟悉的字，今天答過也能再練；沿用設定頁的模式與題數。</li>
               <li><strong>重練今日錯題：</strong>再次練習所選範圍內今天答錯或聽力需要提示的字。</li>
               <li><strong>每天換日：</strong>台灣時間早上 6:00 至隔天 05:59:59 算同一天。</li>
               <li><strong>進度保存：</strong>本輪續答進度保存在這台裝置；登入後，作答紀錄會同步雲端。</li>
@@ -133,7 +132,21 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div id="qPos" class="muted"></div>
       <button id="revealBtn" class="btn" type="button" hidden style="margin-top:12px">顯示單字（使用提示）</button><p id="audioStatus" class="note" role="status"></p>
       <div id="choices" class="choices"></div>
-      <p class="note">鍵盤：1 左上、2 右上、3 左下、4 右下（手機依序 1～4）；5 不確定（記為答錯）；作答後按 Enter 下一題；聽力模式按空白鍵重聽。</p>
+      <div class="rules-row" style="justify-content:center;text-align:left">
+        <details id="keyboardHelp" class="practice-rules">
+          <summary aria-controls="keyboardHelpContent">ⓘ 操作說明</summary>
+          <div id="keyboardHelpContent" class="rules-content">
+            <strong>鍵盤與作答操作</strong>
+            <ul>
+              <li><strong>1～4：</strong>依序選擇左上、右上、左下、右下的答案；手機單欄排列時依序為第 1～4 個。</li>
+              <li><strong>5：</strong>選擇「不確定」，記為答錯。</li>
+              <li><strong>Enter：</strong>作答後進入下一題。</li>
+              <li><strong>空白鍵：</strong>聽力模式再次播放發音。</li>
+              <li><strong>手機：</strong>直接點選答案、喇叭或「下一題」即可操作。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
       <div id="feedback" style="min-height:28px;margin-top:16px;font-weight:700"></div>
       <button id="nextBtn" class="btn primary" style="display:none;width:100%;margin-top:10px">下一題</button>
     </div>
@@ -216,12 +229,13 @@ function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){return activeProgress()[idOf(w)]||{correct:0,wrong:0}}
 function showTab(id){if(id!=='quiz')stopSpeech();document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}}
 // Native disclosure supports touch and keyboard; mouse users can preview on hover.
-const practiceRules=$('#practiceRules');
+for(const practiceRules of [$('#practiceRules'),$('#keyboardHelp')]){
 practiceRules.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')practiceRules.open=true});
 practiceRules.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!practiceRules.contains(document.activeElement))practiceRules.open=false});
 practiceRules.addEventListener('focusout',e=>{if(!practiceRules.contains(e.relatedTarget))practiceRules.open=false});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&practiceRules.open){practiceRules.open=false;e.stopPropagation()}});
 document.addEventListener('pointerdown',e=>{if(!practiceRules.contains(e.target))practiceRules.open=false});
+}
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent='Day '+d;$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
@@ -257,7 +271,7 @@ function renderQuestion(){
   if(roundDate!==studyDate){deck=[];idx=0;roundDate=studyDate;}
   if(roundMode==='normal'){const daily=dailyStatus();while(idx<deck.length&&daily[idOf(deck[idx])])idx++;}
   $('#feedback').textContent='';$('#nextBtn').style.display='none';$('#choices').innerHTML='';
-  if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'所選範圍目前沒有需要加強的弱點單字':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
+  if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'目前模式沒有需要加強的弱點單字':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
   if(idx>=deck.length){
     $('#qWord').textContent=roundMode==='normal'&&!remainingPool().length?'今天所選範圍的單字已全部作答':'本輪完成！';$('#qPos').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct} / ${deck.length}`;$('#qDay').textContent='';$('#qProgress').textContent=`${deck.length} / ${deck.length}`;$('#qBar').style.width='100%';$('#speakBtn').style.display='none';refreshStats();return
   }
@@ -307,8 +321,8 @@ function renderWeak(){
   $('#weakMode').textContent=practiceMode==='listening'?' · 聽力（含需要提示）':' · 單字辨識';
   const body=$('#weakBody');body.innerHTML='';
   const stats=activeProgress();const rows=weakPool(stats).map(w=>({...w,...stats[idOf(w)]})).sort((a,b)=>b.wrong/(b.correct+b.wrong)-a.wrong/(a.correct+a.wrong)||b.wrong-a.wrong||a.word.localeCompare(b.word));
-  $('#weakScope').textContent=`Day ${$('#startDay').value} ～ Day ${$('#currentDay').value}，共 ${rows.length} 個弱點單字。沿用設定頁的模式與題數，今天答過也可再練。`;
-  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">所選範圍目前沒有需要加強的弱點單字</td></tr>';return}
+  $('#weakScope').textContent=`全部 Day，共 ${rows.length} 個弱點單字。沿用設定頁的模式與題數，不受 Day 範圍限制，今天答過也可再練。`;
+  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">目前模式沒有需要加強的弱點單字</td></tr>';return}
   rows.forEach(w=>{const tr=document.createElement('tr');for(const text of [w.word+' ('+w.pos+')',w.zh,w.day,w.wrong,w.correct]){const td=document.createElement('td');td.textContent=String(text);tr.appendChild(td)}body.appendChild(tr)})
 }
 $('#exportBtn').addEventListener('click',()=>{
@@ -537,7 +551,7 @@ function updateResume(){checkDate();const saved=savedRound();const daily=dailySt
 function restoreSettings(){const s=readJSON(roundKey());if(s.start>=1&&s.end<=30&&s.start<=s.end){$('#startDay').value=String(s.start);$('#currentDay').value=String(s.end);$('#limit').value=String(s.limit||50)}updateResume()}
 async function prepareRound(mode='normal',resume=false){
  if(building||!authReady)return;
- building=true;$('#practiceMode').disabled=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;$('#retryWeakBtn').disabled=true;$('#weakStartBtn').disabled=true;
+ building=true;$('#practiceMode').disabled=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;$('#weakStartBtn').disabled=true;
  try{
   const uid=owner();if(account){const ok=await syncProgress();if(owner()!==uid)return;if(!ok)$('#roundMsg').textContent='目前無法取得其他裝置最新紀錄，先依本機紀錄出題；連線後請再同步。'}
   await refreshDictionary();
@@ -547,13 +561,12 @@ async function prepareRound(mode='normal',resume=false){
   else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode!=='wrong'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
   hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
- finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#retryWeakBtn').disabled=false;$('#weakStartBtn').disabled=false}
+ finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#weakStartBtn').disabled=false}
 }
 $('#resumeBtn').addEventListener('click',()=>void prepareRound('normal',true));
 $('#retryTodayBtn').addEventListener('click',()=>void prepareRound('wrong'));
-$('#retryWeakBtn').addEventListener('click',()=>void prepareRound('weak'));
 $('#weakStartBtn').addEventListener('click',()=>void prepareRound('weak'));
-function weakPool(stats=activeProgress()){return pool().filter(w=>{const f=familiarity(w,stats);return f.wrong>0&&!f.mastered})}
+function weakPool(stats=activeProgress()){return WORDS.filter(w=>{const f=familiarity(w,stats);return f.wrong>0&&!f.mastered})}
 async function fetchDaily(uid,date){const {data,error}=await cloud.rpc('get_reading_daily6',{p_day:date});if(error)throw error;return data}
 function refreshDay(){const changed=checkDate();if(changed||roundDate!==studyDate){roundDate=studyDate;refreshStats();$('#roundMsg').textContent='已依台灣時間早上 6:00 換日，今天可以重新複習。';if(deck.length){deck=[];idx=0;locked=false;renderQuestion()}}}
 setInterval(refreshDay,10000);
@@ -752,10 +765,10 @@ function playWord(){
   };
   $('#audioStatus').textContent=messages[code]||'發音未完成，請再點一次喇叭；若仍無聲，請確認媒體音量、靜音設定與藍牙輸出。';
  };
- u.onstart=()=>{if(current()){clearStart();$('#audioStatus').textContent='正在播放發音…'}};
- u.onend=()=>{if(current()){clearStart();activeUtterance=null;$('#audioStatus').textContent='播放結束。若沒聽到，請確認媒體音量、靜音設定與藍牙輸出。'}};
+ u.onstart=()=>{if(current()){clearStart();$('#audioStatus').textContent=''}};
+ u.onend=()=>{if(current()){clearStart();activeUtterance=null;$('#audioStatus').textContent=''}};
  u.onerror=e=>fail(e.error);
- $('#audioStatus').textContent='準備播放…';
+ $('#audioStatus').textContent='';
  speechStartTimer=setTimeout(()=>{if(current()){$('#audioStatus').textContent='尚未開始播放。請再點一次喇叭；若仍無聲，請用 Safari 或 Chrome 直接開啟網站。';speechStartTimer=null}},5000);
  try{
   // Keep speak in the tap handler so mobile browsers retain the user gesture.
