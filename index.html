@@ -27,6 +27,8 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .choice.unsure{grid-column:1 / -1;text-align:center;border-style:dashed;color:var(--muted)}
 .history-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}@media(max-width:650px){.history-grid{grid-template-columns:1fr 1fr}}
 .rules-row{position:relative;display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px}.rules-row>.note{margin:0}.practice-rules{font-size:13px;color:var(--muted)}.practice-rules summary{cursor:pointer;list-style:none;padding:8px 0;border-radius:5px}.practice-rules summary::-webkit-details-marker{display:none}.practice-rules summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.practice-rules[open] summary{color:var(--accent)}.rules-content{position:absolute;left:0;right:0;top:100%;z-index:20;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 12px 30px #0006;max-height:60vh;overflow:auto;line-height:1.7;color:var(--text);font-size:14px}.rules-content ul{margin:10px 0 0;padding-left:22px}.rules-content li+li{margin-top:9px}
+.keyboard-help-row{justify-content:flex-end;text-align:left;margin-top:8px}.keyboard-help-row .rules-content{left:auto;right:0;top:auto;bottom:100%;width:min(440px,100%)}
+#feedback .feedback-answer{color:#f3f4f6}
 </style>
 </head>
 <body>
@@ -132,7 +134,9 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div id="qPos" class="muted"></div>
       <button id="revealBtn" class="btn" type="button" hidden style="margin-top:12px">顯示單字（使用提示）</button><p id="audioStatus" class="note" role="status"></p>
       <div id="choices" class="choices"></div>
-      <div class="rules-row" style="justify-content:center;text-align:left">
+      <div id="feedback" style="min-height:28px;margin-top:16px;font-weight:700"></div>
+      <button id="nextBtn" class="btn primary" style="display:none;width:100%;margin-top:10px">下一題</button>
+      <div class="rules-row keyboard-help-row">
         <details id="keyboardHelp" class="practice-rules">
           <summary aria-controls="keyboardHelpContent">ⓘ 操作說明</summary>
           <div id="keyboardHelpContent" class="rules-content">
@@ -147,8 +151,6 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
           </div>
         </details>
       </div>
-      <div id="feedback" style="min-height:28px;margin-top:16px;font-weight:700"></div>
-      <button id="nextBtn" class="btn primary" style="display:none;width:100%;margin-top:10px">下一題</button>
     </div>
   </section>
 
@@ -270,7 +272,7 @@ function renderQuestion(){
   checkDate();
   if(roundDate!==studyDate){deck=[];idx=0;roundDate=studyDate;}
   if(roundMode==='normal'){const daily=dailyStatus();while(idx<deck.length&&daily[idOf(deck[idx])])idx++;}
-  $('#feedback').textContent='';$('#nextBtn').style.display='none';$('#choices').innerHTML='';
+  $('#feedback').textContent='';$('#feedback').classList.remove('badtxt','goodtxt');$('#nextBtn').style.display='none';$('#choices').innerHTML='';
   if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'目前模式沒有需要加強的弱點單字':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
   if(idx>=deck.length){
     $('#qWord').textContent=roundMode==='normal'&&!remainingPool().length?'今天所選範圍的單字已全部作答':'本輪完成！';$('#qPos').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct} / ${deck.length}`;$('#qDay').textContent='';$('#qProgress').textContent=`${deck.length} / ${deck.length}`;$('#qBar').style.width='100%';$('#speakBtn').style.display='none';refreshStats();return
@@ -291,8 +293,9 @@ function answer(btn,text,item){
   if(roundMode==='normal'&&dailyStatus()[idOf(item)]){renderQuestion();return}
   const ok=text===item.zh;
   try{practiceMode==='listening'?recordListening(item,ok):recordAnswer(item,ok)}catch{$('#feedback').textContent='無法儲存紀錄，請確認瀏覽器儲存空間後重試';return}locked=true;
+  $('#feedback').classList.remove('badtxt');$('#feedback').classList.toggle('goodtxt',ok);
   if(ok){if(practiceMode!=='listening'||!hintUsed)correct++;btn.classList.add('good');$('#feedback').innerHTML='<span class="goodtxt">✓ 答對</span>'}
-  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});$('#feedback').textContent=(text===null?'不確定，已記為答錯。正確答案：':'✗ 正確答案：')+item.zh}
+  else{btn.classList.add('bad');[...$('#choices').children].forEach(x=>{if(x.textContent===item.zh)x.classList.add('good')});const mark=document.createElement('span');mark.className='badtxt';mark.textContent='✗ 答錯。';const meaning=document.createElement('span');meaning.className='feedback-answer';meaning.textContent='正確答案：'+item.zh;$('#feedback').replaceChildren(mark,meaning)}
   if(practiceMode==='listening'){stopSpeech();$('#qWord').textContent=item.word;$('#qPos').textContent=item.pos;$('#revealBtn').hidden=true;if(ok)$('#feedback').textContent=(hintUsed?'提示後答對（仍需複習）：':'✓ 直接聽懂：')+item.zh;}
   $('#qScore').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct}`;[...$('#choices').children].forEach(x=>x.disabled=true);$('#nextBtn').style.display='block';
   try{persistRound()}catch{$('#roundMsg').textContent='本輪順序未能保存，但已答單字仍會從一般抽題排除'}refreshStats();
