@@ -295,7 +295,7 @@ function createExample(item){
    const start=entry.english.toLocaleLowerCase().indexOf(snapshot.word.toLocaleLowerCase());
    if(start>=0){const mark=document.createElement('mark');mark.textContent=entry.english.slice(start,start+snapshot.word.length);en.replaceChildren(document.createTextNode(entry.english.slice(0,start)),mark,document.createTextNode(entry.english.slice(start+snapshot.word.length)))}
    paragraph(entry.chinese);if(entry.phrase)paragraph('常見搭配：'+entry.phrase);
-   paragraph('固定例句 · 試著想像情境，再用這個單字造一句話。','note');
+   
   }
   details.appendChild(content);
  });
