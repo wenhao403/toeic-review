@@ -36,6 +36,9 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .example-copy p{margin:6px 0;overflow-wrap:anywhere}
 .example-copy .example-english{font-size:17px;color:var(--text)}
 .example-copy mark{background:transparent;color:inherit;font-weight:700;text-decoration:underline;text-decoration-color:#6ba6ff;text-underline-offset:4px}
+.weak-word-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.weak-speaker{padding:6px 9px;min-width:44px;min-height:44px;font-size:17px;line-height:1.2}
+#weakAudioStatus:empty{display:none}
 </style>
 </head>
 <body>
@@ -164,8 +167,13 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 
   <section id="weak" class="panel">
     <div class="card">
-      <strong>弱點單字</strong><span id="weakMode" class="muted"></span><span class="muted">　依錯誤率排序，已熟悉的單字不列入</span>
-      <p id="weakScope" class="note"></p><button class="btn primary" id="weakStartBtn">重練弱點單字</button>
+      <strong>弱點單字</strong><span id="weakMode" class="muted"></span>
+      <div class="row" role="group" aria-label="弱點單字篩選" style="margin-top:14px">
+        <button type="button" class="btn primary" id="weakFilterAll" aria-pressed="true">全部弱點</button>
+        <button type="button" class="btn" id="weakFilterToday" aria-pressed="false">今日錯題</button>
+      </div>
+      <p id="weakDescription" class="note"></p>
+      <p id="weakScope" class="note"></p><p id="weakAudioStatus" class="note" role="status"></p><button class="btn primary" id="weakStartBtn">重練弱點單字</button>
       <div style="overflow:auto"><table><thead><tr><th>單字</th><th>中文</th><th>Day</th><th id="weakWrongHead">錯誤</th><th id="weakCorrectHead">答對</th></tr></thead><tbody id="weakBody"></tbody></table></div>
     </div>
   </section>
@@ -237,7 +245,7 @@ const save=()=>saveGuest();
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){return activeProgress()[idOf(w)]||{correct:0,wrong:0}}
-function showTab(id){if(id!=='quiz')stopSpeech();document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}}
+function showTab(id){if(id!=='quiz')stopSpeech();document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}if(id==='weak'){renderWeak();void syncProgress()}}
 // Native disclosure supports touch and keyboard; mouse users can preview on hover.
 for(const practiceRules of [$('#practiceRules'),$('#keyboardHelp')]){
 practiceRules.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')practiceRules.open=true});
@@ -251,7 +259,7 @@ for(let d=1;d<=30;d++){for(const selector of ['#startDay','#currentDay']){const 
 $('#startDay').value='1';$('#currentDay').value='30';
 function pool(){const start=+$('#startDay').value,end=+$('#currentDay').value;return WORDS.filter(w=>w.day>=start && w.day<=end)}
 function refreshStats(){
-  $('#wrongTotalLabel').textContent=practiceMode==='listening'?'累積需要複習（含提示）':'累積答錯';$('#weakWrongHead').textContent=practiceMode==='listening'?'需複習':'錯誤';$('#weakCorrectHead').textContent=practiceMode==='listening'?'直接聽懂':'答對';
+  $('#wrongTotalLabel').textContent=practiceMode==='listening'?'累積需要複習（含提示）':'累積答錯';$('#weakWrongHead').textContent=practiceMode==='listening'?'累積需複習':'累積錯誤';$('#weakCorrectHead').textContent=practiceMode==='listening'?'累積直接聽懂':'累積答對';
   const available=remainingPool().length;
   $('#totalWords').textContent=pool().length;
   $('#poolWords').textContent=available;
@@ -311,12 +319,12 @@ function renderQuestion(){
   if(roundDate!==studyDate){deck=[];idx=0;roundDate=studyDate;}
   if(roundMode==='normal'){const daily=dailyStatus();while(idx<deck.length&&daily[idOf(deck[idx])])idx++;}
   $('#feedback').textContent='';$('#feedback').classList.remove('badtxt','goodtxt');$('#nextBtn').style.display='none';$('#choices').innerHTML='';
-  if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'目前模式沒有需要加強的弱點單字':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
+  if(!deck.length){$('#qWord').textContent=roundMode==='weak'?'目前模式沒有需要加強的弱點單字':roundMode==='todayWrong'?'目前模式今天還沒有錯題':roundMode==='wrong'?'今天所選範圍沒有錯題':remainingPool().length?'請建立今天的題目':'今天所選範圍的單字已全部作答';$('#qPos').textContent='可回設定選擇其他 Day';$('#qDay').textContent='';$('#qProgress').textContent='沒有待作答題目';$('#qScore').textContent='';$('#qBar').style.width='0';$('#speakBtn').style.display='none';return}
   if(idx>=deck.length){
     $('#qWord').textContent=roundMode==='normal'&&!remainingPool().length?'今天所選範圍的單字已全部作答':'本輪完成！';$('#qPos').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct} / ${deck.length}`;$('#qDay').textContent='';$('#qProgress').textContent=`${deck.length} / ${deck.length}`;$('#qBar').style.width='100%';$('#speakBtn').style.display='none';refreshStats();return
   }
   locked=false; const item={...deck[idx]};hintUsed=practiceMode==='listening'&&readJSON(roundKey()).revealedKey===idOf(item);
-  $('#qDay').textContent=(roundMode==='weak'?'弱點單字重練 · ':roundMode==='wrong'?'今日錯題重練 · ':'')+(practiceMode==='listening'?'聽力練習 · ':'')+'Day '+item.day;$('#qWord').textContent=practiceMode==='listening'&&!hintUsed?'聽發音，選出中文意思':item.word;$('#qPos').textContent=practiceMode==='listening'&&!hintUsed?'英文已隱藏':item.pos;$('#revealBtn').hidden=practiceMode!=='listening'||hintUsed;$('#speakBtn').style.display='inline-block';
+  $('#qDay').textContent=(roundMode==='weak'?'弱點單字重練 · ':(roundMode==='wrong'||roundMode==='todayWrong')?'今日錯題重練 · ':'')+(practiceMode==='listening'?'聽力練習 · ':'')+'Day '+item.day;$('#qWord').textContent=practiceMode==='listening'&&!hintUsed?'聽發音，選出中文意思':item.word;$('#qPos').textContent=practiceMode==='listening'&&!hintUsed?'英文已隱藏':item.pos;$('#revealBtn').hidden=practiceMode!=='listening'||hintUsed;$('#speakBtn').style.display='inline-block';
   $('#qProgress').textContent=`第 ${idx+1} / ${deck.length} 題`;$('#qScore').textContent=`${practiceMode==='listening'?'直接聽懂':'答對'} ${correct}`;$('#qBar').style.width=`${idx/deck.length*100}%`;
   makeChoices(item).forEach((text,choiceIndex)=>{
     const b=document.createElement('button');b.className='btn choice';b.type='button';b.textContent=text;b.dataset.shortcut=String(choiceIndex+1);b.setAttribute('aria-keyshortcuts',String(choiceIndex+1));b.setAttribute('aria-label',`${choiceIndex+1}：${text}`);
@@ -360,14 +368,30 @@ document.addEventListener('keydown',e=>{
  else if(locked&&$('#nextBtn').style.display!=='none')$('#nextBtn').click();
 },true);
 $('#speakBtn').addEventListener('click',playWord);
+let weakView='all';
+function todayWrongPool(daily=dailyStatus()){return WORDS.filter(w=>daily[idOf(w)]?.had_wrong)}
 function renderWeak(){
-  $('#weakMode').textContent=practiceMode==='listening'?' · 聽力（含需要提示）':' · 單字辨識';
+  const listening=practiceMode==='listening',today=weakView==='today';
+  $('#weakMode').textContent=listening?' · 聽力（含需要提示）':' · 單字辨識';
   const body=$('#weakBody');body.innerHTML='';
-  const stats=activeProgress();const rows=weakPool(stats).map(w=>({...w,...stats[idOf(w)]})).sort((a,b)=>b.wrong/(b.correct+b.wrong)-a.wrong/(a.correct+a.wrong)||b.wrong-a.wrong||a.word.localeCompare(b.word));
-  $('#weakScope').textContent=`全部 Day，共 ${rows.length} 個弱點單字。沿用設定頁的模式與題數，不受 Day 範圍限制，今天答過也可再練。點「看例句」可展開中英例句，Day 1～30 共 1,219 個單字皆已收錄。`;
-  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="muted">目前模式沒有需要加強的弱點單字</td></tr>';return}
-  rows.forEach(w=>{const tr=document.createElement('tr');for(const text of [w.word+' ('+w.pos+')',w.zh,w.day,w.wrong,w.correct]){const td=document.createElement('td');td.textContent=String(text);tr.appendChild(td)}tr.children[0].appendChild(createExample(w));body.appendChild(tr)})
+  const stats=activeProgress(),all=weakPool(stats),todayWords=todayWrongPool();
+  for(const [id,selected,label] of [['#weakFilterAll',!today,`全部弱點（${all.length}）`],['#weakFilterToday',today,`今日錯題（${todayWords.length}）`]]){
+    const button=$(id);button.textContent=label;button.classList.toggle('primary',selected);button.setAttribute('aria-pressed',String(selected));
+  }
+  const rows=(today?todayWords:all).map(w=>({...w,correct:stats[idOf(w)]?.correct||0,wrong:stats[idOf(w)]?.wrong||0})).sort((a,b)=>b.wrong/(b.correct+b.wrong||1)-a.wrong/(a.correct+a.wrong||1)||b.wrong-a.wrong||a.word.localeCompare(b.word));
+  $('#weakDescription').textContent=today?(listening?'今天曾答錯或使用提示的單字；重練答對後，仍保留至換日。':'今天曾答錯的單字，包含「不確定」；重練答對後，仍保留至換日。'):'依累積錯誤率排序，已熟悉的單字不列入。';
+  $('#weakScope').textContent=today?`全部 Day，共 ${rows.length} 個今日錯題。台灣時間每天早上 6:00 換日，同一單字只列一次。重練沿用設定頁的模式與題數，不受 Day 範圍限制。`:`全部 Day，共 ${rows.length} 個弱點單字。沿用設定頁的模式與題數，不受 Day 範圍限制，今天答過也可再練。點「看例句」可展開中英例句。`;
+  $('#weakStartBtn').textContent=today?'重練今日錯題':'重練弱點單字';
+  $('#weakStartBtn').disabled=building||!authReady||!rows.length;
+  if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=5;td.className='muted';td.textContent=today?'目前模式今天還沒有錯題':'目前模式沒有需要加強的弱點單字';tr.appendChild(td);body.appendChild(tr);return}
+  rows.forEach(w=>{const tr=document.createElement('tr');for(const text of [w.word+' ('+w.pos+')',w.zh,w.day,w.wrong,w.correct]){const td=document.createElement('td');td.textContent=String(text);tr.appendChild(td)}const wordLine=document.createElement('div');wordLine.className='weak-word-line';
+    const wordLabel=document.createElement('span');wordLabel.textContent=w.word+' ('+w.pos+')';
+    const speak=document.createElement('button');speak.type='button';speak.className='btn weak-speaker';speak.textContent='🔊';speak.title='播放 '+w.word+' 的發音';speak.setAttribute('aria-label',speak.title);
+    speak.addEventListener('click',()=>speakText(w.word,$('#weakAudioStatus')));
+    wordLine.appendChild(wordLabel);wordLine.appendChild(speak);tr.children[0].replaceChildren(wordLine,createExample(w));body.appendChild(tr)})
 }
+$('#weakFilterAll').addEventListener('click',()=>{weakView='all';renderWeak()});
+$('#weakFilterToday').addEventListener('click',()=>{weakView='today';renderWeak()});
 $('#exportBtn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(progress,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='toeic_progress.json';a.click();URL.revokeObjectURL(a.href);$('#backupMsg').textContent='紀錄已匯出';
 });
@@ -590,7 +614,7 @@ function persistRound(){
  localStorage.setItem(roundKey(),JSON.stringify(state));updateResume();
 }
 function savedRound(){const s=readJSON(roundKey());return s.date===studyDate&&Array.isArray(s.keys)&&Number.isInteger(s.next)&&s.next>=0&&s.next<s.keys.length?s:null}
-function updateResume(){checkDate();const saved=savedRound();const daily=dailyStatus();const count=saved?saved.keys.slice(saved.next).filter(k=>wordIndex.has(k)&&(saved.mode==='wrong'||saved.mode==='weak'||!daily[k])).length:0;$('#resumeBtn').hidden=!count;$('#resumeBtn').textContent=`繼續上次作答（剩 ${count} 題）`;}
+function updateResume(){checkDate();const saved=savedRound();const daily=dailyStatus();const count=saved?saved.keys.slice(saved.next).filter(k=>wordIndex.has(k)&&(saved.mode==='wrong'||saved.mode==='todayWrong'||saved.mode==='weak'||!daily[k])).length:0;$('#resumeBtn').hidden=!count;$('#resumeBtn').textContent=`繼續上次作答（剩 ${count} 題）`;}
 function restoreSettings(){const s=readJSON(roundKey());if(s.start>=1&&s.end<=30&&s.start<=s.end){$('#startDay').value=String(s.start);$('#currentDay').value=String(s.end);$('#limit').value=String(s.limit||50)}updateResume()}
 async function prepareRound(mode='normal',resume=false){
  if(building||!authReady)return;
@@ -601,14 +625,14 @@ async function prepareRound(mode='normal',resume=false){
   checkDate();const daily=dailyStatus();let saved=resume?savedRound():null;
   if(resume&&!saved){$('#roundMsg').textContent='沒有今天可繼續的題目，請重新建立本輪題目';return}
   if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;$('#startDay').value=String(saved.start);$('#currentDay').value=String(saved.end)}
-  else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode!=='wrong'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
+  else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='todayWrong'?todayWrongPool(daily):mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'||mode==='weak'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
   hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
- finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#weakStartBtn').disabled=false}
+ finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#weakStartBtn').disabled=false;renderWeak()}
 }
 $('#resumeBtn').addEventListener('click',()=>void prepareRound('normal',true));
 $('#retryTodayBtn').addEventListener('click',()=>void prepareRound('wrong'));
-$('#weakStartBtn').addEventListener('click',()=>void prepareRound('weak'));
+$('#weakStartBtn').addEventListener('click',()=>void prepareRound(weakView==='today'?'todayWrong':'weak'));
 function weakPool(stats=activeProgress()){return WORDS.filter(w=>{const f=familiarity(w,stats);return f.wrong>0&&!f.mastered})}
 async function fetchDaily(uid,date){const {data,error}=await cloud.rpc('get_reading_daily6',{p_day:date});if(error)throw error;return data}
 function refreshDay(){const changed=checkDate();if(changed||roundDate!==studyDate){roundDate=studyDate;refreshStats();$('#roundMsg').textContent='已依台灣時間早上 6:00 換日，今天可以重新複習。';if(deck.length){deck=[];idx=0;locked=false;renderQuestion()}}}
@@ -786,13 +810,14 @@ function stopSpeech(){
  if('speechSynthesis' in window){const synth=window.speechSynthesis;if(activeUtterance||synth.speaking||synth.pending)synth.cancel()}
  activeUtterance=null;
 }
-function playWord(){
- if(!deck.length||idx>=deck.length)return;
+function playWord(){if(deck.length&&idx<deck.length)speakText(deck[idx].word,$('#audioStatus'))}
+function speakText(text,status){
+ if(typeof text!=='string'||!text.trim())return;
  stopSpeech();const generation=speechGeneration;
- if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){$('#audioStatus').textContent='此瀏覽器不支援發音。請用 Safari 或 Chrome 直接開啟網站。';return}
+ if(!('speechSynthesis' in window)||typeof SpeechSynthesisUtterance==='undefined'){status.textContent='此瀏覽器不支援發音。請用 Safari 或 Chrome 直接開啟網站。';return}
  const synth=window.speechSynthesis;
  // Let the device resolve an English voice instead of selecting a possibly unavailable voice.
- const u=new SpeechSynthesisUtterance(deck[idx].word);u.lang='en-US';u.rate=.82;u.pitch=1;u.volume=1;
+ const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.82;u.pitch=1;u.volume=1;
  activeUtterance=u;
  const current=()=>generation===speechGeneration&&activeUtterance===u;
  const clearStart=()=>{if(speechStartTimer!==null){clearTimeout(speechStartTimer);speechStartTimer=null}};
@@ -806,13 +831,13 @@ function playWord(){
    'audio-hardware':'無法使用音訊輸出，請確認手機音量與耳機連線。',
    'network':'發音服務連線失敗，請連網後再點喇叭。'
   };
-  $('#audioStatus').textContent=messages[code]||'發音未完成，請再點一次喇叭；若仍無聲，請確認媒體音量、靜音設定與藍牙輸出。';
+  status.textContent=messages[code]||'發音未完成，請再點一次喇叭；若仍無聲，請確認媒體音量、靜音設定與藍牙輸出。';
  };
- u.onstart=()=>{if(current()){clearStart();$('#audioStatus').textContent=''}};
- u.onend=()=>{if(current()){clearStart();activeUtterance=null;$('#audioStatus').textContent=''}};
+ u.onstart=()=>{if(current()){clearStart();status.textContent=''}};
+ u.onend=()=>{if(current()){clearStart();activeUtterance=null;status.textContent=''}};
  u.onerror=e=>fail(e.error);
- $('#audioStatus').textContent='';
- speechStartTimer=setTimeout(()=>{if(current()){$('#audioStatus').textContent='尚未開始播放。請再點一次喇叭；若仍無聲，請用 Safari 或 Chrome 直接開啟網站。';speechStartTimer=null}},5000);
+ status.textContent='';
+ speechStartTimer=setTimeout(()=>{if(current()){status.textContent='尚未開始播放。請再點一次喇叭；若仍無聲，請用 Safari 或 Chrome 直接開啟網站。';speechStartTimer=null}},5000);
  try{
   // Keep speak in the tap handler so mobile browsers retain the user gesture.
   if(synth.paused)synth.resume();
