@@ -227,10 +227,10 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
         <div class="history-chart-wrap" id="historyChart" tabindex="0" aria-label="正確率折線圖，可左右滑動"></div>
         <p id="historyChartEmpty" class="note" hidden></p>
         <p id="historyChartDetail" class="history-chart-detail" role="status"></p>
-        <p class="note">點選圓點可看當日題數與正確率；沒有作答或含未分類紀錄的日期留空，不算 0%。日期較多時可左右滑動。</p>
+        <p class="note">只顯示有作答的日期；點選圓點可看題數與正確率。含未分類紀錄的日期不計算正確率，日期較多時可左右滑動。</p>
       </div>
       <div style="overflow:auto"><table><thead><tr><th>日期</th><th>答題數</th><th id="historyCorrectHead">答對</th><th>答錯</th><th id="historyRateHead">正確率</th><th>提示後答對</th><th>未分類</th></tr></thead><tbody id="historyBody"></tbody></table></div>
-      <p class="note">有時間的雲端紀錄已按早上 6:00 重新歸日；較早未登入的本機紀錄只有每日合計，保留原日期，更新前的本機今日完成清單會重新開始，累積成績保留。部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類或未作答的日期，正確率顯示「—」。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
+      <p class="note">有時間的雲端紀錄已按早上 6:00 重新歸日；較早未登入的本機紀錄只有每日合計，保留原日期，更新前的本機今日完成清單會重新開始，累積成績保留。部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類的日期，正確率顯示「—」；沒有作答的日期不列入圖表與清單。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
     </div>
   </section>
 
@@ -778,20 +778,20 @@ function renderHistoryChart(history,dates,listening){
  empty.textContent='目前沒有可計算'+label+'的紀錄；完成作答後，這裡會自動顯示趨勢。';
  if(!valid.length)return;
  const width=Math.max(640,series.length*16+76),height=258,left=48,right=20,top=18,bottom=40;
- const start=Date.parse(series[0].date+'T00:00:00Z'),end=Date.parse(series.at(-1).date+'T00:00:00Z'),span=end-start;
- const x=date=>span?left+(Date.parse(date+'T00:00:00Z')-start)/span*(width-left-right):left+(width-left-right)/2;
+ const positions=new Map(series.map((p,i)=>[p.date,i]));
+ const x=date=>series.length>1?left+positions.get(date)/(series.length-1)*(width-left-right):left+(width-left-right)/2;
  const y=rate=>top+(100-rate)/100*(height-top-bottom);
  const node=(tag,attrs={},text)=>{const el=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,String(v));if(text!==undefined)el.textContent=text;return el};
  const svg=node('svg',{viewBox:`0 0 ${width} ${height}`,class:'history-rate-chart',role:'group','aria-label':'每日'+label+'，由左至右依日期排列'});
  svg.style.minWidth=width+'px';svg.appendChild(node('title',{},'每日'+label+'折線圖'));
- svg.appendChild(node('desc',{},'縱軸為 0% 到 100%，橫軸為日期；空白日期不連線。可點選或以鍵盤選取圓點，查看當日統計。'));
+ svg.appendChild(node('desc',{},'縱軸為 0% 到 100%，橫軸依序排列有作答的日期；含未分類紀錄的日期不連線。可點選或以鍵盤選取圓點，查看當日統計。'));
  for(const rate of [0,25,50,75,100]){const py=y(rate);svg.appendChild(node('line',{x1:left,y1:py,x2:width-right,y2:py,stroke:'var(--line)','stroke-width':1}));svg.appendChild(node('text',{x:left-8,y:py+4,fill:'var(--muted)','font-size':12,'text-anchor':'end'},rate+'%'))}
  const tickIndexes=[...new Set(Array.from({length:Math.min(6,series.length)},(_,i)=>Math.round(i*(series.length-1)/Math.max(1,Math.min(6,series.length)-1))))];
  for(const i of tickIndexes){const date=series[i].date;svg.appendChild(node('text',{x:x(date),y:height-12,fill:'var(--muted)','font-size':12,'text-anchor':'middle'},date.slice(5).replace('-','/')))}
  let previous=null,path='';
  for(const point of series){
   if(point.rate===null){previous=null;continue}
-  const connected=previous&&offsetDay(previous.date,1)===point.date;
+  const connected=!!previous;
   path+=(connected?' L ':' M ')+x(point.date).toFixed(2)+' '+y(point.rate).toFixed(2);previous=point;
  }
  svg.appendChild(node('path',{d:path,fill:'none',stroke:'var(--accent)','stroke-width':2.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
@@ -817,7 +817,7 @@ function renderHistory(){
  $('#historyTodayTotal').textContent=dayTotal(row);$('#historyTodayCorrect').textContent=row.correct;$('#historyTodayWrong').textContent=row.wrong;$('#historyTodayRate').textContent=formatRate(row);
  $('#historyTodayNote').textContent=row.unknown?'今日含 '+row.unknown+' 題舊紀錄未分類，無法計算完整正確率。':listening?'今日提示後答對 '+(row.hinted||0)+' 題（不列入直接聽懂）。':'';
  const days=+$('#historyRange').value||30;
- const dates=days===99999?Object.keys(history).sort().reverse():Array.from({length:days},(_,i)=>offsetDay(today,-i));
+ const dates=(days===99999?Object.keys(history).sort().reverse():Array.from({length:days},(_,i)=>offsetDay(today,-i))).filter(date=>dayTotal(history[date]||emptyDay())>0);
  const total=dates.reduce((s,date)=>{const r=history[date]||emptyDay();s.correct+=r.correct;s.wrong+=r.wrong;s.unknown+=r.unknown;s.hinted+=r.hinted||0;return s},emptyDay());
  $('#historySummary').textContent=`所選期間：${dayTotal(total)} 題｜${listening?'直接聽懂':'答對'} ${total.correct}｜答錯 ${total.wrong}${listening?'｜提示後答對 '+total.hinted:''}｜${listening?'直接聽懂率':'正確率'} ${formatRate(total)}${total.unknown?'｜舊紀錄未分類 '+total.unknown+' 題':''}`;
  renderHistoryChart(history,dates,listening);
@@ -826,7 +826,7 @@ function renderHistory(){
  $('#historyComparison').textContent=a===null||b===null?'近 7 天與前 7 天：尚無兩段完整對錯資料可比較。':`近 7 天 ${a.toFixed(1)}%（${dayTotal(recent)} 題），前 7 天 ${b.toFixed(1)}%（${dayTotal(prior)} 題）；${a>b?'提高':a<b?'下降':'持平'}${a===b?'':' '+Math.abs(a-b).toFixed(1)+' 個百分點'}。`;
  const body=$('#historyBody');body.replaceChildren();
  for(const date of dates){const r=history[date]||emptyDay(),tr=document.createElement('tr');for(const value of [date+(date===today?'（今天）':''),dayTotal(r),r.correct,r.wrong,formatRate(r),r.hinted||'—',r.unknown||'—']){const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td)}body.appendChild(tr)}
- if(!dates.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='目前沒有可按日期查看的紀錄，開始作答後會自動累積。';tr.appendChild(td);body.appendChild(tr)}
+ if(!dates.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='所選期間沒有作答紀錄，開始作答後會自動累積。';tr.appendChild(td);body.appendChild(tr)}
  $('#historyLocalNote').textContent=account?(readJSON(cloudCache(account.id)).dayBoundary===6?'顯示目前帳號的雲端紀錄及這台裝置尚待同步的答案。':'目前顯示舊快取；連線同步後，會依早上 6:00 重新歸日。'):'尚未登入，顯示這個瀏覽器的本機紀錄。';
 }
 async function fetchHistory(){
