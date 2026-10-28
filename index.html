@@ -46,6 +46,13 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .history-chart-point{cursor:pointer;outline:none}
 .history-chart-point:hover .chart-dot,.history-chart-point:focus-visible .chart-dot{stroke:var(--text);stroke-width:3}
 .history-chart-detail{min-height:24px;margin:10px 0 0;font-size:14px}
+
+.auto-speech-control{display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-size:14px;color:var(--muted);margin:6px 0}
+.auto-speech-toggle{appearance:none;-webkit-appearance:none;position:relative;flex-shrink:0;width:38px;height:22px;margin:0;border:1px solid var(--line);border-radius:99px;background:var(--card2);cursor:pointer}
+.auto-speech-toggle:before{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--muted)}
+.auto-speech-toggle:checked{background:var(--accent);border-color:var(--accent)}
+.auto-speech-toggle:checked:before{left:19px;background:#08111f}
+.auto-speech-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -98,7 +105,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
   </div>
 
   <section id="home" class="panel active">
-    <div class="card" style="margin-bottom:12px"><label for="practiceMode">練習模式</label><select id="practiceMode"><option value="reading">單字辨識</option><option value="listening">聽力練習</option></select><p class="note">聽力練習先隱藏英文並播放發音。兩種模式的熟練度、今日已答與續答進度分開計算。</p></div>
+    <div class="card" style="margin-bottom:12px"><label for="practiceMode">練習模式</label><select id="practiceMode"><option value="reading">單字辨識</option><option value="listening">聽力練習</option></select><div id="readingAutoHome"><label class="auto-speech-control"><input id="readingAutoHomeToggle" class="auto-speech-toggle" type="checkbox" role="switch">單字辨識自動發音</label></div><p class="note">聽力練習先隱藏英文並播放發音。兩種模式的熟練度、今日已答與續答進度分開計算。</p></div>
     <div class="grid">
       <div class="card"><div class="muted">所選範圍單字</div><div id="totalWords" class="stat">0</div></div>
       <div class="card"><div class="muted">今日剩餘單字</div><div id="poolWords" class="stat">0</div></div>
@@ -145,6 +152,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
   <section id="quiz" class="panel" tabindex="-1">
     <div class="card quiz">
       <div class="row" style="justify-content:space-between"><span id="qProgress" class="muted">尚未建立題目</span><span id="qScore" class="muted">答對 0</span></div>
+      <div id="readingAutoQuiz" style="text-align:right"><label class="auto-speech-control"><input id="readingAutoQuizToggle" class="auto-speech-toggle" type="checkbox" role="switch">自動發音</label></div>
       <div class="bar" style="margin-top:10px"><div id="qBar"></div></div>
       <div id="qDay" class="muted" style="margin-top:22px"></div>
       <div class="wordline"><div id="qWord" class="word">先到「設定」建立題目</div><button id="speakBtn" class="btn speaker" type="button" style="display:none" aria-label="播放發音">🔊</button></div>
@@ -255,6 +263,20 @@ let progress;try{progress=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{prog
 let deck=[],idx=0,correct=0,locked=false;
 let practiceMode=localStorage.getItem(KEY+':practice-mode')==='listening'?'listening':'reading',hintUsed=false,speechGeneration=0;
 const $=s=>document.querySelector(s);
+let readingAutoSpeak=localStorage.getItem(KEY+':reading-auto-speak')==='true';
+function updateReadingAutoControls(){
+ for(const id of ['#readingAutoHomeToggle','#readingAutoQuizToggle'])$(id).checked=readingAutoSpeak;
+ $('#readingAutoHome').hidden=practiceMode!=='reading';$('#readingAutoQuiz').hidden=practiceMode!=='reading';
+}
+for(const id of ['#readingAutoHomeToggle','#readingAutoQuizToggle'])$(id).addEventListener('change',()=>{
+ readingAutoSpeak=$(id).checked;updateReadingAutoControls();
+ try{localStorage.setItem(KEY+':reading-auto-speak',String(readingAutoSpeak))}catch{$('#roundMsg').textContent='自動發音設定暫時無法保存，重新開啟網頁後需再設定。'}
+ if(practiceMode==='reading'&&$('#quiz').classList.contains('active')){
+  if(!readingAutoSpeak)stopSpeech();
+  else if(!locked&&deck.length&&idx<deck.length)playWord();
+ }
+});
+
 const save=()=>saveGuest();
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
@@ -327,6 +349,7 @@ function resetQuizExample(){const area=$('#quizExample');area.hidden=true;area.r
 function showQuizExample(item){const area=$('#quizExample');area.replaceChildren(createExample(item));area.hidden=false}
 
 function renderQuestion(){
+  updateReadingAutoControls();
   resetQuizExample();
   stopSpeech();$('#revealBtn').hidden=true;$('#audioStatus').textContent='';
   checkDate();
@@ -345,7 +368,7 @@ function renderQuestion(){
     b.addEventListener('click',()=>answer(b,text,item));$('#choices').appendChild(b);
   });
   const unsure=document.createElement('button');unsure.className='btn choice unsure';unsure.type='button';unsure.textContent='不確定';unsure.dataset.shortcut='5';unsure.setAttribute('aria-label','5：不確定');unsure.setAttribute('aria-keyshortcuts','5');unsure.addEventListener('click',()=>answer(unsure,null,item));$('#choices').appendChild(unsure);
-  if(practiceMode==='listening')playWord();
+  if(practiceMode==='listening'||readingAutoSpeak)playWord();
 }
 function answer(btn,text,item){
   if(locked||!authReady)return;
@@ -920,7 +943,7 @@ $('#practiceMode').addEventListener('change',()=>{
 $('#historyMode').addEventListener('change',renderHistory);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)stopSpeech()});
 
-$('#practiceMode').value=practiceMode;$('#historyMode').value=practiceMode;
+$('#practiceMode').value=practiceMode;$('#historyMode').value=practiceMode;updateReadingAutoControls();
 progress=guestProgress();restoreSettings();$('#buildQuiz').disabled=!authReady;
 if(cloud)cloud.auth.onAuthStateChange((_event,session)=>activateAccount(session));
 else cloudMessage('登入服務未載入；可先使用本機練習，連網後重新整理。');
