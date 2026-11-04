@@ -464,7 +464,7 @@ $('#flashDetailClose').addEventListener('click',()=>$('#flashDetailDialog').clos
 $('#flashDetailDialog').addEventListener('close',()=>{const scroll=document.scrollingElement;if(scroll&&flashDialogScroll){scroll.scrollTop=flashDialogScroll.top;scroll.scrollLeft=flashDialogScroll.left}flashDialogScroll=null});
 $('#flashDetailDialog').addEventListener('click',e=>{if(e.target===$('#flashDetailDialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close()}});
 
-let flashContext='',flashRevealed=new Set(),flashFocus=new Map(),flashMeanings=new Map();
+let flashContext='',flashRevealed=new Set(),flashFocus=new Map(),flashMeanings=new Map(),flashFaces=new Map(),flashLayout='';
 function loadFlashCards(){
  const context=owner()+':'+practiceMode+':'+taipeiDate();
  if(context===flashContext)return;
@@ -473,10 +473,12 @@ function loadFlashCards(){
 function renderTodayFlashcards(words){
  loadFlashCards();
  for(const w of words){const key=idOf(w);if(flashMeanings.has(key)&&flashMeanings.get(key)!==w.zh)flashRevealed.delete(key);flashMeanings.set(key,w.zh)}
- const cards=$('#flashCards');cards.replaceChildren();flashFocus=new Map();
+ const cards=$('#flashCards');
+ const layout=JSON.stringify([flashContext,words.map(w=>[idOf(w),w.pos,w.zh])]);
+ if(layout===flashLayout){for(const update of flashFaces.values())update();updateFlashRevealAll(words);return}
+ flashLayout=layout;cards.replaceChildren();flashFocus=new Map();flashFaces=new Map();
  $('#flashTotal').textContent=`共 ${words.length} 個單字`;
- $('#flashRevealAll').disabled=!words.length;
- $('#flashRevealAll').textContent=words.length&&words.every(w=>flashRevealed.has(idOf(w)))?'收起全部翻譯':'顯示全部翻譯';
+ updateFlashRevealAll(words);
  if(!words.length){const empty=document.createElement('p');empty.className='note';empty.textContent='目前模式今天還沒有錯題。';cards.appendChild(empty);return}
  for(const w of words){
   const key=idOf(w),revealed=flashRevealed.has(key);
@@ -485,15 +487,34 @@ function renderTodayFlashcards(words){
   const meta=document.createElement('span');meta.textContent='Day '+w.day+' · '+w.pos;
   const speaker=document.createElement('button');speaker.className='btn weak-speaker';speaker.type='button';speaker.textContent='🔊';speaker.setAttribute('aria-label','播放 '+w.word+' 的發音');speaker.title='播放發音';speaker.addEventListener('click',()=>speakText(w.word,$('#weakAudioStatus')));
   top.appendChild(meta);
-  if(revealed){const example=document.createElement('button');example.type='button';example.className='btn flash-example-button';example.textContent='💡 例句';example.title='查看完整解釋與例句';example.setAttribute('aria-label',w.word+'：查看解釋與例句');example.addEventListener('click',()=>openFlashDetail(w));top.appendChild(example)}
+  const example=document.createElement('button');example.type='button';example.className='btn flash-example-button';example.textContent='💡 例句';example.title='查看完整解釋與例句';example.setAttribute('aria-label',w.word+'：查看解釋與例句');example.addEventListener('click',()=>openFlashDetail(w));top.appendChild(example)
   top.appendChild(speaker);card.appendChild(top);
   const flip=document.createElement('button');flip.type='button';flip.className='flash-flip';flip.setAttribute('aria-expanded',String(revealed));flip.setAttribute('aria-label',(revealed?'收起 ':'揭曉 ')+w.word+' 的中文');
   const word=document.createElement('span');word.className='flash-word';word.lang='en';word.textContent=w.word;flip.appendChild(word);
   const meaning=document.createElement('span');meaning.className=revealed?'flash-meaning':'flash-hint';meaning.textContent=revealed?w.zh:'先想中文，再點擊翻面';if(revealed)meaning.title=w.zh;flip.appendChild(meaning);
-  flip.addEventListener('click',()=>{loadFlashCards();if(revealed)flashRevealed.delete(key);else flashRevealed.add(key);renderWeak();flashFocus.get(key)?.focus({preventScroll:true})});
+  const context=flashContext;
+  const updateFace=()=>{
+   const shown=flashRevealed.has(key);
+   flip.setAttribute('aria-expanded',String(shown));
+   flip.setAttribute('aria-label',(shown?'收起 ':'揭曉 ')+w.word+' 的中文');
+   meaning.className=shown?'flash-meaning':'flash-hint';
+   meaning.textContent=shown?w.zh:'先想中文，再點擊翻面';meaning.title=shown?w.zh:'';
+   example.hidden=!shown;
+  };
+  flashFaces.set(key,updateFace);updateFace();
+  // Keep the clicked card mounted so flipping cannot collapse the page or move its scroll anchor.
+  flip.addEventListener('click',()=>{
+   loadFlashCards();if(context!==flashContext){renderWeak();return}
+   if(flashRevealed.has(key))flashRevealed.delete(key);else flashRevealed.add(key);
+   updateFace();updateFlashRevealAll(words);
+  });
   card.appendChild(flip);flashFocus.set(key,flip);
   cards.appendChild(card);
  }
+}
+function updateFlashRevealAll(words){
+ $('#flashRevealAll').disabled=!words.length;
+ $('#flashRevealAll').textContent=words.length&&words.every(w=>flashRevealed.has(idOf(w)))?'收起全部翻譯':'顯示全部翻譯';
 }
 $('#flashRevealAll').addEventListener('click',()=>{loadFlashCards();const words=todayWrongPool(),hide=words.every(w=>flashRevealed.has(idOf(w)));for(const w of words){if(hide)flashRevealed.delete(idOf(w));else flashRevealed.add(idOf(w))}renderWeak()});
 
