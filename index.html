@@ -167,7 +167,8 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
             <strong>練習規則</strong>
             <ul>
               <li><strong>一般抽題：</strong>排除今天已答過的字，答對、答錯都算。</li>
-              <li><strong>限量抽題：</strong>優先練習不熟或少練習的字；選「全部」則包含所有今日未答單字。</li>
+              <li><strong>限量抽題：</strong>一般練習至少保留 30% 名額給目前模式尚未作答的單字（50 題保留 15 題、100 題保留 30 題、200 題保留 60 題）；新字不足時以其他字補滿。其餘依熟悉程度加權抽題，仍可能抽到更多新字，題目順序隨機。</li>
+              <li><strong>全部與重練：</strong>選「全部」包含範圍內所有今日未答單字；重練弱點與今日錯題維持原規則，不保留新字名額。</li>
               <li><strong>熟悉門檻：</strong>累積作答至少 3 次，且「連續答對 3 次」或「累積正確率達 80%」，就減少出題。未滿 3 次照常練習。</li>
               <li><strong>聽力提示：</strong>使用提示不算直接答對，也會中斷連續答對。</li>
               <li><strong>重練弱點單字：</strong>在「弱點單字」分頁開始，抽取全部 Day 中曾答錯、尚未熟悉的字，今天答過也能再練；沿用設定頁的模式與題數。</li>
@@ -797,7 +798,7 @@ async function prepareRound(mode='normal',resume=false){
   checkDate();const daily=dailyStatus();let saved=resume?savedRound():null;
   if(resume&&!saved){$('#roundMsg').textContent='沒有今天可繼續的題目，請重新建立本輪題目';return}
   if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;$('#startDay').value=String(saved.start);$('#currentDay').value=String(saved.end)}
-  else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='todayWrong'?todayWrongPool(daily):mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'||mode==='weak'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
+  else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='todayWrong'?todayWrongPool(daily):mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'?sampleNormalReview(candidates,+$('#limit').value):mode==='weak'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
   hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
  finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#weakStartBtn').disabled=false;renderWeak()}
@@ -816,6 +817,15 @@ function answerOrder(a,b){return (a.answered_at||'').localeCompare(b.answered_at
 function streakOf(s){return Number.isSafeInteger(s.streak)?s.streak:s.wrong===0?s.correct:0}
 function familiarity(w,stats=activeProgress()){const s=stats[idOf(w)]||{correct:0,wrong:0},total=s.correct+s.wrong;return {correct:s.correct,wrong:s.wrong,total,rate:total?s.correct/total:0,streak:streakOf(s),mastered:total>=3&&(streakOf(s)>=3||s.correct/total>=.8)}}
 function samplingWeight(w,stats){const f=familiarity(w,stats);if(f.mastered)return .12;if(!f.total)return 1.5;return .5+3*(1-f.rate)+1/Math.sqrt(f.total)}
+// Reserve 30% of normal limited rounds for words never answered in this mode.
+function sampleNormalReview(candidates,limit,random=Math.random){
+ if(limit>=candidates.length)return sampleReview(candidates,limit,random);
+ const stats=activeProgress(),unseen=candidates.filter(w=>familiarity(w,stats).total===0);
+ const quota=Math.min(unseen.length,Math.ceil(limit*.3));
+ const reserved=sampleReview(unseen,quota,random),keys=new Set(reserved.map(idOf));
+ const rest=sampleReview(candidates.filter(w=>!keys.has(idOf(w))),limit-reserved.length,random);
+ return shuffle([...reserved,...rest]);
+}
 function sampleReview(candidates,limit,random=Math.random){
  if(limit>=candidates.length)return shuffle(candidates);
  const stats=activeProgress();return candidates.map(w=>({w,score:-Math.log(Math.max(Number.MIN_VALUE,random()))/samplingWeight(w,stats)})).sort((a,b)=>a.score-b.score).slice(0,limit).map(x=>x.w);
