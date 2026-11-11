@@ -279,6 +279,19 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div style="overflow:auto"><table><thead><tr><th>日期</th><th>答題數</th><th id="historyCorrectHead">答對</th><th>答錯</th><th id="historyRateHead">正確率</th><th>提示後答對</th><th>未分類</th></tr></thead><tbody id="historyBody"></tbody></table></div>
       <p class="note">有時間的雲端紀錄已按早上 6:00 重新歸日；較早未登入的本機紀錄只有每日合計，保留原日期，更新前的本機今日完成清單會重新開始，累積成績保留。部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類的日期，正確率顯示「—」；沒有作答的日期不列入圖表與清單。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
     </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>全部單字統計</h3>
+      <p id="wordStatsNote" class="note"></p>
+      <div class="row">
+        <div class="grow"><label for="wordStatsSearch">搜尋單字或中文</label><input id="wordStatsSearch" type="search" placeholder="例如 praise、稱讚"></div>
+        <div><label for="wordStatsDay">Day 範圍</label><select id="wordStatsDay"><option value="all">全部 Day</option><option value="1">Day 1</option><option value="2">Day 2</option><option value="3">Day 3</option><option value="4">Day 4</option><option value="5">Day 5</option><option value="6">Day 6</option><option value="7">Day 7</option><option value="8">Day 8</option><option value="9">Day 9</option><option value="10">Day 10</option><option value="11">Day 11</option><option value="12">Day 12</option><option value="13">Day 13</option><option value="14">Day 14</option><option value="15">Day 15</option><option value="16">Day 16</option><option value="17">Day 17</option><option value="18">Day 18</option><option value="19">Day 19</option><option value="20">Day 20</option><option value="21">Day 21</option><option value="22">Day 22</option><option value="23">Day 23</option><option value="24">Day 24</option><option value="25">Day 25</option><option value="26">Day 26</option><option value="27">Day 27</option><option value="28">Day 28</option><option value="29">Day 29</option><option value="30">Day 30</option></select></div>
+        <div><label for="wordStatsSort">排序</label><select id="wordStatsSort"><option value="totalDesc">作答次數：多到少</option><option value="totalAsc">作答次數：少到多</option><option value="wrong">答錯次數：多到少</option><option value="rate">正確率：低到高</option><option value="day">Day 順序</option></select></div>
+      </div>
+      <p id="wordStatsSummary" class="note" role="status"></p>
+      <div style="overflow:auto"><table style="min-width:680px"><thead><tr><th>單字</th><th>中文</th><th>Day</th><th>作答總次數</th><th id="wordStatsCorrectHead">答對</th><th id="wordStatsWrongHead">答錯</th><th id="wordStatsRateHead">正確率</th></tr></thead><tbody id="wordStatsBody"></tbody></table></div>
+      <div class="row" style="margin-top:12px"><button id="wordStatsPrev" class="btn" type="button">上一頁</button><span id="wordStatsPage" class="muted"></span><button id="wordStatsNext" class="btn" type="button">下一頁</button></div>
+    </div>
   </section>
 
   <section id="backup" class="panel">
@@ -953,7 +966,41 @@ function renderHistoryChart(history,dates,listening){
  host.appendChild(svg);detail.textContent=(valid.length===1?'目前只有一天資料，繼續練習後會形成折線。 ':'')+describe(valid.at(-1));
 }
 
+let wordStatsPage=0;
+function renderWordStatistics(){
+ const listening=$('#historyMode').value==='listening',stats=listening?listeningData().progress:progress;
+ const search=$('#wordStatsSearch').value.trim().toLocaleLowerCase(),day=$('#wordStatsDay').value,sort=$('#wordStatsSort').value;
+ const rows=WORDS.filter(w=>(!day||day==='all'||w.day===Number(day))&&(!search||(w.word+' '+w.zh).toLocaleLowerCase().includes(search))).map(w=>{
+  const s=stats[idOf(w)]||{},correct=Number(s.correct)||0,wrong=Number(s.wrong)||0,total=correct+wrong;
+  return {w,correct,wrong,total,rate:total?correct/total:null};
+ });
+ const tie=(a,b)=>a.w.day-b.w.day||a.w.word.localeCompare(b.w.word);
+ rows.sort((a,b)=>{
+  if(sort==='day')return tie(a,b);
+  if(sort==='rate')return (a.rate===null?Infinity:a.rate)-(b.rate===null?Infinity:b.rate)||b.total-a.total||tie(a,b);
+  return (sort==='totalAsc'?a.total-b.total:sort==='wrong'?b.wrong-a.wrong:b.total-a.total)||tie(a,b);
+ });
+ const pages=Math.max(1,Math.ceil(rows.length/50));wordStatsPage=Math.max(0,Math.min(wordStatsPage,pages-1));
+ $('#wordStatsNote').textContent=(listening?'聽力練習：答對為未看提示就答對；答錯／需複習包含提示後答對。':'單字辨識：答錯包含「不確定」。')+'累積統計不受上方查看期間限制；作答總次數＝答對＋答錯，未作答就離開不計次。相同單字在不同 Day 分開統計。';
+ $('#wordStatsCorrectHead').textContent=listening?'直接聽懂':'答對';$('#wordStatsWrongHead').textContent=listening?'答錯／需複習':'答錯';$('#wordStatsRateHead').textContent=listening?'直接聽懂率':'正確率';
+ const total=rows.reduce((sum,r)=>sum+r.total,0),practiced=rows.filter(r=>r.total>0).length;
+ $('#wordStatsSummary').textContent=`符合 ${rows.length} 個單字｜已練 ${practiced} 個｜未練 ${rows.length-practiced} 個｜累積作答 ${total} 次`;
+ const body=$('#wordStatsBody');body.replaceChildren();
+ for(const r of rows.slice(wordStatsPage*50,(wordStatsPage+1)*50)){
+  const tr=document.createElement('tr');
+  for(const value of [r.w.word+' '+r.w.pos,r.w.zh,r.w.day,r.total,r.correct,r.wrong,r.rate===null?'—':(r.rate*100).toFixed(1)+'%']){const td=document.createElement('td');td.textContent=String(value);tr.appendChild(td)}
+  body.appendChild(tr);
+ }
+ if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='找不到符合的單字，請調整搜尋或 Day。';tr.appendChild(td);body.appendChild(tr)}
+ $('#wordStatsPage').textContent=`第 ${wordStatsPage+1} / ${pages} 頁（每頁 50 個）`;
+ $('#wordStatsPrev').disabled=wordStatsPage===0;$('#wordStatsNext').disabled=wordStatsPage===pages-1;
+}
+for(const [selector,event] of [['#wordStatsSearch','input'],['#wordStatsDay','change'],['#wordStatsSort','change']])$(selector).addEventListener(event,()=>{wordStatsPage=0;renderWordStatistics()});
+$('#wordStatsPrev').addEventListener('click',()=>{wordStatsPage--;renderWordStatistics()});
+$('#wordStatsNext').addEventListener('click',()=>{wordStatsPage++;renderWordStatistics()});
+
 function renderHistory(){
+ renderWordStatistics();
  const listening=$('#historyMode').value==='listening';
  $('#listeningHistoryNote').hidden=!listening;
  $('#historyCorrectLabel').textContent=listening?'今日直接聽懂':'今日答對';$('#historyRateLabel').textContent=listening?'直接聽懂率':'今日正確率';
