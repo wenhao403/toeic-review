@@ -87,6 +87,8 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .weak-row-actions{display:flex;justify-content:flex-end;align-items:center;gap:6px;white-space:nowrap}
 .weak-row-actions .btn{padding:5px 8px;font-size:13px;min-height:34px;border-radius:8px}
 .weak-row-actions .weak-speaker{width:34px;min-width:34px;padding:4px;font-size:16px}
+.answer-count-bar{cursor:pointer;outline:none}.answer-count-bar:hover .count-bar,.answer-count-bar:focus-visible .count-bar{stroke:var(--text);stroke-width:2}
+.count-rate-point{cursor:pointer;outline:none}.count-rate-point:hover .rate-dot,.count-rate-point:focus-visible .rate-dot{stroke:var(--text);stroke-width:3}
 </style>
 </head>
 <body>
@@ -280,6 +282,13 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <p class="note">有時間的雲端紀錄已按早上 6:00 重新歸日；較早未登入的本機紀錄只有每日合計，保留原日期，更新前的本機今日完成清單會重新開始，累積成績保留。部分舊紀錄只有日期、沒有逐題對錯，會列為「未分類」；含未分類的日期，正確率顯示「—」；沒有作答的日期不列入圖表與清單。更早沒有日期的累積紀錄不列入。新作答會完整記錄，匯入舊統計不會補入每日題數。<br>目前抽題會優先出不熟的單字，題目難度也會變化；正確率適合搭配題數一起看，不代表單純的能力排名。</p>
     </div>
 
+    <div class="card" style="margin-top:16px">
+      <h3>單字作答次數分布</h3>
+      <p id="answerCountSummary" class="note"></p>
+      <div id="answerCountChart" class="history-chart-wrap" tabindex="0" aria-label="作答次數分布，可左右滑動"></div>
+      <p id="answerCountEmpty" class="note" hidden>沒有符合篩選的單字，請調整下方搜尋或 Day。</p>
+      <p id="answerCountDetail" class="history-chart-detail" role="status"></p>
+    </div>
     <div class="card" style="margin-top:16px">
       <h3>全部單字統計</h3>
       <p id="wordStatsNote" class="note"></p>
@@ -947,6 +956,54 @@ function renderHistoryChart(history,dates,listening){
  host.appendChild(svg);detail.textContent=(valid.length===1?'目前只有一天資料，繼續練習後會形成折線。 ':'')+describe(valid.at(-1));
 }
 
+function answerCountDistribution(rows){
+ const max=rows.reduce((n,r)=>Math.max(n,r.total),0),step=Math.max(1,Math.ceil(max/30));
+ const bins=[{from:0,to:0,count:0,correct:0,total:0,rate:null}];
+ for(let from=1;from<=max;from+=step)bins.push({from,to:Math.min(max,from+step-1),count:0,correct:0,total:0,rate:null});
+ for(const row of rows){const bin=bins[row.total===0?0:1+Math.floor((row.total-1)/step)];bin.count++;bin.correct+=row.correct||0;bin.total+=row.total}
+ for(const bin of bins)bin.rate=bin.total?bin.correct/bin.total*100:null;
+ return bins;
+}
+function renderAnswerCountChart(rows,listening){
+ const host=$('#answerCountChart'),detail=$('#answerCountDetail');host.replaceChildren();detail.textContent='';
+ $('#answerCountSummary').textContent=(listening?'聽力練習':'單字辨識')+` · 共 ${rows.length} 個單字。依下方搜尋與 Day 篩選，不受每日紀錄期間或表格分頁限制；各分類正確率＝答對總次數 ÷ 作答總次數，0 次不畫正確率。`;
+ $('#answerCountEmpty').hidden=rows.length>0;host.hidden=!rows.length;
+ if(!rows.length)return;
+ const bins=answerCountDistribution(rows),peak=Math.max(...bins.map(b=>b.count)),tick=Math.max(1,Math.ceil(peak/4)),ceiling=Math.ceil(peak/tick)*tick;
+ const width=Math.max(700,bins.length*50+130),height=300,left=60,right=70,top=36,bottom=58,plotH=height-top-bottom,plotW=width-left-right,slot=plotW/bins.length;
+ const node=(tag,attrs={},text)=>{const el=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v]of Object.entries(attrs))el.setAttribute(k,String(v));if(text!==undefined)el.textContent=text;return el};
+ const svg=node('svg',{viewBox:`0 0 ${width} ${height}`,role:'group','aria-label':'單字作答次數分布與正確率組合圖'});svg.style.width='100%';svg.style.minWidth=width+'px';svg.style.display='block';
+ svg.appendChild(node('title',{},'單字作答次數分布與'+(listening?'直接聽懂率':'正確率')));
+ svg.appendChild(node('desc',{},'橫軸為每個單字累積作答次數，左軸為單字數，右軸為 0% 到 100% 正確率。灰色為未作答，藍色為已作答單字數，綠色點線為各分類的答對總次數除以作答總次數。沒有作答或沒有單字的分類不畫點。次數較多時以區間合併。'));
+ svg.appendChild(node('text',{x:left,y:16,fill:'var(--muted)','font-size':12},'單字數（個）'));
+ for(let value=0;value<=ceiling;value+=tick){const y=top+plotH*(1-value/ceiling);svg.appendChild(node('line',{x1:left,y1:y,x2:width-right,y2:y,stroke:'var(--line)'}));svg.appendChild(node('text',{x:left-8,y:y+4,fill:'var(--muted)','font-size':12,'text-anchor':'end'},value))}
+ const rateLabel=listening?'直接聽懂率':'正確率',rateY=rate=>top+plotH*(1-rate/100);
+ svg.appendChild(node('text',{x:width-right+8,y:16,fill:'var(--good)','font-size':12},rateLabel));
+ for(const rate of [0,25,50,75,100])svg.appendChild(node('text',{x:width-right+8,y:rateY(rate)+4,fill:'var(--good)','font-size':12},rate+'%'));
+ const describe=b=>`作答 ${b.from===b.to?b.from:b.from+'～'+b.to} 次：${b.count} 個單字（${(b.count/rows.length*100).toFixed(1)}%）｜${rateLabel} ${b.rate===null?'—':b.rate.toFixed(1)+'%'}${b.total?'（'+b.correct+' / '+b.total+' 次）':''}`;
+ for(const [i,b]of bins.entries()){
+  const x=left+i*slot+slot*.18,barW=slot*.64,barH=b.count/ceiling*plotH,y=top+plotH-barH;
+  const group=node('g',{tabindex:0,role:'button',class:'answer-count-bar','aria-label':describe(b)});
+  group.appendChild(node('title',{},describe(b)));
+  group.appendChild(node('rect',{x:left+i*slot,y:top,width:slot,height:plotH,fill:'transparent'}));
+  group.appendChild(node('rect',{class:'count-bar',x,y,width:barW,height:barH,rx:3,fill:i===0?'var(--muted)':'var(--accent)'}));
+  group.appendChild(node('text',{x:x+barW/2,y:y-7,fill:'var(--text)','font-size':12,'text-anchor':'middle'},b.count));
+  group.appendChild(node('text',{x:x+barW/2,y:height-bottom+20,fill:'var(--muted)','font-size':12,'text-anchor':'middle'},b.from===b.to?b.from:b.from+'–'+b.to));
+  const select=()=>{detail.textContent=describe(b)};group.addEventListener('pointerenter',select);group.addEventListener('focus',select);group.addEventListener('click',select);group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}});svg.appendChild(group);
+ }
+ const points=bins.map((b,i)=>({b,x:left+(i+.5)*slot})).filter(p=>p.b.rate!==null);
+ if(points.length>1){const d=points.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+rateY(p.b.rate).toFixed(2)).join(' ');svg.appendChild(node('path',{class:'count-rate-line',d,fill:'none',stroke:'var(--good)','stroke-width':2.5,'pointer-events':'none'}))}
+ for(const p of points){
+  const group=node('g',{class:'count-rate-point',tabindex:0,role:'button','aria-label':describe(p.b)});
+  group.appendChild(node('title',{},describe(p.b)));
+  group.appendChild(node('circle',{cx:p.x,cy:rateY(p.b.rate),r:12,fill:'transparent'}));
+  group.appendChild(node('circle',{class:'rate-dot',cx:p.x,cy:rateY(p.b.rate),r:4.5,fill:'var(--good)',stroke:'var(--card)','stroke-width':1.5}));
+  const select=()=>{detail.textContent=describe(p.b)};group.addEventListener('pointerenter',select);group.addEventListener('focus',select);group.addEventListener('click',select);group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}});svg.appendChild(group);
+ }
+ svg.appendChild(node('text',{x:left+plotW/2,y:height-5,fill:'var(--muted)','font-size':12,'text-anchor':'middle'},'每個單字的作答總次數（次）'));
+ host.appendChild(svg);detail.textContent='灰色：未作答｜藍色長條：單字數（左軸）｜綠色點線：'+rateLabel+'（右軸）。點選長條或圓點可查看詳細資料。';
+}
+
 let wordStatsPage=0;
 function renderWordStatistics(){
  const listening=$('#historyMode').value==='listening',stats=listening?listeningData().progress:progress;
@@ -961,6 +1018,7 @@ function renderWordStatistics(){
   if(sort==='rate')return (a.rate===null?Infinity:a.rate)-(b.rate===null?Infinity:b.rate)||b.total-a.total||tie(a,b);
   return (sort==='totalAsc'?a.total-b.total:sort==='wrong'?b.wrong-a.wrong:b.total-a.total)||tie(a,b);
  });
+ renderAnswerCountChart(rows,listening);
  const pages=Math.max(1,Math.ceil(rows.length/50));wordStatsPage=Math.max(0,Math.min(wordStatsPage,pages-1));
  $('#wordStatsNote').textContent=(listening?'聽力練習：答對為未看提示就答對；答錯／需複習包含提示後答對。':'單字辨識：答錯包含「不確定」。')+'累積統計不受上方查看期間限制；作答總次數＝答對＋答錯，未作答就離開不計次。相同單字在不同 Day 分開統計。';
  $('#wordStatsCorrectHead').textContent=listening?'直接聽懂':'答對';$('#wordStatsWrongHead').textContent=listening?'答錯／需複習':'答錯';$('#wordStatsRateHead').textContent=listening?'直接聽懂率':'正確率';
