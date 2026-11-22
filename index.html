@@ -93,7 +93,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .question-word-row{display:grid;grid-template-columns:96px minmax(0,1fr) 96px;align-items:center;gap:8px}.question-word-row .wordline{grid-column:2;min-width:0}.question-word-row .word{overflow-wrap:anywhere;min-width:0}.btn.redo-answer{grid-column:3;justify-self:end;padding:6px 8px;min-height:32px;font-size:13px;font-weight:400;color:var(--muted);background:transparent;border-color:transparent;white-space:nowrap}.btn.redo-answer:enabled:hover,.btn.redo-answer:enabled:focus-visible{color:var(--text);border-color:var(--line)}@media(max-width:650px){.question-word-row{grid-template-columns:minmax(0,1fr) 76px}.question-word-row .wordline{grid-column:1}.btn.redo-answer{grid-column:2}}
 .quiz-next-slot{display:flow-root;min-height:60px}.choices .choice:disabled{opacity:1}.btn.redo-answer:disabled{opacity:1;color:var(--muted);background:transparent;border-color:transparent;cursor:default}
 
-.source-controls{display:grid;grid-template-columns:minmax(150px,1fr) minmax(110px,.55fr);gap:16px;align-items:end}.day-range-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.test-fields{margin-top:0}.test-selection-summary{font-size:13px;color:var(--muted);margin:12px 0 0}[hidden]{display:none!important}
+.source-controls{display:grid;grid-template-columns:minmax(150px,1fr) minmax(110px,.55fr);gap:16px;align-items:end}.day-range-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.test-fields{margin-top:0}[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -167,7 +167,6 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
           <div><label class="muted" for="endTest">複習到哪個 Test</label><select id="endTest"></select></div>
         </div>
         <p id="readingTestEmpty" class="note" hidden>尚未匯入閱讀題庫。</p>
-        <p id="testSelectionSummary" class="test-selection-summary" role="status"></p>
       </div>
       <div class="row" style="margin-top:14px">
         <button class="btn primary" id="buildQuiz">建立本輪題目</button>
@@ -414,7 +413,6 @@ function renderSourcePicker(){
   select.disabled=!READING_GROUPS.length;
  }
  $('#startTest').value=String(selection.testStart??'');$('#endTest').value=String(selection.testEnd??'');
- $('#testSelectionSummary').textContent=selection.tests.length?`範圍內 ${selection.tests.length} 份 Test，共 ${WORDS.filter(w=>selection.tests.includes(w.day)).length} 字`:'尚未匯入閱讀題庫。';
  $('#readingTestEmpty').hidden=READING_GROUPS.length>0;
 }
 function pool(){
@@ -429,7 +427,6 @@ function refreshStats(){
   $('#doneWords').textContent=pool().length-available;
   $('#wrongTotal').textContent=Object.values(activeProgress()).reduce((a,x)=>a+(x.wrong||0),0);
   $('#ruleText').textContent=`${selectionLabel()}｜範圍 ${pool().length}｜今日已答 ${pool().length-available}｜剩餘 ${available}`;
-  $('#testSelectionSummary').textContent=selection.tests.length?`範圍內 ${selection.tests.length} 份 Test，共 ${WORDS.filter(w=>selection.tests.includes(w.day)).length} 字`:'尚未匯入閱讀題庫。';
   updateResume();
   renderWeak();
   renderHistory();
