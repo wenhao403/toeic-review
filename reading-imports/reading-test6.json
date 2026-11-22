@@ -453,42 +453,2826 @@
       "source_label": "閱讀 Test6",
       "source_photo": "預設資料夾 - 42.jpg",
       "source_question": 130
+    },
+    {
+      "word": "enthusiast",
+      "pos": "n.",
+      "zh": "熱衷者；愛好者",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "stylish",
+      "pos": "adj.",
+      "zh": "時尚的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "layer",
+      "pos": "n.",
+      "zh": "層",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "tough",
+      "pos": "adj.",
+      "zh": "堅韌的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "sturdy",
+      "pos": "adj.",
+      "zh": "結實的；堅固的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "absorption",
+      "pos": "n.",
+      "zh": "吸收",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "neatly",
+      "pos": "adv.",
+      "zh": "整齊地；整潔地",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "compact",
+      "pos": "adj.",
+      "zh": "小巧的；精巧的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "simply",
+      "pos": "adv.",
+      "zh": "簡直；就是",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "excuse",
+      "pos": "n.",
+      "zh": "藉口；理由",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 43.jpg",
+      "source_questions": "131-134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 43.jpg",
+          "questions": "131-134"
+        }
+      ]
+    },
+    {
+      "word": "durability",
+      "pos": "n.",
+      "zh": "耐用性",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 44.jpg",
+      "source_questions": "132",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 44.jpg",
+          "questions": "132"
+        },
+        {
+          "photo": "預設資料夾 - 59.jpg",
+          "questions": "159"
+        }
+      ]
+    },
+    {
+      "word": "if so",
+      "pos": "phr.",
+      "zh": "如果是這樣的話",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 44.jpg",
+      "source_questions": "133",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 44.jpg",
+          "questions": "133"
+        }
+      ]
+    },
+    {
+      "word": "take advantage of",
+      "pos": "phr.",
+      "zh": "利用",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 44.jpg",
+      "source_questions": "134",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 44.jpg",
+          "questions": "134"
+        }
+      ]
+    },
+    {
+      "word": "sign up",
+      "pos": "phr.",
+      "zh": "報名",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 45.jpg",
+      "source_questions": "135-138",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 45.jpg",
+          "questions": "135-138"
+        }
+      ]
+    },
+    {
+      "word": "pay in installments",
+      "pos": "phr.",
+      "zh": "分期付款",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 45.jpg",
+      "source_questions": "135-138",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 45.jpg",
+          "questions": "135-138"
+        }
+      ]
+    },
+    {
+      "word": "enrollment",
+      "pos": "n.",
+      "zh": "報名；註冊",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 46.jpg",
+      "source_questions": "135",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 46.jpg",
+          "questions": "135"
+        }
+      ]
+    },
+    {
+      "word": "reception desk",
+      "pos": "phr.",
+      "zh": "接待處",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 46.jpg",
+      "source_questions": "136",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 46.jpg",
+          "questions": "136"
+        }
+      ]
+    },
+    {
+      "word": "symptom",
+      "pos": "n.",
+      "zh": "症狀",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 46.jpg",
+      "source_questions": "138",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 46.jpg",
+          "questions": "138"
+        }
+      ]
+    },
+    {
+      "word": "referral",
+      "pos": "n.",
+      "zh": "轉介；轉診",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 46.jpg",
+      "source_questions": "138",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 46.jpg",
+          "questions": "138"
+        }
+      ]
+    },
+    {
+      "word": "county",
+      "pos": "n.",
+      "zh": "郡；縣",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "gala",
+      "pos": "n.",
+      "zh": "盛會；慶典",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "shelter",
+      "pos": "n.",
+      "zh": "庇護所；收容所；住處",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "cause",
+      "pos": "n./v.",
+      "zh": "目的；造成",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "portion",
+      "pos": "n.",
+      "zh": "部分",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "essential",
+      "pos": "adj.",
+      "zh": "必要的；不可或缺的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "awareness",
+      "pos": "n.",
+      "zh": "意識；認知",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 47.jpg",
+      "source_questions": "139-142",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 47.jpg",
+          "questions": "139-142"
+        }
+      ]
+    },
+    {
+      "word": "enable",
+      "pos": "v.",
+      "zh": "使……能夠",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 48.jpg",
+      "source_questions": "139",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 48.jpg",
+          "questions": "139"
+        }
+      ]
+    },
+    {
+      "word": "newsletter",
+      "pos": "n.",
+      "zh": "時事通訊；電子報",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 48.jpg",
+      "source_questions": "140",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 48.jpg",
+          "questions": "140"
+        }
+      ]
+    },
+    {
+      "word": "live entertainment",
+      "pos": "phr.",
+      "zh": "現場娛樂表演",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 48.jpg",
+      "source_questions": "140",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 48.jpg",
+          "questions": "140"
+        }
+      ]
+    },
+    {
+      "word": "chiefly",
+      "pos": "adv.",
+      "zh": "主要地",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 48.jpg",
+      "source_questions": "141",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 48.jpg",
+          "questions": "141"
+        }
+      ]
+    },
+    {
+      "word": "drain",
+      "pos": "v.",
+      "zh": "將……的水排空",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 49.jpg",
+      "source_questions": "143-146",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 49.jpg",
+          "questions": "143-146"
+        }
+      ]
+    },
+    {
+      "word": "sanitize",
+      "pos": "v.",
+      "zh": "殺菌；消毒",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 49.jpg",
+      "source_questions": "143-146",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 49.jpg",
+          "questions": "143-146"
+        }
+      ]
+    },
+    {
+      "word": "wellness",
+      "pos": "n.",
+      "zh": "健康",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 49.jpg",
+      "source_questions": "143-146",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 49.jpg",
+          "questions": "143-146"
+        }
+      ]
+    },
+    {
+      "word": "after all",
+      "pos": "phr.",
+      "zh": "畢竟",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 50.jpg",
+      "source_questions": "144",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 50.jpg",
+          "questions": "144"
+        }
+      ]
+    },
+    {
+      "word": "cosmetic products",
+      "pos": "phr.",
+      "zh": "化妝品",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 51.jpg",
+      "source_questions": "147-148",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 51.jpg",
+          "questions": "147-148"
+        }
+      ]
+    },
+    {
+      "word": "rash",
+      "pos": "n.",
+      "zh": "疹子；皮疹",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 51.jpg",
+      "source_questions": "147-148",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 51.jpg",
+          "questions": "147-148"
+        }
+      ]
+    },
+    {
+      "word": "itch",
+      "pos": "v.",
+      "zh": "發癢",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 51.jpg",
+      "source_questions": "147-148",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 51.jpg",
+          "questions": "147-148"
+        }
+      ]
+    },
+    {
+      "word": "in exchange",
+      "pos": "phr.",
+      "zh": "作為交換",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 51.jpg",
+      "source_questions": "147-148",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 51.jpg",
+          "questions": "147-148"
+        }
+      ]
+    },
+    {
+      "word": "in person",
+      "pos": "phr.",
+      "zh": "親自；親身",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 51.jpg",
+      "source_questions": "147",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 51.jpg",
+          "questions": "147"
+        }
+      ]
+    },
+    {
+      "word": "restock",
+      "pos": "v.",
+      "zh": "重新進貨；補貨",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 52.jpg",
+      "source_questions": "149-151",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 52.jpg",
+          "questions": "149-151"
+        }
+      ]
+    },
+    {
+      "word": "lift",
+      "pos": "v.",
+      "zh": "解除；抬起",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 52.jpg",
+      "source_questions": "149-151",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 52.jpg",
+          "questions": "149-151"
+        }
+      ]
+    },
+    {
+      "word": "nationwide",
+      "pos": "adv.",
+      "zh": "在全國",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 52.jpg",
+      "source_questions": "149-151",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 52.jpg",
+          "questions": "149-151"
+        }
+      ]
+    },
+    {
+      "word": "go out of business",
+      "pos": "phr.",
+      "zh": "歇業；停止營運",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 52.jpg",
+      "source_questions": "149",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 52.jpg",
+          "questions": "149"
+        }
+      ]
+    },
+    {
+      "word": "worldwide",
+      "pos": "adv.",
+      "zh": "在全世界",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 53.jpg",
+      "source_questions": "150",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 53.jpg",
+          "questions": "150"
+        }
+      ]
+    },
+    {
+      "word": "take part in",
+      "pos": "phr.",
+      "zh": "參加",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 53.jpg",
+      "source_questions": "151",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 53.jpg",
+          "questions": "151"
+        }
+      ]
+    },
+    {
+      "word": "that works for me",
+      "pos": "phr.",
+      "zh": "那樣我可以；那樣對我合適",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 54.jpg",
+      "source_questions": "152-153",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 54.jpg",
+          "questions": "152-153"
+        }
+      ]
+    },
+    {
+      "word": "last-minute",
+      "pos": "adj.",
+      "zh": "最後一刻的；臨時的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 54.jpg",
+      "source_questions": "152-153",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 54.jpg",
+          "questions": "152-153"
+        }
+      ]
+    },
+    {
+      "word": "make an offer",
+      "pos": "phr.",
+      "zh": "出價",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 54.jpg",
+      "source_questions": "152-153",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 54.jpg",
+          "questions": "152-153"
+        }
+      ]
+    },
+    {
+      "word": "feel free to",
+      "pos": "phr.",
+      "zh": "儘管；可以自由地做……",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154-155",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154-155"
+        }
+      ]
+    },
+    {
+      "word": "figure out",
+      "pos": "phr.",
+      "zh": "想出；弄清楚",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154-155",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154-155"
+        }
+      ]
+    },
+    {
+      "word": "draw up",
+      "pos": "phr.",
+      "zh": "制定；擬訂",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154-155",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154-155"
+        }
+      ]
+    },
+    {
+      "word": "surplus",
+      "pos": "adj.",
+      "zh": "剩餘的；過剩的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154-155",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154-155"
+        }
+      ]
+    },
+    {
+      "word": "on short notice",
+      "pos": "phr.",
+      "zh": "在臨時通知的情況下",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154-155",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154-155"
+        }
+      ]
+    },
+    {
+      "word": "harvest",
+      "pos": "v.",
+      "zh": "收穫；收割",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 55.jpg",
+      "source_questions": "154",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 55.jpg",
+          "questions": "154"
+        }
+      ]
+    },
+    {
+      "word": "so-called",
+      "pos": "adj.",
+      "zh": "所謂的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "stringent",
+      "pos": "adj.",
+      "zh": "嚴格的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "hygiene",
+      "pos": "n.",
+      "zh": "衛生",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "neighborhood",
+      "pos": "n.",
+      "zh": "鄰近地區；街區",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "affected",
+      "pos": "adj.",
+      "zh": "受影響的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "argue",
+      "pos": "v.",
+      "zh": "主張；爭論",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "counter",
+      "pos": "v.",
+      "zh": "反駁",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "welfare",
+      "pos": "n.",
+      "zh": "福利",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156-157",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156-157"
+        }
+      ]
+    },
+    {
+      "word": "city",
+      "pos": "n.",
+      "zh": "城市；市政府（本文指市政當局）",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156"
+        }
+      ]
+    },
+    {
+      "word": "regulate",
+      "pos": "v.",
+      "zh": "管制；規範",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 57.jpg",
+      "source_questions": "156",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 57.jpg",
+          "questions": "156"
+        }
+      ]
+    },
+    {
+      "word": "deforestation",
+      "pos": "n.",
+      "zh": "砍伐森林；森林濫伐",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "utensil",
+      "pos": "n.",
+      "zh": "用具；器具",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "bamboo",
+      "pos": "n.",
+      "zh": "竹子",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "biodegradable",
+      "pos": "adj.",
+      "zh": "可生物分解的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "decompose",
+      "pos": "v.",
+      "zh": "分解；腐爛",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "advocate",
+      "pos": "v.",
+      "zh": "提倡；擁護",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "consumption",
+      "pos": "n.",
+      "zh": "消費；消耗",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "practice",
+      "pos": "n.",
+      "zh": "實踐；慣常做法",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 58.jpg",
+      "source_questions": "158-161",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 58.jpg",
+          "questions": "158-161"
+        }
+      ]
+    },
+    {
+      "word": "disposal",
+      "pos": "n.",
+      "zh": "（廢棄物等的）處理；丟棄",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 59.jpg",
+      "source_questions": "159",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 59.jpg",
+          "questions": "159"
+        }
+      ]
+    },
+    {
+      "word": "workout",
+      "pos": "n.",
+      "zh": "運動；健身訓練",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 60.jpg",
+      "source_questions": "162-164",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 60.jpg",
+          "questions": "162-164"
+        }
+      ]
+    },
+    {
+      "word": "affiliated",
+      "pos": "adj.",
+      "zh": "有合作關係的；附屬的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 60.jpg",
+      "source_questions": "162-164",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 60.jpg",
+          "questions": "162-164"
+        }
+      ]
+    },
+    {
+      "word": "make up for",
+      "pos": "phr.",
+      "zh": "彌補；補償",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 60.jpg",
+      "source_questions": "162-164",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 60.jpg",
+          "questions": "162-164"
+        }
+      ]
+    },
+    {
+      "word": "tie",
+      "pos": "n.",
+      "zh": "關係；連結",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 60.jpg",
+      "source_questions": "162",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 60.jpg",
+          "questions": "162"
+        }
+      ]
+    },
+    {
+      "word": "affiliate",
+      "pos": "n.",
+      "zh": "附屬機構；合作機構",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 60.jpg",
+      "source_questions": "162",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 60.jpg",
+          "questions": "162"
+        }
+      ]
+    },
+    {
+      "word": "rate",
+      "pos": "v.",
+      "zh": "評價；評等",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 61.jpg",
+      "source_questions": "163",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 61.jpg",
+          "questions": "163"
+        }
+      ]
+    },
+    {
+      "word": "franchise",
+      "pos": "n.",
+      "zh": "特許經營；加盟權",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 61.jpg",
+      "source_questions": "163",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 61.jpg",
+          "questions": "163"
+        }
+      ]
+    },
+    {
+      "word": "pause",
+      "pos": "v.",
+      "zh": "暫停",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 61.jpg",
+      "source_questions": "164",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 61.jpg",
+          "questions": "164"
+        }
+      ]
+    },
+    {
+      "word": "pursue",
+      "pos": "v.",
+      "zh": "追求",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "tuition",
+      "pos": "n.",
+      "zh": "學費",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "stellar",
+      "pos": "adj.",
+      "zh": "傑出的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "academic",
+      "pos": "adj.",
+      "zh": "學業的；學術的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "dormitory",
+      "pos": "n.",
+      "zh": "宿舍",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "dean",
+      "pos": "n.",
+      "zh": "學院院長；系主任",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165-167",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165-167"
+        }
+      ]
+    },
+    {
+      "word": "scholarship",
+      "pos": "n.",
+      "zh": "獎學金",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165"
+        }
+      ]
+    },
+    {
+      "word": "follow-up",
+      "pos": "adj./n.",
+      "zh": "進一步的；後續行動",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 62.jpg",
+      "source_questions": "165",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 62.jpg",
+          "questions": "165"
+        }
+      ]
+    },
+    {
+      "word": "dozens of",
+      "pos": "phr.",
+      "zh": "數十個；許多",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 64.jpg",
+      "source_questions": "168-171",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 64.jpg",
+          "questions": "168-171"
+        }
+      ]
+    },
+    {
+      "word": "premade",
+      "pos": "adj.",
+      "zh": "預先製作的",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 64.jpg",
+      "source_questions": "168-171",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 64.jpg",
+          "questions": "168-171"
+        }
+      ]
+    },
+    {
+      "word": "fragrance",
+      "pos": "n.",
+      "zh": "香水；香味",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 64.jpg",
+      "source_questions": "168-171",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 64.jpg",
+          "questions": "168-171"
+        }
+      ]
+    },
+    {
+      "word": "draw",
+      "pos": "v.",
+      "zh": "吸引；引起",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 64.jpg",
+      "source_questions": "168-171",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 64.jpg",
+          "questions": "168-171"
+        }
+      ]
+    },
+    {
+      "word": "scent",
+      "pos": "n.",
+      "zh": "香氣；香味",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 64.jpg",
+      "source_questions": "168-171",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 64.jpg",
+          "questions": "168-171"
+        }
+      ]
+    },
+    {
+      "word": "post",
+      "pos": "n.",
+      "zh": "職位",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 65.jpg",
+      "source_questions": "169",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 65.jpg",
+          "questions": "169"
+        }
+      ]
+    },
+    {
+      "word": "stain",
+      "pos": "n.",
+      "zh": "污漬",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 65.jpg",
+      "source_questions": "169",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 65.jpg",
+          "questions": "169"
+        }
+      ]
+    },
+    {
+      "word": "program",
+      "pos": "n.",
+      "zh": "節目單",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 66.jpg",
+      "source_questions": "172-175",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 66.jpg",
+          "questions": "172-175"
+        }
+      ]
+    },
+    {
+      "word": "botanical garden",
+      "pos": "phr.",
+      "zh": "植物園",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 66.jpg",
+      "source_questions": "172-175",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 66.jpg",
+          "questions": "172-175"
+        }
+      ]
+    },
+    {
+      "word": "note down",
+      "pos": "phr.",
+      "zh": "記下；寫下",
+      "day": 31,
+      "source": "reading-test6",
+      "source_label": "閱讀 Test6",
+      "source_photo": "預設資料夾 - 67.jpg",
+      "source_questions": "174",
+      "source_locations": [
+        {
+          "photo": "預設資料夾 - 67.jpg",
+          "questions": "174"
+        }
+      ]
     }
   ],
   "photos": [
     {
       "file": "預設資料夾 - 35.jpg",
-      "sha256": "0c68725a63f565434cbb19bec0d3fd9aed3116dd82d7de607fa520b855be0829"
+      "sha256": "0c68725a63f565434cbb19bec0d3fd9aed3116dd82d7de607fa520b855be0829",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 36.jpg",
-      "sha256": "038d9dd800dc758b92482469410b009deb0cf219d1aa0fc2940c413712bc6a57"
+      "sha256": "038d9dd800dc758b92482469410b009deb0cf219d1aa0fc2940c413712bc6a57",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 37.jpg",
-      "sha256": "7ee4abcffd3a00a29fc8fb5e66d980219fc22b8de9f11dfd9f095d42fc828feb"
+      "sha256": "7ee4abcffd3a00a29fc8fb5e66d980219fc22b8de9f11dfd9f095d42fc828feb",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 38.jpg",
-      "sha256": "f728155ea7c74109d03b6e092c733b752223e7e3d1c46b32ccd95acccfa6a485"
+      "sha256": "f728155ea7c74109d03b6e092c733b752223e7e3d1c46b32ccd95acccfa6a485",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 39.jpg",
-      "sha256": "682ed139b18d89846efdfe90dcf9231a1c3e5bcd096dbee0b81d06907fa2461d"
+      "sha256": "682ed139b18d89846efdfe90dcf9231a1c3e5bcd096dbee0b81d06907fa2461d",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 40.jpg",
-      "sha256": "0519ef4e19c6d02691b36960d3dcef292acf05592299f2c500a04392cebf87af"
+      "sha256": "0519ef4e19c6d02691b36960d3dcef292acf05592299f2c500a04392cebf87af",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 41.jpg",
-      "sha256": "d84afeeb7ee969a5fb2c1bd3d52c7bfa9c9bc7cb868a1bf71d60446ae16571d7"
+      "sha256": "d84afeeb7ee969a5fb2c1bd3d52c7bfa9c9bc7cb868a1bf71d60446ae16571d7",
+      "reviewed": true,
+      "new_highlight_occurrences": []
     },
     {
       "file": "預設資料夾 - 42.jpg",
-      "sha256": "3d2540dd44f181a7cabeeab4b20c23a6f2a3d8de8e59d85d4470e4fae333f0dc"
+      "sha256": "3d2540dd44f181a7cabeeab4b20c23a6f2a3d8de8e59d85d4470e4fae333f0dc",
+      "reviewed": true,
+      "new_highlight_occurrences": []
+    },
+    {
+      "file": "預設資料夾 - 43.jpg",
+      "sha256": "78eab472b1fc0da9439cf12ac382fd44fe9e5e45c8ef4148b3e865b2fe1eb77e",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "enthusiast",
+          "pos": "n.",
+          "zh": "熱衷者；愛好者",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "stylish",
+          "pos": "adj.",
+          "zh": "時尚的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "layer",
+          "pos": "n.",
+          "zh": "層",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "tough",
+          "pos": "adj.",
+          "zh": "堅韌的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "sturdy",
+          "pos": "adj.",
+          "zh": "結實的；堅固的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "absorption",
+          "pos": "n.",
+          "zh": "吸收",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "neatly",
+          "pos": "adv.",
+          "zh": "整齊地；整潔地",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "compact",
+          "pos": "adj.",
+          "zh": "小巧的；精巧的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "simply",
+          "pos": "adv.",
+          "zh": "簡直；就是",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        },
+        {
+          "word": "excuse",
+          "pos": "n.",
+          "zh": "藉口；理由",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 43.jpg",
+          "source_questions": "131-134"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 44.jpg",
+      "sha256": "c245784f4eab7f81ad7478aab2366afc73fd5cf3f73a35e8cfe9a39d7fe58eec",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "durability",
+          "pos": "n.",
+          "zh": "耐用性",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 44.jpg",
+          "source_questions": "132"
+        },
+        {
+          "word": "if so",
+          "pos": "phr.",
+          "zh": "如果是這樣的話",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 44.jpg",
+          "source_questions": "133"
+        },
+        {
+          "word": "take advantage of",
+          "pos": "phr.",
+          "zh": "利用",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 44.jpg",
+          "source_questions": "134"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 45.jpg",
+      "sha256": "4856d1b403cd6d9ea48dcfc753313e4bc5429f61440fc60911242ea92e04a965",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "sign up",
+          "pos": "phr.",
+          "zh": "報名",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 45.jpg",
+          "source_questions": "135-138"
+        },
+        {
+          "word": "pay in installments",
+          "pos": "phr.",
+          "zh": "分期付款",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 45.jpg",
+          "source_questions": "135-138"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 46.jpg",
+      "sha256": "1d03502116e1d4e006a6b0f819adecf6d181c8602fc6b8825cb72f4516145bf9",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "enrollment",
+          "pos": "n.",
+          "zh": "報名；註冊",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 46.jpg",
+          "source_questions": "135"
+        },
+        {
+          "word": "reception desk",
+          "pos": "phr.",
+          "zh": "接待處",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 46.jpg",
+          "source_questions": "136"
+        },
+        {
+          "word": "symptom",
+          "pos": "n.",
+          "zh": "症狀",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 46.jpg",
+          "source_questions": "138"
+        },
+        {
+          "word": "referral",
+          "pos": "n.",
+          "zh": "轉介；轉診",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 46.jpg",
+          "source_questions": "138"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 47.jpg",
+      "sha256": "29ede956050aacd01b089bdee015d6422ed65386290b3c3d4cf3daf395c4dcea",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "county",
+          "pos": "n.",
+          "zh": "郡；縣",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "gala",
+          "pos": "n.",
+          "zh": "盛會；慶典",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "shelter",
+          "pos": "n.",
+          "zh": "庇護所；收容所；住處",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "cause",
+          "pos": "n./v.",
+          "zh": "目的；造成",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "portion",
+          "pos": "n.",
+          "zh": "部分",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "essential",
+          "pos": "adj.",
+          "zh": "必要的；不可或缺的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        },
+        {
+          "word": "awareness",
+          "pos": "n.",
+          "zh": "意識；認知",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 47.jpg",
+          "source_questions": "139-142"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 48.jpg",
+      "sha256": "0356dad6a5ffd87835f2b0827908d37bbd722d66d8e4f5b27940e88d5bb08c71",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "enable",
+          "pos": "v.",
+          "zh": "使……能夠",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 48.jpg",
+          "source_questions": "139"
+        },
+        {
+          "word": "newsletter",
+          "pos": "n.",
+          "zh": "時事通訊；電子報",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 48.jpg",
+          "source_questions": "140"
+        },
+        {
+          "word": "live entertainment",
+          "pos": "phr.",
+          "zh": "現場娛樂表演",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 48.jpg",
+          "source_questions": "140"
+        },
+        {
+          "word": "chiefly",
+          "pos": "adv.",
+          "zh": "主要地",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 48.jpg",
+          "source_questions": "141"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 49.jpg",
+      "sha256": "8919653cd720fdc2deaca7e70978d86067bf15e70a1bc5c9602d32b810b193cc",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "drain",
+          "pos": "v.",
+          "zh": "將……的水排空",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 49.jpg",
+          "source_questions": "143-146"
+        },
+        {
+          "word": "sanitize",
+          "pos": "v.",
+          "zh": "殺菌；消毒",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 49.jpg",
+          "source_questions": "143-146"
+        },
+        {
+          "word": "wellness",
+          "pos": "n.",
+          "zh": "健康",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 49.jpg",
+          "source_questions": "143-146"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 50.jpg",
+      "sha256": "56b9b8761187ad2a5523cdb43dddb5b66e6d363bada898256c2331668b36f250",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "after all",
+          "pos": "phr.",
+          "zh": "畢竟",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 50.jpg",
+          "source_questions": "144"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 51.jpg",
+      "sha256": "60f978c7335450a90280b246e284f8cb734bd567993a00acbcf7a6a706751f44",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "cosmetic products",
+          "pos": "phr.",
+          "zh": "化妝品",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 51.jpg",
+          "source_questions": "147-148"
+        },
+        {
+          "word": "rash",
+          "pos": "n.",
+          "zh": "疹子；皮疹",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 51.jpg",
+          "source_questions": "147-148"
+        },
+        {
+          "word": "itch",
+          "pos": "v.",
+          "zh": "發癢",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 51.jpg",
+          "source_questions": "147-148"
+        },
+        {
+          "word": "in exchange",
+          "pos": "phr.",
+          "zh": "作為交換",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 51.jpg",
+          "source_questions": "147-148"
+        },
+        {
+          "word": "in person",
+          "pos": "phr.",
+          "zh": "親自；親身",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 51.jpg",
+          "source_questions": "147"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 52.jpg",
+      "sha256": "caedf6a99ed5370166860147ce06411966669c196b67390843d458aaf5b38c55",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "restock",
+          "pos": "v.",
+          "zh": "重新進貨；補貨",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 52.jpg",
+          "source_questions": "149-151"
+        },
+        {
+          "word": "lift",
+          "pos": "v.",
+          "zh": "解除；抬起",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 52.jpg",
+          "source_questions": "149-151"
+        },
+        {
+          "word": "nationwide",
+          "pos": "adv.",
+          "zh": "在全國",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 52.jpg",
+          "source_questions": "149-151"
+        },
+        {
+          "word": "go out of business",
+          "pos": "phr.",
+          "zh": "歇業；停止營運",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 52.jpg",
+          "source_questions": "149"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 53.jpg",
+      "sha256": "dc6a8e4e282da39ba27f69ec79cb856cafdff66da13797b90084b705fefa0632",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "worldwide",
+          "pos": "adv.",
+          "zh": "在全世界",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 53.jpg",
+          "source_questions": "150"
+        },
+        {
+          "word": "take part in",
+          "pos": "phr.",
+          "zh": "參加",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 53.jpg",
+          "source_questions": "151"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 54.jpg",
+      "sha256": "678a5254068a979b1c096e3ce14ded7c9c6aeeb5a0cd29cce0039eba82067408",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "that works for me",
+          "pos": "phr.",
+          "zh": "那樣我可以；那樣對我合適",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 54.jpg",
+          "source_questions": "152-153"
+        },
+        {
+          "word": "last-minute",
+          "pos": "adj.",
+          "zh": "最後一刻的；臨時的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 54.jpg",
+          "source_questions": "152-153"
+        },
+        {
+          "word": "make an offer",
+          "pos": "phr.",
+          "zh": "出價",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 54.jpg",
+          "source_questions": "152-153"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 55.jpg",
+      "sha256": "ef700b711afee9dd28cc338e63fee03fb165ab53ffda03bd18a55767a357f713",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "feel free to",
+          "pos": "phr.",
+          "zh": "儘管；可以自由地做……",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154-155"
+        },
+        {
+          "word": "figure out",
+          "pos": "phr.",
+          "zh": "想出；弄清楚",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154-155"
+        },
+        {
+          "word": "draw up",
+          "pos": "phr.",
+          "zh": "制定；擬訂",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154-155"
+        },
+        {
+          "word": "surplus",
+          "pos": "adj.",
+          "zh": "剩餘的；過剩的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154-155"
+        },
+        {
+          "word": "on short notice",
+          "pos": "phr.",
+          "zh": "在臨時通知的情況下",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154-155"
+        },
+        {
+          "word": "harvest",
+          "pos": "v.",
+          "zh": "收穫；收割",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 55.jpg",
+          "source_questions": "154"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 56.jpg",
+      "sha256": "2cb377457ca13ccace093cbae5547598627f7ddbb09bb254aa864b57a5a3e1c5",
+      "reviewed": true,
+      "new_highlight_occurrences": []
+    },
+    {
+      "file": "預設資料夾 - 57.jpg",
+      "sha256": "068dd71b30d398ad97736c9accb9ffa684a87f60f1af92c66bf2b8a6de562d19",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "so-called",
+          "pos": "adj.",
+          "zh": "所謂的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "stringent",
+          "pos": "adj.",
+          "zh": "嚴格的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "hygiene",
+          "pos": "n.",
+          "zh": "衛生",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "neighborhood",
+          "pos": "n.",
+          "zh": "鄰近地區；街區",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "affected",
+          "pos": "adj.",
+          "zh": "受影響的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "argue",
+          "pos": "v.",
+          "zh": "主張；爭論",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "counter",
+          "pos": "v.",
+          "zh": "反駁",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "welfare",
+          "pos": "n.",
+          "zh": "福利",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156-157"
+        },
+        {
+          "word": "city",
+          "pos": "n.",
+          "zh": "城市；市政府（本文指市政當局）",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156"
+        },
+        {
+          "word": "regulate",
+          "pos": "v.",
+          "zh": "管制；規範",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 57.jpg",
+          "source_questions": "156"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 58.jpg",
+      "sha256": "c9939651d7d4580b0e050ca96d47c1b6040173748e3e1c02b41f5e9a78c6c96d",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "deforestation",
+          "pos": "n.",
+          "zh": "砍伐森林；森林濫伐",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "utensil",
+          "pos": "n.",
+          "zh": "用具；器具",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "bamboo",
+          "pos": "n.",
+          "zh": "竹子",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "biodegradable",
+          "pos": "adj.",
+          "zh": "可生物分解的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "decompose",
+          "pos": "v.",
+          "zh": "分解；腐爛",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "advocate",
+          "pos": "v.",
+          "zh": "提倡；擁護",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "consumption",
+          "pos": "n.",
+          "zh": "消費；消耗",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        },
+        {
+          "word": "practice",
+          "pos": "n.",
+          "zh": "實踐；慣常做法",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 58.jpg",
+          "source_questions": "158-161"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 59.jpg",
+      "sha256": "8cf07b2413d1a7ebea3fb906d3216ea729a7ab6d57a7f90d6f0aaec533aee2b1",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "durability",
+          "pos": "n.",
+          "zh": "耐久性；耐用性",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 59.jpg",
+          "source_questions": "159"
+        },
+        {
+          "word": "disposal",
+          "pos": "n.",
+          "zh": "（廢棄物等的）處理；丟棄",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 59.jpg",
+          "source_questions": "159"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 60.jpg",
+      "sha256": "d487641f752de75cc0a3b0384b134a55ec5d94acfb85703a98c4888339aa5f9a",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "workout",
+          "pos": "n.",
+          "zh": "運動；健身訓練",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 60.jpg",
+          "source_questions": "162-164"
+        },
+        {
+          "word": "affiliated",
+          "pos": "adj.",
+          "zh": "有合作關係的；附屬的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 60.jpg",
+          "source_questions": "162-164"
+        },
+        {
+          "word": "make up for",
+          "pos": "phr.",
+          "zh": "彌補；補償",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 60.jpg",
+          "source_questions": "162-164"
+        },
+        {
+          "word": "tie",
+          "pos": "n.",
+          "zh": "關係；連結",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 60.jpg",
+          "source_questions": "162"
+        },
+        {
+          "word": "affiliate",
+          "pos": "n.",
+          "zh": "附屬機構；合作機構",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 60.jpg",
+          "source_questions": "162"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 61.jpg",
+      "sha256": "b837c825721b9092ebdb9b626f55f8c555449a0ab9b65c9540a803f703af4f95",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "rate",
+          "pos": "v.",
+          "zh": "評價；評等",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 61.jpg",
+          "source_questions": "163"
+        },
+        {
+          "word": "franchise",
+          "pos": "n.",
+          "zh": "特許經營；加盟權",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 61.jpg",
+          "source_questions": "163"
+        },
+        {
+          "word": "pause",
+          "pos": "v.",
+          "zh": "暫停",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 61.jpg",
+          "source_questions": "164"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 62.jpg",
+      "sha256": "bd3b060a43f8a1648cdbc94a75522092f08607e7d13fd90fbc038d362258b9e3",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "pursue",
+          "pos": "v.",
+          "zh": "追求",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "tuition",
+          "pos": "n.",
+          "zh": "學費",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "stellar",
+          "pos": "adj.",
+          "zh": "傑出的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "academic",
+          "pos": "adj.",
+          "zh": "學業的；學術的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "dormitory",
+          "pos": "n.",
+          "zh": "宿舍",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "dean",
+          "pos": "n.",
+          "zh": "學院院長；系主任",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165-167"
+        },
+        {
+          "word": "scholarship",
+          "pos": "n.",
+          "zh": "獎學金",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165"
+        },
+        {
+          "word": "follow-up",
+          "pos": "adj./n.",
+          "zh": "進一步的；後續行動",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 62.jpg",
+          "source_questions": "165"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 63.jpg",
+      "sha256": "a1f2c95dd446d44d150e3cb28a1eaf8bc299c3d3c2f1b4ee7f7645a11ee401d8",
+      "reviewed": true,
+      "new_highlight_occurrences": []
+    },
+    {
+      "file": "預設資料夾 - 64.jpg",
+      "sha256": "72ba214ef387ad00b7168cfc5e6d828d975625b81ceee3c50d39e98e29a282d0",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "dozens of",
+          "pos": "phr.",
+          "zh": "數十個；許多",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 64.jpg",
+          "source_questions": "168-171"
+        },
+        {
+          "word": "premade",
+          "pos": "adj.",
+          "zh": "預先製作的",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 64.jpg",
+          "source_questions": "168-171"
+        },
+        {
+          "word": "fragrance",
+          "pos": "n.",
+          "zh": "香水；香味",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 64.jpg",
+          "source_questions": "168-171"
+        },
+        {
+          "word": "draw",
+          "pos": "v.",
+          "zh": "吸引；引起",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 64.jpg",
+          "source_questions": "168-171"
+        },
+        {
+          "word": "scent",
+          "pos": "n.",
+          "zh": "香氣；香味",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 64.jpg",
+          "source_questions": "168-171"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 65.jpg",
+      "sha256": "8e718860cef381dff8fbd677f38ae32de9d30898c16ca04d956986c27f56a74f",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "post",
+          "pos": "n.",
+          "zh": "職位",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 65.jpg",
+          "source_questions": "169"
+        },
+        {
+          "word": "stain",
+          "pos": "n.",
+          "zh": "污漬",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 65.jpg",
+          "source_questions": "169"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 66.jpg",
+      "sha256": "476e2bc09f998218054e8ca0c73feac4506152d2a6b1bbc5d613b0f9b3218f7c",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "program",
+          "pos": "n.",
+          "zh": "節目單",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 66.jpg",
+          "source_questions": "172-175"
+        },
+        {
+          "word": "botanical garden",
+          "pos": "phr.",
+          "zh": "植物園",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 66.jpg",
+          "source_questions": "172-175"
+        }
+      ]
+    },
+    {
+      "file": "預設資料夾 - 67.jpg",
+      "sha256": "205d320955e1566cda97522f4fbb6f6c9015f815a5ed7ec6f998289321a37e67",
+      "reviewed": true,
+      "new_highlight_occurrences": [
+        {
+          "word": "note down",
+          "pos": "phr.",
+          "zh": "記下；寫下",
+          "day": 31,
+          "source": "reading-test6",
+          "source_label": "閱讀 Test6",
+          "source_photo": "預設資料夾 - 67.jpg",
+          "source_questions": "174"
+        }
+      ]
     }
   ],
-  "photo_directory": "word/閱讀題庫Test6",
-  "photo_directory_relative_to": "project_root"
+  "photo_directory": "word/國際學村閱讀題庫/Test6",
+  "photo_directory_relative_to": "project_root",
+  "updated_on": "2026-11-22",
+  "normalization_notes": [
+    "cosmetics products → cosmetic products（採標準片語拼法）",
+    "Feel free → feel free to；short notice → on short notice；make up（彌補）→ make up for（補足常用搭配）",
+    "workouts → workout；programs → program；city’s → city（本文指市政當局）",
+    "durability 出現於兩張新照片，合併為一筆並保留兩處來源；未有螢光筆標記的照片 56、63 也已檢查。"
+  ]
 }

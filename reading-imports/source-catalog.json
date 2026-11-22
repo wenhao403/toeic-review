@@ -1,0 +1,396 @@
+{
+  "updated_on": "2026-11-22",
+  "project_root": "/Users/kevin/Downloads/30daysWord",
+  "sources": [
+    {
+      "kind": "day-supplement",
+      "directory": "word/新制多益補充單字",
+      "photos": [
+        {
+          "file": "day1.png",
+          "sha256": "30bc14f2a1df1a98cfcad9ab3487f4b73619a30789a93a80d1398687cab8fb11"
+        },
+        {
+          "file": "day10.png",
+          "sha256": "ef5933e3c25cf1c710dc06b31125858c840d4de13bf7ddc7fb4c57dc26c3ae51"
+        },
+        {
+          "file": "day11.png",
+          "sha256": "0630bcea1d9dbd75c55290dc2ffd148f128053bba397bfeeb8b5ab8b0bfaaa66"
+        },
+        {
+          "file": "day12.png",
+          "sha256": "c9b6df0a7611441f0ab2fa5055c271bb8e98e1e8cc504b9785c010572de84f15"
+        },
+        {
+          "file": "day13.png",
+          "sha256": "155a8581ca054cef602b8730966d78798ec5f018ac0b8948ba7451c972542a04"
+        },
+        {
+          "file": "day14.png",
+          "sha256": "24dc0d4389cb3ac9deb594f1f4e90a4ef3024b4fdb8eeffbb278d52557962f03"
+        },
+        {
+          "file": "day15.png",
+          "sha256": "e34c1b336930551c9d4ba9096fd200dba1c042ec3419a820fc13f386f327d414"
+        },
+        {
+          "file": "day16.png",
+          "sha256": "83486a6d62e667675d7349527f730f6b2a2b1961c46d4d0a5f8a29a49dceee59"
+        },
+        {
+          "file": "day17.png",
+          "sha256": "96bf1172002504c676ac22b35472057e2a34efeccdbb12b94f40388ff6d229b7"
+        },
+        {
+          "file": "day18.png",
+          "sha256": "55e0f218d1851cb17f96ca8b785d2e9453c14aa375d5d49e80f86ff1bae206ab"
+        },
+        {
+          "file": "day19.png",
+          "sha256": "f3e8ec43a7c8d5b2f984d604510210dd69cad1fcd813b5d43e6319b177c2b934"
+        },
+        {
+          "file": "day2.png",
+          "sha256": "041b1b4d75d3205916bd5dd9b9b61460bd94c4c2e5cec81bc4c8b02eadd3eb55"
+        },
+        {
+          "file": "day20.png",
+          "sha256": "27f8cd65b80e363c686663768d52579abd076b8c08db1a2ebc3c2b3c835bd142"
+        },
+        {
+          "file": "day21.png",
+          "sha256": "5a78567c651af7a88482ebefb8908336fee7eecd3a19735b1dfb158c72690efc"
+        },
+        {
+          "file": "day22.png",
+          "sha256": "9947ce9613c4c985462f096d960abb0d6dbc580d2d103d6da11af8cd73e13daf"
+        },
+        {
+          "file": "day23.png",
+          "sha256": "8cbd3676b1f7752eaf5479c9def2e24ca91318137371467a9c01359e5b3d28fd"
+        },
+        {
+          "file": "day24.png",
+          "sha256": "1b802f99a95eb177d27658f480088ff80b68d293b78b2f47bd56f9b9139ceae4"
+        },
+        {
+          "file": "day25.png",
+          "sha256": "46956c77b3e09e17a66c97b2b7087c52fda4d9f83b020f9f2ccfe87161b7baa5"
+        },
+        {
+          "file": "day26.png",
+          "sha256": "06eef086e227d019b2ec0b57b1317d905d0d25b97e2db9f5aeb6a830e343dad9"
+        },
+        {
+          "file": "day27.png",
+          "sha256": "a2a1a2a1abf73b403fbfe98af0e9909444e1500338dc663dc53d2362105489b4"
+        },
+        {
+          "file": "day28.png",
+          "sha256": "1d8a4087c3f26d9e026cabb22bc012d98c28f37522bc7cf1fd6955e2c9b8bf92"
+        },
+        {
+          "file": "day29.png",
+          "sha256": "fa692732d389a21fe97065dc1a0f3735786f700d46dc901b84fc68000da44588"
+        },
+        {
+          "file": "day3.png",
+          "sha256": "e037068298638a2e2b0db1730c877721e68d696943de3876e81537e78f6f92d0"
+        },
+        {
+          "file": "day30.png",
+          "sha256": "f655c89821dc72b2d1a2a0a45efd385dfb24b5832532e802eaa26668ea272a3d"
+        },
+        {
+          "file": "day4.png",
+          "sha256": "d9e2325163e45ade649c8c2ca04ff8c0a8e5180b47995276bfa07af7a71f4bf7"
+        },
+        {
+          "file": "day5.png",
+          "sha256": "c57b666110972f04b2e4a6c38c3cf76bb150072e52b5c6e4e88008a05f336e4e"
+        },
+        {
+          "file": "day6.png",
+          "sha256": "6b7fbc4d18613c72c03a939738c44dcec7d9229d04b842e888f149408baa5ad1"
+        },
+        {
+          "file": "day7.png",
+          "sha256": "570bfb240498bd0f8f977d6a2b5932bc0cc9af29fe7905b3c10000de2811cac8"
+        },
+        {
+          "file": "day8.png",
+          "sha256": "12e27e84ae8a080d2349c9c882b53e45bad42635c92ea0b6e8e7e7058254d287"
+        },
+        {
+          "file": "day9.png",
+          "sha256": "71fcd3715875d7581f4e43027051fef3ddde88ea4f70973e0301e98b8d634e31"
+        }
+      ]
+    },
+    {
+      "kind": "day-basic",
+      "directory": "word/新制多益基礎單字",
+      "photos": [
+        {
+          "file": "新制多益基礎單字 day1.jpg",
+          "sha256": "ff809c229c0e2acfc4a99e9e815bd036d63f7d4c5d007ddd559813f75ed5e59c"
+        },
+        {
+          "file": "新制多益基礎單字 day10.jpg",
+          "sha256": "56012f3ac533fbf7e281c86de1e828068bf8c3d716fa726d88ca6b61625bab5e"
+        },
+        {
+          "file": "新制多益基礎單字 day11.jpg",
+          "sha256": "7fcc9653460e4fb5773e40fe44344422f66af83f5c5b475455032460a0ddd365"
+        },
+        {
+          "file": "新制多益基礎單字 day12.jpg",
+          "sha256": "b5554d21a7484436834f26a3c407da5f2a076e11fb84cb49236439eaed817f23"
+        },
+        {
+          "file": "新制多益基礎單字 day13.jpg",
+          "sha256": "aa9ddb79139ba912697ec19d6ce05d74e2418c22d8b0b6eaa27e9e9a03302124"
+        },
+        {
+          "file": "新制多益基礎單字 day14.jpg",
+          "sha256": "02a93810e7f80aeb0c4c6047044e23f06ae713ffd7439ce5246aa86816fad0d9"
+        },
+        {
+          "file": "新制多益基礎單字 day15.jpg",
+          "sha256": "2944860f18560576ad3677365c159a736d21591907f1a17911360e2ac3e3240f"
+        },
+        {
+          "file": "新制多益基礎單字 day16.jpg",
+          "sha256": "e92f6b060db5b88354b87b5bb0f7dff5ec47d97535923bd091a4f36e3a31b14d"
+        },
+        {
+          "file": "新制多益基礎單字 day17.jpg",
+          "sha256": "f90e667ca2015430b21d3860e592566a19afc0b3547d1cbbdad8cadd01b13bde"
+        },
+        {
+          "file": "新制多益基礎單字 day18.jpg",
+          "sha256": "c6afd987dce222cc0378902d359f6884fb9aaf0ba73ad5a0aed0bb648fe835ca"
+        },
+        {
+          "file": "新制多益基礎單字 day19.jpg",
+          "sha256": "59a3da24c393d5a23c907fec20aacaf39ee96cb59db51a71278c7ff83fd54220"
+        },
+        {
+          "file": "新制多益基礎單字 day2.jpg",
+          "sha256": "3056a066a88e6b6d5c07014b16531ad657492754f37639a5528acffa71556067"
+        },
+        {
+          "file": "新制多益基礎單字 day20.jpg",
+          "sha256": "f8a8569f59b603fc92e829ddb7aae9623373a2038faf4fcd6a8b1eaa32eb55a2"
+        },
+        {
+          "file": "新制多益基礎單字 day21.jpg",
+          "sha256": "51eedf0275b7024ef806ed44dbe767c84f6bb1dbfb92f11a6d4008d56fe62ec9"
+        },
+        {
+          "file": "新制多益基礎單字 day22.jpg",
+          "sha256": "9a3a512d50de01da80d2634e23cbf304465d7ea15b6fb943010e00da8dc6903a"
+        },
+        {
+          "file": "新制多益基礎單字 day23.jpg",
+          "sha256": "e6f8ddd997c806cda825e2fee5334178538b574cb0f8520a922d84b4d4523a3e"
+        },
+        {
+          "file": "新制多益基礎單字 day24.jpg",
+          "sha256": "6402dc937dafbf4b962c2cae74ffe4dbb20c613ac4ac72a8df0ea54bee217edc"
+        },
+        {
+          "file": "新制多益基礎單字 day25.jpg",
+          "sha256": "16abdb1e589ff4fb8106ac0806dfc7dd34d288a48642b1dd59903141877d7245"
+        },
+        {
+          "file": "新制多益基礎單字 day26.jpg",
+          "sha256": "6bdef2a6022873fd97f62ed0374953732d34a77adfc49fb36896546f0eb7eb72"
+        },
+        {
+          "file": "新制多益基礎單字 day27.jpg",
+          "sha256": "507c2048f56fed8169d8e67843759a8f9c3da5355b36c4f95745d14eee2c4e38"
+        },
+        {
+          "file": "新制多益基礎單字 day28.jpg",
+          "sha256": "0dfd6f66384413c5121f0e45accc1cb480a7e64920c7923aff52ecf1b2f0291b"
+        },
+        {
+          "file": "新制多益基礎單字 day29.jpg",
+          "sha256": "19620b6a8f978f00892736e4f2cf192d68f5523ce538564b711c7c76649bebac"
+        },
+        {
+          "file": "新制多益基礎單字 day3.jpg",
+          "sha256": "cc65d18510a19f7be0225d4c356d1a46c51142708414282891ab5737b57cff5e"
+        },
+        {
+          "file": "新制多益基礎單字 day30.jpg",
+          "sha256": "c79ee55488eba17fba0e9ad8e7cf59ee5d7b49992b52bff6036f0da808cbe3a6"
+        },
+        {
+          "file": "新制多益基礎單字 day4.jpg",
+          "sha256": "7f0f160484a62c8293347fe24b319b2bb44eb2d8e189d1f13b5e163ed4b09d09"
+        },
+        {
+          "file": "新制多益基礎單字 day5.jpg",
+          "sha256": "44a00443228540a7db2dc8ba1df39684cf8c8c73bc58038cf86de965112cf5f9"
+        },
+        {
+          "file": "新制多益基礎單字 day6.jpg",
+          "sha256": "18f9f7a4b08e51909da1866307d23d68aaecc15127b98a60f55199c1ce575abc"
+        },
+        {
+          "file": "新制多益基礎單字 day7.jpg",
+          "sha256": "873016aefa4b796842207ff7cec5387ce0676419f16197354608a45b411a34a0"
+        },
+        {
+          "file": "新制多益基礎單字 day8.jpg",
+          "sha256": "b4fc5e729a0c73d4bccfe3e4f74db43b9d01611dd042009f59438ee4a45ff078"
+        },
+        {
+          "file": "新制多益基礎單字 day9.jpg",
+          "sha256": "2a4aac26a50faba12530a3bf39628c8fed1465178b9fdbf85ae624c98af3268d"
+        }
+      ]
+    },
+    {
+      "kind": "reading-test6",
+      "directory": "word/國際學村閱讀題庫/Test6",
+      "photos": [
+        {
+          "file": "預設資料夾 - 35.jpg",
+          "sha256": "0c68725a63f565434cbb19bec0d3fd9aed3116dd82d7de607fa520b855be0829"
+        },
+        {
+          "file": "預設資料夾 - 36.jpg",
+          "sha256": "038d9dd800dc758b92482469410b009deb0cf219d1aa0fc2940c413712bc6a57"
+        },
+        {
+          "file": "預設資料夾 - 37.jpg",
+          "sha256": "7ee4abcffd3a00a29fc8fb5e66d980219fc22b8de9f11dfd9f095d42fc828feb"
+        },
+        {
+          "file": "預設資料夾 - 38.jpg",
+          "sha256": "f728155ea7c74109d03b6e092c733b752223e7e3d1c46b32ccd95acccfa6a485"
+        },
+        {
+          "file": "預設資料夾 - 39.jpg",
+          "sha256": "682ed139b18d89846efdfe90dcf9231a1c3e5bcd096dbee0b81d06907fa2461d"
+        },
+        {
+          "file": "預設資料夾 - 40.jpg",
+          "sha256": "0519ef4e19c6d02691b36960d3dcef292acf05592299f2c500a04392cebf87af"
+        },
+        {
+          "file": "預設資料夾 - 41.jpg",
+          "sha256": "d84afeeb7ee969a5fb2c1bd3d52c7bfa9c9bc7cb868a1bf71d60446ae16571d7"
+        },
+        {
+          "file": "預設資料夾 - 42.jpg",
+          "sha256": "3d2540dd44f181a7cabeeab4b20c23a6f2a3d8de8e59d85d4470e4fae333f0dc"
+        },
+        {
+          "file": "預設資料夾 - 43.jpg",
+          "sha256": "78eab472b1fc0da9439cf12ac382fd44fe9e5e45c8ef4148b3e865b2fe1eb77e"
+        },
+        {
+          "file": "預設資料夾 - 44.jpg",
+          "sha256": "c245784f4eab7f81ad7478aab2366afc73fd5cf3f73a35e8cfe9a39d7fe58eec"
+        },
+        {
+          "file": "預設資料夾 - 45.jpg",
+          "sha256": "4856d1b403cd6d9ea48dcfc753313e4bc5429f61440fc60911242ea92e04a965"
+        },
+        {
+          "file": "預設資料夾 - 46.jpg",
+          "sha256": "1d03502116e1d4e006a6b0f819adecf6d181c8602fc6b8825cb72f4516145bf9"
+        },
+        {
+          "file": "預設資料夾 - 47.jpg",
+          "sha256": "29ede956050aacd01b089bdee015d6422ed65386290b3c3d4cf3daf395c4dcea"
+        },
+        {
+          "file": "預設資料夾 - 48.jpg",
+          "sha256": "0356dad6a5ffd87835f2b0827908d37bbd722d66d8e4f5b27940e88d5bb08c71"
+        },
+        {
+          "file": "預設資料夾 - 49.jpg",
+          "sha256": "8919653cd720fdc2deaca7e70978d86067bf15e70a1bc5c9602d32b810b193cc"
+        },
+        {
+          "file": "預設資料夾 - 50.jpg",
+          "sha256": "56b9b8761187ad2a5523cdb43dddb5b66e6d363bada898256c2331668b36f250"
+        },
+        {
+          "file": "預設資料夾 - 51.jpg",
+          "sha256": "60f978c7335450a90280b246e284f8cb734bd567993a00acbcf7a6a706751f44"
+        },
+        {
+          "file": "預設資料夾 - 52.jpg",
+          "sha256": "caedf6a99ed5370166860147ce06411966669c196b67390843d458aaf5b38c55"
+        },
+        {
+          "file": "預設資料夾 - 53.jpg",
+          "sha256": "dc6a8e4e282da39ba27f69ec79cb856cafdff66da13797b90084b705fefa0632"
+        },
+        {
+          "file": "預設資料夾 - 54.jpg",
+          "sha256": "678a5254068a979b1c096e3ce14ded7c9c6aeeb5a0cd29cce0039eba82067408"
+        },
+        {
+          "file": "預設資料夾 - 55.jpg",
+          "sha256": "ef700b711afee9dd28cc338e63fee03fb165ab53ffda03bd18a55767a357f713"
+        },
+        {
+          "file": "預設資料夾 - 56.jpg",
+          "sha256": "2cb377457ca13ccace093cbae5547598627f7ddbb09bb254aa864b57a5a3e1c5"
+        },
+        {
+          "file": "預設資料夾 - 57.jpg",
+          "sha256": "068dd71b30d398ad97736c9accb9ffa684a87f60f1af92c66bf2b8a6de562d19"
+        },
+        {
+          "file": "預設資料夾 - 58.jpg",
+          "sha256": "c9939651d7d4580b0e050ca96d47c1b6040173748e3e1c02b41f5e9a78c6c96d"
+        },
+        {
+          "file": "預設資料夾 - 59.jpg",
+          "sha256": "8cf07b2413d1a7ebea3fb906d3216ea729a7ab6d57a7f90d6f0aaec533aee2b1"
+        },
+        {
+          "file": "預設資料夾 - 60.jpg",
+          "sha256": "d487641f752de75cc0a3b0384b134a55ec5d94acfb85703a98c4888339aa5f9a"
+        },
+        {
+          "file": "預設資料夾 - 61.jpg",
+          "sha256": "b837c825721b9092ebdb9b626f55f8c555449a0ab9b65c9540a803f703af4f95"
+        },
+        {
+          "file": "預設資料夾 - 62.jpg",
+          "sha256": "bd3b060a43f8a1648cdbc94a75522092f08607e7d13fd90fbc038d362258b9e3"
+        },
+        {
+          "file": "預設資料夾 - 63.jpg",
+          "sha256": "a1f2c95dd446d44d150e3cb28a1eaf8bc299c3d3c2f1b4ee7f7645a11ee401d8"
+        },
+        {
+          "file": "預設資料夾 - 64.jpg",
+          "sha256": "72ba214ef387ad00b7168cfc5e6d828d975625b81ceee3c50d39e98e29a282d0"
+        },
+        {
+          "file": "預設資料夾 - 65.jpg",
+          "sha256": "8e718860cef381dff8fbd677f38ae32de9d30898c16ca04d956986c27f56a74f"
+        },
+        {
+          "file": "預設資料夾 - 66.jpg",
+          "sha256": "476e2bc09f998218054e8ca0c73feac4506152d2a6b1bbc5d613b0f9b3218f7c"
+        },
+        {
+          "file": "預設資料夾 - 67.jpg",
+          "sha256": "205d320955e1566cda97522f4fbb6f6c9015f815a5ed7ec6f998289321a37e67"
+        }
+      ]
+    }
+  ]
+}
