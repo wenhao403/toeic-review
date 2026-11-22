@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOEIC Day 1–30 單字複習</title>
+<title>TOEIC 單字複習</title>
 <style>
 :root{--bg:#0f1115;--card:#171a21;--card2:#1d222b;--text:#f3f4f6;--muted:#9ca3af;--line:#303744;--accent:#6ea8fe;--good:#46c37b;--bad:#ff6b6b}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif}
@@ -62,6 +62,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .flash-flip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:1;min-height:0;width:100%;padding:6px 4px;border:0;background:transparent;color:var(--text);cursor:pointer;border-radius:10px}
 .flash-flip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .flash-word{font-size:22px;font-weight:700;overflow-wrap:anywhere}
+.flash-pos{font-size:14px;line-height:1.2;color:var(--muted)}
 .flash-hint{font-size:13px;color:var(--muted)}
 .flash-meaning{font-size:17px;line-height:1.5;overflow-wrap:anywhere}
 
@@ -91,12 +92,14 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .count-rate-point{cursor:pointer;outline:none}.count-rate-point:hover .rate-dot,.count-rate-point:focus-visible .rate-dot{stroke:var(--text);stroke-width:3}
 .question-word-row{display:grid;grid-template-columns:96px minmax(0,1fr) 96px;align-items:center;gap:8px}.question-word-row .wordline{grid-column:2;min-width:0}.question-word-row .word{overflow-wrap:anywhere;min-width:0}.btn.redo-answer{grid-column:3;justify-self:end;padding:6px 8px;min-height:32px;font-size:13px;font-weight:400;color:var(--muted);background:transparent;border-color:transparent;white-space:nowrap}.btn.redo-answer:enabled:hover,.btn.redo-answer:enabled:focus-visible{color:var(--text);border-color:var(--line)}@media(max-width:650px){.question-word-row{grid-template-columns:minmax(0,1fr) 76px}.question-word-row .wordline{grid-column:1}.btn.redo-answer{grid-column:2}}
 .quiz-next-slot{display:flow-root;min-height:60px}.choices .choice:disabled{opacity:1}.btn.redo-answer:disabled{opacity:1;color:var(--muted);background:transparent;border-color:transparent;cursor:default}
+
+.source-controls{display:grid;grid-template-columns:minmax(150px,1fr) minmax(110px,.55fr);gap:16px;align-items:end}.day-range-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.test-fields{margin-top:0}.test-selection-summary{font-size:13px;color:var(--muted);margin:12px 0 0}[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
-    <div><h1>TOEIC Day 1–30 單字複習</h1><div class="sub">自由選擇起始與結束 Day，複習指定範圍</div></div>
+    <div><h1>TOEIC 單字複習</h1><div class="sub">選擇 Day 範圍或閱讀 Test，練習需要加強的單字</div></div>
   </div>
   <div class="account-card">
     <div class="account-bar">
@@ -150,13 +153,21 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div class="card"><div class="muted">範圍內今日已答</div><div id="doneWords" class="stat">0</div></div>
     </div>
     <div class="card" style="margin-top:12px">
-      <div class="row">
-        <div class="grow"><label class="muted" for="collectionChoice">快速選擇題庫</label><select id="collectionChoice"><option value="days">Day 1～30</option><option value="test6">閱讀 Test6</option><option value="all">全部題庫</option><option value="custom">自訂範圍</option></select></div>
-        <div class="grow"><label class="muted" for="startDay">範圍起點</label><select id="startDay"></select></div>
-        <div class="grow"><label class="muted" for="currentDay">範圍終點</label><select id="currentDay"></select></div>
-        <div class="grow"><label class="muted">本輪題數</label>
-          <select id="limit"><option>20</option><option>30</option><option selected>50</option><option>100</option><option>200</option><option value="99999">全部</option></select>
+      <div class="source-controls">
+        <div><label class="muted" for="sourceChoice">單字來源</label><select id="sourceChoice"><option value="days">Day 單字庫</option><option value="reading">閱讀題庫</option><option value="all">全部來源</option></select></div>
+        <div><label class="muted" for="limit">本輪題數</label><select id="limit"><option>20</option><option>30</option><option selected>50</option><option>100</option><option>200</option><option value="99999">全部</option></select></div>
+      </div>
+      <div id="dayRangeFields" class="day-range-fields">
+        <div><label class="muted" for="startDay">從哪一天開始</label><select id="startDay"></select></div>
+        <div><label class="muted" for="currentDay">複習到哪一天</label><select id="currentDay"></select></div>
+      </div>
+      <div id="readingTestFields" class="test-fields" hidden>
+        <div class="day-range-fields">
+          <div><label class="muted" for="startTest">從哪個 Test 開始</label><select id="startTest"></select></div>
+          <div><label class="muted" for="endTest">複習到哪個 Test</label><select id="endTest"></select></div>
         </div>
+        <p id="readingTestEmpty" class="note" hidden>尚未匯入閱讀題庫。</p>
+        <p id="testSelectionSummary" class="test-selection-summary" role="status"></p>
       </div>
       <div class="row" style="margin-top:14px">
         <button class="btn primary" id="buildQuiz">建立本輪題目</button>
@@ -297,7 +308,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <p id="wordStatsNote" class="note"></p>
       <div class="row">
         <div class="grow"><label for="wordStatsSearch">搜尋單字或中文</label><input id="wordStatsSearch" type="search" placeholder="例如 praise、稱讚"></div>
-        <div><label for="wordStatsDay">Day 範圍</label><select id="wordStatsDay"><option value="all">全部 Day</option><option value="1">Day 1</option><option value="2">Day 2</option><option value="3">Day 3</option><option value="4">Day 4</option><option value="5">Day 5</option><option value="6">Day 6</option><option value="7">Day 7</option><option value="8">Day 8</option><option value="9">Day 9</option><option value="10">Day 10</option><option value="11">Day 11</option><option value="12">Day 12</option><option value="13">Day 13</option><option value="14">Day 14</option><option value="15">Day 15</option><option value="16">Day 16</option><option value="17">Day 17</option><option value="18">Day 18</option><option value="19">Day 19</option><option value="20">Day 20</option><option value="21">Day 21</option><option value="22">Day 22</option><option value="23">Day 23</option><option value="24">Day 24</option><option value="25">Day 25</option><option value="26">Day 26</option><option value="27">Day 27</option><option value="28">Day 28</option><option value="29">Day 29</option><option value="30">Day 30</option><option value="31">閱讀 Test6</option></select></div>
+        <div><label for="wordStatsDay">題庫／Day</label><select id="wordStatsDay"><option value="all">全部題庫</option></select></div>
         <div><label for="wordStatsSort">排序</label><select id="wordStatsSort"><option value="totalDesc">作答次數：多到少</option><option value="totalAsc">作答次數：少到多</option><option value="wrong">答錯次數：多到少</option><option value="rate">正確率：低到高</option><option value="day">Day 順序</option></select></div>
       </div>
       <p id="wordStatsSummary" class="note" role="status"></p>
@@ -350,7 +361,6 @@ const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math
 const GROUP_IDS=[...new Set(WORDS.map(w=>w.day))].sort((a,b)=>a-b);
 const GROUP_LABELS=new Map(WORDS.filter(w=>w.source_label).map(w=>[w.day,w.source_label]));
 function groupLabel(day){return GROUP_LABELS.get(day)||'Day '+day}
-function updateCollectionChoice(){const start=+$('#startDay').value,end=+$('#currentDay').value;$('#collectionChoice').value=start===31&&end===31?'test6':start===1&&end===30?'days':start===1&&end===31?'all':'custom'}
 function idOf(w){return w.day+'|'+w.word.toLowerCase()}
 function stat(w){return activeProgress()[idOf(w)]||{correct:0,wrong:0}}
 function showTab(id){if(id!=='quiz'&&!finishEditableAnswer())return;if(id!=='quiz')stopSpeech();document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));$('#'+id).classList.add('active');if(id==='quiz')$('#quiz').focus({preventScroll:true});if(id==='dictionary'){renderDictionary();void refreshDictionary()}if(id==='history'){renderHistory();void syncProgress()}if(id==='weak'){renderWeak();void syncProgress()}}
@@ -363,9 +373,54 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&practiceRules.open)
 document.addEventListener('pointerdown',e=>{if(!practiceRules.contains(e.target))practiceRules.open=false});
 }
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
-for(const d of GROUP_IDS){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent=groupLabel(d);$(selector).appendChild(o)}}
+for(const d of GROUP_IDS.filter(d=>d<=30)){for(const selector of ['#startDay','#currentDay']){const o=document.createElement('option');o.value=d;o.textContent=groupLabel(d);$(selector).appendChild(o)}}
 $('#startDay').value='1';$('#currentDay').value='30';
-function pool(){const start=+$('#startDay').value,end=+$('#currentDay').value;return WORDS.filter(w=>w.day>=start && w.day<=end)}
+// Source membership comes from the vocabulary, so newly imported Tests appear automatically.
+const READING_GROUPS=GROUP_IDS.filter(d=>WORDS.some(w=>w.day===d&&w.source?.startsWith('reading-'))).sort((a,b)=>(Number(groupLabel(a).match(/\d+/)?.[0])||a)-(Number(groupLabel(b).match(/\d+/)?.[0])||b));
+let selection={source:'days',tests:[...READING_GROUPS],testStart:READING_GROUPS[0],testEnd:READING_GROUPS.at(-1)},roundSelection=null;
+function setTestRange(start,end){
+ let first=READING_GROUPS.indexOf(start),last=READING_GROUPS.indexOf(end);
+ if(first<0)first=0;if(last<first)last=READING_GROUPS.length-1;
+ selection.testStart=READING_GROUPS[first];selection.testEnd=READING_GROUPS[last];selection.tests=READING_GROUPS.slice(first,last+1);
+}
+
+function currentSelection(){return {source:selection.source,tests:[...selection.tests],testStart:selection.testStart,testEnd:selection.testEnd,start:+$('#startDay').value,end:+$('#currentDay').value,limit:$('#limit').value}}
+function selectionFromRound(s){
+ if(s.selection)return s.selection;
+ const start=Number(s.start)||1,end=Number(s.end)||30;
+ return {source:start>30?'reading':end>30?'all':'days',tests:end<=30?[...READING_GROUPS]:READING_GROUPS.filter(d=>d>=start&&d<=end),start:Math.min(30,start),end:Math.min(30,end),limit:s.limit||50};
+}
+function applySelection(s){
+ selection.source=['days','reading','all'].includes(s.source)?s.source:'days';
+ const legacy=Array.isArray(s.tests)?READING_GROUPS.filter(d=>s.tests.includes(d)):[];
+ setTestRange(s.testStart??legacy[0]??READING_GROUPS[0],s.testEnd??legacy.at(-1)??READING_GROUPS.at(-1));
+ $('#sourceChoice').value=selection.source;
+ $('#startDay').value=String(Number.isInteger(s.start)&&s.start>=1&&s.start<=30?s.start:1);
+ $('#currentDay').value=String(Number.isInteger(s.end)&&s.end>=+$('#startDay').value&&s.end<=30?s.end:30);
+ $('#limit').value=String([20,30,50,100,200,99999].includes(Number(s.limit))?s.limit:50);
+ renderSourcePicker();
+}
+function saveSelection(){try{localStorage.setItem(KEY+':source-selection',JSON.stringify(currentSelection()))}catch{$('#roundMsg').textContent='設定未能保存在這台裝置，重新整理後可能需要重新選擇。'}}
+function selectionLabel(){
+ if(selection.source==='all')return '全部來源';
+ if(selection.source==='days')return `Day ${$('#startDay').value} ～ Day ${$('#currentDay').value}`;
+ return selection.tests.length?`${groupLabel(selection.testStart)} ～ ${groupLabel(selection.testEnd).replace(/^閱讀 /,'')}`:'尚未匯入 Test';
+}
+function renderSourcePicker(){
+ $('#dayRangeFields').hidden=selection.source!=='days';$('#readingTestFields').hidden=selection.source!=='reading';
+ for(const id of ['#startTest','#endTest']){
+  const select=$(id);select.replaceChildren();
+  for(const d of READING_GROUPS){const option=document.createElement('option');option.value=String(d);option.textContent=groupLabel(d).replace(/^閱讀 /,'');select.appendChild(option)}
+  select.disabled=!READING_GROUPS.length;
+ }
+ $('#startTest').value=String(selection.testStart??'');$('#endTest').value=String(selection.testEnd??'');
+ $('#testSelectionSummary').textContent=selection.tests.length?`範圍內 ${selection.tests.length} 份 Test，共 ${WORDS.filter(w=>selection.tests.includes(w.day)).length} 字`:'尚未匯入閱讀題庫。';
+ $('#readingTestEmpty').hidden=READING_GROUPS.length>0;
+}
+function pool(){
+ const start=+$('#startDay').value,end=+$('#currentDay').value;
+ return WORDS.filter(w=>selection.source==='all'||(selection.source==='reading'?selection.tests.includes(w.day):!READING_GROUPS.includes(w.day)&&w.day>=start&&w.day<=end));
+}
 function refreshStats(){
   $('#wrongTotalLabel').textContent=practiceMode==='listening'?'累積需要複習（含提示）':'累積答錯';$('#weakWrongHead').textContent=practiceMode==='listening'?'累積需複習':'累積錯誤';$('#weakCorrectHead').textContent=practiceMode==='listening'?'累積聽懂':'累積答對';$('#weakCorrectHead').title=practiceMode==='listening'?'累積未看提示就答對的次數':'累積答對次數';
   const available=remainingPool().length;
@@ -373,23 +428,31 @@ function refreshStats(){
   $('#poolWords').textContent=available;
   $('#doneWords').textContent=pool().length-available;
   $('#wrongTotal').textContent=Object.values(activeProgress()).reduce((a,x)=>a+(x.wrong||0),0);
-  $('#ruleText').textContent=`${groupLabel(+$('#startDay').value)} ～ ${groupLabel(+$('#currentDay').value)}｜範圍 ${pool().length}｜今日已答 ${pool().length-available}｜剩餘 ${available}`;
-  updateCollectionChoice();
+  $('#ruleText').textContent=`${selectionLabel()}｜範圍 ${pool().length}｜今日已答 ${pool().length-available}｜剩餘 ${available}`;
+  $('#testSelectionSummary').textContent=selection.tests.length?`範圍內 ${selection.tests.length} 份 Test，共 ${WORDS.filter(w=>selection.tests.includes(w.day)).length} 字`:'尚未匯入閱讀題庫。';
   updateResume();
   renderWeak();
   renderHistory();
 }
-$('#collectionChoice').addEventListener('change',()=>{
- const choice=$('#collectionChoice').value;if(choice==='custom')return;
- $('#startDay').value=choice==='test6'?'31':'1';$('#currentDay').value=choice==='days'?'30':'31';refreshStats();
+$('#sourceChoice').addEventListener('change',()=>{selection.source=$('#sourceChoice').value;renderSourcePicker();saveSelection();refreshStats()});
+$('#startTest').addEventListener('change',()=>{
+ const start=+$('#startTest').value;let end=+$('#endTest').value;
+ if(READING_GROUPS.indexOf(start)>READING_GROUPS.indexOf(end))end=start;
+ setTestRange(start,end);$('#endTest').value=String(end);saveSelection();refreshStats();
 });
+$('#endTest').addEventListener('change',()=>{
+ let start=+$('#startTest').value;const end=+$('#endTest').value;
+ if(READING_GROUPS.indexOf(end)<READING_GROUPS.indexOf(start))start=end;
+ setTestRange(start,end);$('#startTest').value=String(start);saveSelection();refreshStats();
+});
+$('#limit').addEventListener('change',saveSelection);
 $('#startDay').addEventListener('change',()=>{
   if(+$('#startDay').value>+$('#currentDay').value)$('#currentDay').value=$('#startDay').value;
-  refreshStats();
+  saveSelection();refreshStats();
 });
 $('#currentDay').addEventListener('change',()=>{
   if(+$('#currentDay').value<+$('#startDay').value)$('#startDay').value=$('#currentDay').value;
-  refreshStats();
+  saveSelection();refreshStats();
 });
 $('#buildQuiz').addEventListener('click',()=>void prepareRound());
 function makeChoices(item){
@@ -499,13 +562,14 @@ function renderTodayFlashcards(words){
   const key=idOf(w),revealed=flashRevealed.has(key);
   const card=document.createElement('article');card.className='flash-card';
   const top=document.createElement('div');top.className='flash-top';
-  const meta=document.createElement('span');meta.textContent=groupLabel(w.day)+' · '+w.pos;
+  const meta=document.createElement('span');meta.textContent=groupLabel(w.day);
   const speaker=document.createElement('button');speaker.className='btn weak-speaker';speaker.type='button';speaker.textContent='🔊';speaker.setAttribute('aria-label','播放 '+w.word+' 的發音');speaker.title='播放發音';speaker.addEventListener('click',()=>speakText(w.word,$('#weakAudioStatus')));
   top.appendChild(meta);
   const example=document.createElement('button');example.type='button';example.className='btn flash-example-button';example.textContent='💡 例句';example.title='查看完整解釋與例句';example.setAttribute('aria-label',w.word+'：查看解釋與例句');example.addEventListener('click',()=>openFlashDetail(w));top.appendChild(example)
   top.appendChild(speaker);card.appendChild(top);
   const flip=document.createElement('button');flip.type='button';flip.className='flash-flip';flip.setAttribute('aria-expanded',String(revealed));flip.setAttribute('aria-label',(revealed?'收起 ':'揭曉 ')+w.word+' 的中文');
   const word=document.createElement('span');word.className='flash-word';word.lang='en';word.textContent=w.word;flip.appendChild(word);
+  const pos=document.createElement('span');pos.className='flash-pos';pos.textContent=w.pos;flip.appendChild(pos);
   const meaning=document.createElement('span');meaning.className=revealed?'flash-meaning':'flash-hint';meaning.textContent=revealed?w.zh:'先想中文，再點擊翻面';if(revealed)meaning.title=w.zh;flip.appendChild(meaning);
   const context=flashContext;
   const updateFace=()=>{
@@ -785,14 +849,15 @@ function remainingPool(){const daily=dailyStatus();return pool().filter(w=>!dail
 function checkDate(){const day=taipeiDate();if(day===studyDate)return false;studyDate=day;return true}
 function roundKey(){return KEY+':round:'+owner()+(practiceMode==='listening'?':listening':'')}
 function persistRound(){
- const state={answerDraftId:answerDraft?.event.id,revealedKey:hintUsed&&deck[idx]?idOf(deck[idx]):null,date:roundDate,mode:roundMode,keys:deck.map(idOf),next:idx+(locked?1:0),correct,start:roundStart,end:roundEnd,limit:$('#limit').value};
+ const state={selection:roundSelection,answerDraftId:answerDraft?.event.id,revealedKey:hintUsed&&deck[idx]?idOf(deck[idx]):null,date:roundDate,mode:roundMode,keys:deck.map(idOf),next:idx+(locked?1:0),correct,start:roundStart,end:roundEnd,limit:$('#limit').value};
  localStorage.setItem(roundKey(),JSON.stringify(state));updateResume();
 }
 function savedRound(){const s=readJSON(roundKey());return s.date===studyDate&&Array.isArray(s.keys)&&Number.isInteger(s.next)&&s.next>=0&&s.next<s.keys.length?s:null}
 function updateResume(){checkDate();const saved=savedRound();const daily=dailyStatus();const count=saved?saved.keys.slice(saved.next).filter(k=>wordIndex.has(k)&&(saved.mode==='wrong'||saved.mode==='todayWrong'||saved.mode==='weak'||!daily[k])).length:0;$('#resumeBtn').hidden=!count;$('#resumeBtn').textContent=`繼續上次作答（剩 ${count} 題）`;}
-function restoreSettings(){const s=readJSON(roundKey());if(s.start>=1&&GROUP_IDS.includes(s.end)&&s.start<=s.end){$('#startDay').value=String(s.start);$('#currentDay').value=String(s.end);$('#limit').value=String(s.limit||50)}updateResume()}
+function restoreSettings(){const prefs=readJSON(KEY+':source-selection'),s=readJSON(roundKey());applySelection(prefs.source?prefs:selectionFromRound(s));updateResume()}
 async function prepareRound(mode='normal',resume=false){
  if(building||!authReady||!finishEditableAnswer())return;
+ if(!resume&&mode==='normal'&&!pool().length){$('#roundMsg').textContent='請先選擇至少一份有單字的題庫。';return}
  try{recoverAnswerDrafts()}catch{$('#roundMsg').textContent='無法儲存先前的作答暫存，請確認瀏覽器儲存空間後重試。';return}
  building=true;$('#practiceMode').disabled=true;$('#buildQuiz').disabled=true;$('#resumeBtn').disabled=true;$('#retryTodayBtn').disabled=true;$('#weakStartBtn').disabled=true;
  try{
@@ -800,9 +865,9 @@ async function prepareRound(mode='normal',resume=false){
   await refreshDictionary();
   checkDate();const daily=dailyStatus();let saved=resume?savedRound():null;
   if(resume&&!saved){$('#roundMsg').textContent='沒有今天可繼續的題目，請重新建立本輪題目';return}
-  if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;$('#startDay').value=String(saved.start);$('#currentDay').value=String(saved.end)}
+  if(saved){roundMode=saved.mode;deck=saved.keys.map(k=>wordIndex.get(k)).filter(Boolean);idx=saved.next;correct=saved.correct||0;applySelection(selectionFromRound(saved));saveSelection()}
   else{roundMode=mode;const candidates=mode==='weak'?weakPool():mode==='todayWrong'?todayWrongPool(daily):mode==='wrong'?pool().filter(w=>daily[idOf(w)]?.had_wrong):remainingPool();deck=mode==='normal'?sampleNormalReview(candidates,+$('#limit').value):mode==='weak'?sampleReview(candidates,+$('#limit').value):shuffle(candidates).slice(0,+$('#limit').value);idx=0;correct=0;}
-  hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
+  hintUsed=!!saved&&saved.revealedKey===idOf(deck[idx]||{day:'',word:''});roundDate=studyDate;roundSelection=currentSelection();roundStart=+$('#startDay').value;roundEnd=+$('#currentDay').value;locked=false;persistRound();showTab('quiz');renderQuestion();refreshStats();
  }catch{$('#roundMsg').textContent='無法保存本輪進度，請確認瀏覽器儲存空間後重試'}
  finally{building=false;$('#practiceMode').disabled=false;$('#buildQuiz').disabled=false;$('#resumeBtn').disabled=false;$('#retryTodayBtn').disabled=false;$('#weakStartBtn').disabled=false;renderWeak()}
 }
@@ -913,6 +978,7 @@ $('#dictionaryExport').addEventListener('click',()=>{
  const a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(WORDS,null,2)],{type:'application/json'}));a.href=url;a.download='toeic_words.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 for(const d of GROUP_IDS){const option=document.createElement('option');option.value=d;option.textContent=groupLabel(d);$('#dictionaryDay').appendChild(option)}
+for(const d of GROUP_IDS){const option=document.createElement('option');option.value=d;option.textContent=groupLabel(d);$('#wordStatsDay').appendChild(option)}
 const cachedDictionary=readJSON(DICTIONARY_CACHE,[]);applyDictionary(Array.isArray(cachedDictionary)?cachedDictionary:[]);
 void refreshDictionary();
 window.addEventListener('online',()=>void refreshDictionary());
