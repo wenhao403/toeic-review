@@ -90,7 +90,7 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
 .weak-row-actions .weak-speaker{width:34px;min-width:34px;padding:4px;font-size:16px}
 .answer-count-bar{cursor:pointer;outline:none}.answer-count-bar:hover .count-bar,.answer-count-bar:focus-visible .count-bar{stroke:var(--text);stroke-width:2}
 .count-rate-point{cursor:pointer;outline:none}.count-rate-point:hover .rate-dot,.count-rate-point:focus-visible .rate-dot{stroke:var(--text);stroke-width:3}
-.question-word-row{display:grid;grid-template-columns:96px minmax(0,1fr) 96px;align-items:center;gap:8px}.question-word-row .wordline{grid-column:2;min-width:0}.question-word-row .word{overflow-wrap:anywhere;min-width:0}.btn.redo-answer{grid-column:3;justify-self:end;padding:6px 8px;min-height:32px;font-size:13px;font-weight:400;color:var(--muted);background:transparent;border-color:transparent;white-space:nowrap}.btn.redo-answer:enabled:hover,.btn.redo-answer:enabled:focus-visible{color:var(--text);border-color:var(--line)}@media(max-width:650px){.question-word-row{grid-template-columns:minmax(0,1fr) 76px}.question-word-row .wordline{grid-column:1}.btn.redo-answer{grid-column:2}}
+.question-meta-row{display:grid;grid-template-columns:76px minmax(0,1fr) 76px;align-items:center;gap:8px;margin-top:22px;min-height:32px}.question-meta-row #qDay{grid-column:2;min-width:0;overflow-wrap:anywhere}.question-word-row{min-width:0}.question-word-row .wordline{min-width:0}.question-word-row .word{overflow-wrap:anywhere;min-width:0}.btn.redo-answer{grid-column:3;justify-self:end;padding:6px 8px;min-height:32px;font-size:13px;font-weight:400;color:var(--muted);background:transparent;border-color:transparent;white-space:nowrap}.btn.redo-answer:enabled:hover,.btn.redo-answer:enabled:focus-visible{color:var(--text);border-color:var(--line)}
 .quiz-next-slot{display:flow-root;min-height:60px}.choices .choice:disabled{opacity:1}.btn.redo-answer:disabled{opacity:1;color:var(--muted);background:transparent;border-color:transparent;cursor:default}
 
 .source-controls{display:grid;grid-template-columns:minmax(150px,1fr) minmax(110px,.55fr);gap:16px;align-items:end}.day-range-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.test-fields{margin-top:0}[hidden]{display:none!important}
@@ -204,8 +204,8 @@ textarea{resize:vertical;min-height:100px}#dictionaryBody td:nth-child(4){min-wi
       <div class="row" style="justify-content:space-between"><span id="qProgress" class="muted">尚未建立題目</span><span id="qScore" class="muted">答對 0</span></div>
       <div id="readingAutoQuiz" style="text-align:right"><label class="auto-speech-control"><input id="readingAutoQuizToggle" class="auto-speech-toggle" type="checkbox" role="switch">自動發音</label></div>
       <div class="bar" style="margin-top:10px"><div id="qBar"></div></div>
-      <div id="qDay" class="muted" style="margin-top:22px"></div>
-      <div class="question-word-row"><div class="wordline"><div id="qWord" class="word">先到「設定」建立題目</div><button id="speakBtn" class="btn speaker" type="button" style="display:none" aria-label="播放發音">🔊</button></div><button id="redoAnswerBtn" class="btn redo-answer" type="button" hidden disabled title="按下一題前可重新選擇；僅記錄最後一次答案">重新作答</button></div>
+      <div class="question-meta-row"><div id="qDay" class="muted"></div><button id="redoAnswerBtn" class="btn redo-answer" type="button" hidden disabled title="按下一題前可重新選擇；僅記錄最後一次答案">重新作答</button></div>
+      <div class="question-word-row"><div class="wordline"><div id="qWord" class="word">先到「設定」建立題目</div><button id="speakBtn" class="btn speaker" type="button" style="display:none" aria-label="播放發音">🔊</button></div></div>
       <div id="qPos" class="muted"></div>
       <button id="revealBtn" class="btn" type="button" hidden style="margin-top:12px">顯示單字（使用提示）</button><p id="audioStatus" class="note" role="status"></p>
       <div id="choices" class="choices"></div>
